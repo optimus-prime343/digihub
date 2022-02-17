@@ -1,0 +1,9 @@
+div 
+    h1 Your application to become a merchant has been reviewed by our admin
+    p Your status has been updated to #{status}
+    if status === 'APPROVED'
+        p You can now start selling your products
+    else if status === 'REJECTED'
+        p Sorry, your application has been rejected. Please contact us for more information.
+    else if status === 'BLOCKED'
+        p Your account has been blocked. Please contact us for more information.

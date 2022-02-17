@@ -1,0 +1,6 @@
+extends base
+block content
+    - const orderMessage = message.split('.')
+    p Your order has been updated
+    each message in orderMessage
+        p #{message}

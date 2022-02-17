@@ -1,0 +1,43 @@
+/* Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+/* Global Styles */
+@layer base {
+  body {
+    @apply bg-gray-900 text-white;
+  }
+}
+/* Components styles */
+@layer components {
+  .btn {
+    @apply rounded-md px-4 py-3 shadow-md transition-all duration-300 hover:brightness-90 hover:filter;
+  }
+  .btn--cta {
+    @apply text-lg font-medium tracking-wide;
+  }
+  .input {
+    @apply rounded-md border border-gray-50 border-opacity-10 bg-gray-800/25 px-4 py-3 focus:outline-none focus:ring-1 focus:ring-indigo-600;
+  }
+  .input--file {
+    @apply file:mr-2 file:rounded-md file:border-none file:bg-indigo-600 file:p-2 file:text-white;
+  }
+  .input--error {
+    @apply border-red-400 border-opacity-70 focus:ring-red-600;
+  }
+  .divider {
+    @apply h-px w-full bg-gray-600;
+  }
+  .link {
+    @apply font-medium text-indigo-600 hover:text-indigo-500;
+  }
+  .heading-secondary {
+    @apply text-3xl font-bold uppercase tracking-tight lg:text-4xl;
+  }
+  .heading-tertiary {
+    @apply text-2xl font-bold capitalize text-neutral-200;
+  }
+}

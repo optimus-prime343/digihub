@@ -1,0 +1,34 @@
+import { Body, Controller, Patch, UseGuards } from '@nestjs/common'
+
+import { Role } from '../common/types'
+import { GetMerchant } from '../decorators/getMerchant.decorator'
+import { Roles } from '../decorators/roles.decorator'
+import { JwtAuthGuard } from '../guards/jwtAuth.guard'
+import { RolesGuard } from '../guards/roles.guard'
+import { User } from '../users/entities/user.entity'
+import { UpdateMerchantDto } from './dtos/updateMerchant.dto'
+import { Merchant } from './entity/merchant.entity'
+import { MerchantsService } from './merchants.service'
+
+@Controller('merchants')
+@Roles(Role.MERCHANT)
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class MerchantsController {
+    constructor(private readonly merchantService: MerchantsService) {}
+
+    @Patch()
+    public updateMerchant(
+        @GetMerchant() merchant: Merchant,
+        @Body() updateMerchantDto: UpdateMerchantDto
+    ): Promise<User | undefined> {
+        return this.merchantService.updateMerchant(merchant, updateMerchantDto)
+    }
+
+    @Patch('withdraw-amount')
+    public async withdraw(
+        @GetMerchant() merchant: Merchant,
+        @Body('amount') amount: number
+    ): Promise<Merchant> {
+        return this.merchantService.withdraw(merchant, amount)
+    }
+}

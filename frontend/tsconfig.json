@@ -1,0 +1,72 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "~shared/*": [
+        "src/components/Shared/*"
+      ],
+      "~forms/*": [
+        "src/forms/*"
+      ],
+      "~order/*": [
+        "src/components/Order/*"
+      ],
+      "~product/*": [
+        "src/components/Product/*"
+      ],
+      "~merchant/*": [
+        "src/components/Merchant/*"
+      ],
+      "~utils/*": [
+        "src/utils/*"
+      ],
+      "~constants/*": [
+        "src/constants/*"
+      ],
+      "~layouts/*": [
+        "src/layouts/*"
+      ],
+      "~types/*": [
+        "src/types/*"
+      ],
+      "~context/*": [
+        "src/context/*"
+      ],
+      "~services/*": [
+        "src/services/*"
+      ],
+      "~schemas/*": [
+        "src/schemas/*"
+      ],
+      "~styles/*": [
+        "src/styles/*"
+      ],
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
