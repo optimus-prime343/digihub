@@ -1,5 +1,5 @@
-import { IProduct, UpdateProductPayload } from '~types/product'
-import { axiosClient } from '~utils/axiosClient'
+import { IProduct, UpdateProductPayload } from '@/types/product'
+import { axiosClient } from '@/utils/axiosClient'
 
 export class ProductService {
   async fetchProducts() {

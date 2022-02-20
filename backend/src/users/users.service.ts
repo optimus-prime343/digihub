@@ -198,7 +198,6 @@ export class UsersService {
             if (email) user.email = email
             if (username) user.username = username
             await this.userRepository.save(user)
-            console.log(`User is ${JSON.stringify(user, undefined, 4)}`)
             return user
         } catch (error: any) {
             if (error.code === '23505')

@@ -1,11 +1,9 @@
-/* eslint-disable unicorn/no-useless-undefined */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from 'next/router'
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { productService } from 'src/services/product-service'
 
-import { useAuth } from '~context/auth'
-import { productService } from '~services/product-service'
-import { IProduct, UpdateProductPayload } from '~types/product'
+import { useAuth } from '@/context/auth'
+import { IProduct, UpdateProductPayload } from '@/types/product'
 
 import { IProductContext, productContext } from './product-context'
 

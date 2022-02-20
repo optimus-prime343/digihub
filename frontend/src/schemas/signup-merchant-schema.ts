@@ -4,7 +4,7 @@ import {
   PASSWORD_REGEX,
   PASSWORD_WEAK_MESSAGE,
   PHONE_NUMBER_REGEX,
-} from '~constants/index'
+} from '@/constants'
 
 export const signupMerchantSchema = Yup.object().shape({
   firstName: Yup.string().required(),

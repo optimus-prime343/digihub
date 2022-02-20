@@ -1,7 +1,7 @@
 import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 
-import { ResetPasswordPayload } from '~types/auth'
-import { ChangePasswordPayload, IUser, LoginPayload } from '~types/user'
+import { ResetPasswordPayload } from '@/types/auth'
+import { ChangePasswordPayload, IUser, LoginPayload } from '@/types/user'
 
 export interface IAuthContext {
   user?: IUser

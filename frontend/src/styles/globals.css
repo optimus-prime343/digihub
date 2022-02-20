@@ -14,13 +14,13 @@
 /* Components styles */
 @layer components {
   .btn {
-    @apply rounded-md px-4 py-3 shadow-md transition-all duration-300 hover:brightness-90 hover:filter;
+    @apply inline-block rounded-md px-4 py-2 shadow-md transition-all duration-300 hover:brightness-90 hover:filter;
   }
   .btn--cta {
     @apply text-lg font-medium tracking-wide;
   }
   .input {
-    @apply rounded-md border border-gray-50 border-opacity-10 bg-gray-800/25 px-4 py-3 focus:outline-none focus:ring-1 focus:ring-indigo-600;
+    @apply rounded-md border border-gray-50 border-opacity-10 bg-gray-800/25 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-600;
   }
   .input--file {
     @apply file:mr-2 file:rounded-md file:border-none file:bg-indigo-600 file:p-2 file:text-white;
@@ -35,9 +35,9 @@
     @apply font-medium text-indigo-600 hover:text-indigo-500;
   }
   .heading-secondary {
-    @apply text-3xl font-bold uppercase tracking-tight lg:text-4xl;
+    @apply text-xl font-bold uppercase tracking-tight text-gray-400 lg:text-2xl;
   }
   .heading-tertiary {
-    @apply text-2xl font-bold capitalize text-neutral-200;
+    @apply text-lg font-bold capitalize text-neutral-200 lg:text-xl;
   }
 }

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { IOrder, UpdateOrderPayload } from '~types/order'
+import { IOrder, UpdateOrderPayload } from '@/types/order'
 
 export interface IOrderContext {
   orders: IOrder[]

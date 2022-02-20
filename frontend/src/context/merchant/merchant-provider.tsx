@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
+import { merchantService } from 'src/services/merchant-service'
 
-import { useAuth } from '~context/auth'
-import { merchantService } from '~services/merchant-service'
-import { UpdateMerchantPayload } from '~types/merchant'
+import { useAuth } from '@/context/auth'
+import { UpdateMerchantPayload } from '@/types/merchant'
 
 import { IMerchantContext, merchantContext } from './merchant-context'
 

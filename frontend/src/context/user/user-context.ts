@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { UpdateUserPayload } from '~types/user'
+import { UpdateUserPayload } from '@/types/user'
 
 export interface IUserContext {
   updateUser: (

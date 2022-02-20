@@ -1,5 +1,5 @@
-import { IOrder, UpdateOrderPayload } from '~types/order'
-import { axiosClient } from '~utils/axiosClient'
+import { IOrder, UpdateOrderPayload } from '@/types/order'
+import { axiosClient } from '@/utils/axiosClient'
 
 export class OrderService {
   async fetchOrders(whose: 'merchant' | 'user') {

@@ -3,13 +3,10 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { useAuth } from '~context/auth'
-
 const NotFoundPage = () => {
   const router = useRouter()
-  const { user } = useAuth()
   const handleClick = () => {
-    router.push(user ? user.role.toLowerCase() : '/')
+    router.push('/')
   }
   return (
     <div className='p-4 lg:p-0'>

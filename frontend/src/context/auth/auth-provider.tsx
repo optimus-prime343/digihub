@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
-import { authService } from '~services/auth-service'
-import { ResetPasswordPayload } from '~types/auth'
-import { ChangePasswordPayload, IUser, LoginPayload } from '~types/user'
+import { authService } from '@/services/auth-service'
+import { ResetPasswordPayload } from '@/types/auth'
+import { ChangePasswordPayload, IUser, LoginPayload } from '@/types/user'
 
 import { authContext, IAuthContext } from './auth-context'
 
@@ -41,11 +41,10 @@ export const AuthProvider: FC = ({ children }) => {
       await authService.login(loginPayload)
       // once login is successful, fetch the user based on the httponly cookie stored in the browser
       const user = await authService.fetchUser()
-      console.log(user)
       setUser(user)
       onLogin()
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.message)
     } finally {
       setLoading(false)
     }
@@ -56,7 +55,7 @@ export const AuthProvider: FC = ({ children }) => {
       await authService.signup(signupPayload)
       onSignup()
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.message)
     } finally {
       setLoading(false)
     }
@@ -67,7 +66,7 @@ export const AuthProvider: FC = ({ children }) => {
       setUser(undefined)
       onLogout?.()
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.message)
     }
   }
   const resetPassword = async (
@@ -80,7 +79,7 @@ export const AuthProvider: FC = ({ children }) => {
       await authService.resetPassword(resetToken, resetPayload)
       onSuccess()
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.message)
     } finally {
       setLoading(false)
     }
@@ -93,7 +92,7 @@ export const AuthProvider: FC = ({ children }) => {
       await authService.changePassword(changePasswordPayload)
       onSuccess?.()
     } catch (error: any) {
-      setError(error.response.data?.message ?? 'Failed to change password')
+      setError(error.message ?? 'Failed to change password')
     } finally {
       setLoading(false)
     }

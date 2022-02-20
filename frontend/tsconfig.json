@@ -20,45 +20,33 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "~shared/*": [
-        "src/components/Shared/*"
+      "@/components/*": [
+        "src/components/*"
       ],
-      "~forms/*": [
-        "src/forms/*"
-      ],
-      "~order/*": [
-        "src/components/Order/*"
-      ],
-      "~product/*": [
-        "src/components/Product/*"
-      ],
-      "~merchant/*": [
-        "src/components/Merchant/*"
-      ],
-      "~utils/*": [
-        "src/utils/*"
-      ],
-      "~constants/*": [
-        "src/constants/*"
-      ],
-      "~layouts/*": [
-        "src/layouts/*"
-      ],
-      "~types/*": [
-        "src/types/*"
-      ],
-      "~context/*": [
-        "src/context/*"
-      ],
-      "~services/*": [
-        "src/services/*"
-      ],
-      "~schemas/*": [
+      "@/schemas/*": [
         "src/schemas/*"
       ],
-      "~styles/*": [
+      "@/types/*": [
+        "src/types/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ],
+      "@/context/*": [
+        "src/context/*"
+      ],
+      "@/styles/*": [
         "src/styles/*"
       ],
+      "@/hooks/*": [
+        "src/hooks/*"
+      ],
+      "@/services/*": [
+        "src/services/*"
+      ],
+      "@/constants": [
+        "src/constants"
+      ]
     }
   },
   "include": [

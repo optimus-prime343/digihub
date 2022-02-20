@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 
-import { IMerchant, UpdateMerchantPayload } from '~types/merchant'
-import { IProduct } from '~types/product'
-import { IUser } from '~types/user'
-import { axiosClient } from '~utils/axiosClient'
+import { IMerchant, UpdateMerchantPayload } from '@/types/merchant'
+import { IProduct } from '@/types/product'
+import { IUser } from '@/types/user'
+import { axiosClient } from '@/utils/axiosClient'
 
 export class MerchantService {
   async fetchProducts(): Promise<IProduct[]> {

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { IProduct, UpdateProductPayload } from '~types/product'
+import { IProduct, UpdateProductPayload } from '@/types/product'
 
 export interface IProductContext {
   merchantProducts: IProduct[]

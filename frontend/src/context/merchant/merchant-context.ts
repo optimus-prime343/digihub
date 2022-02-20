@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { UpdateMerchantPayload } from '~types/merchant'
+import { UpdateMerchantPayload } from '@/types/merchant'
 
 export interface IMerchantContext {
   updateMerchant: (

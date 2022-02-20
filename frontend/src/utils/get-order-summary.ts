@@ -1,5 +1,5 @@
-import { IOrder } from '~types/order'
-import { OrderStatus } from '~types/orderStatus'
+import { IOrder } from '@/types/order'
+import { OrderStatus } from '@/types/orderStatus'
 
 // Generates a basic summary of order from all the orders received by the merchant
 export const getOrderSummary = (orders: IOrder[]) => {

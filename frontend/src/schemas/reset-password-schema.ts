@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-import { PASSWORD_REGEX, PASSWORD_WEAK_MESSAGE } from '~constants/index'
+import { PASSWORD_REGEX, PASSWORD_WEAK_MESSAGE } from '@/constants'
 
 export const resetPasswordSchema = Yup.object().shape({
   password: Yup.string()

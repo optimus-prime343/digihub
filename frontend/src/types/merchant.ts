@@ -9,7 +9,19 @@ export interface IMerchant {
   withDrawAmount: number
   pendingAmount: number
 }
-export type UpdateMerchantPayload = Pick<
-  IMerchant,
-  'businessName' | 'businessDescription' | 'address'
->
+export type MerchantSignupPayload = {
+  firstName: string
+  lastName: string
+  email: string
+  username: string
+  password: string
+  address: string
+  businessDescription: string
+  businessName: string
+  phoneNumber: string
+}
+export type UpdateMerchantPayload = {
+  businessName: string
+  businessDescription: string
+  address: string
+}

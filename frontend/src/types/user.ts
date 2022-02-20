@@ -22,9 +22,6 @@ export type SignupPayload = Pick<
   'firstName' | 'lastName' | 'email' | 'username'
 > & { password: string }
 
-export type SignUpMerchantPayload = SignupPayload &
-  Omit<IMerchant, 'id' | 'status'>
-
 export type LoginPayload = {
   username: string
   password: string

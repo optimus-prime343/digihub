@@ -1,19 +1,13 @@
-import AddProduct from '~merchant/add-product'
-import Layout from '~shared/layout'
-import PrivateRoute from '~shared/private-route'
-import RestrictPageAccess from '~shared/restrict-page-access'
-import { UserRole } from '~types/user'
+import { Layout, WithAuth } from '@/components/core'
+import { AddProductForm } from '@/components/product'
+import { UserRole } from '@/types/user'
 
 const AddProductPage = () => {
   return (
-    <PrivateRoute>
-      <RestrictPageAccess restrictTo={UserRole.MERCHANT}>
-        <Layout title='Digihub | Add Product'>
-          <AddProduct />
-        </Layout>
-      </RestrictPageAccess>
-    </PrivateRoute>
+    <Layout title='Digihub'>
+      <AddProductForm />
+    </Layout>
   )
 }
 
-export default AddProductPage
+export default WithAuth(AddProductPage, { restrictTo: UserRole.MERCHANT })

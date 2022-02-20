@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router'
 
-import SignupMerchantForm from '~forms/signup-merchant-form'
-import SignupUserForm from '~forms/signup-user-form'
-import Layout from '~shared/layout'
-import NextLink from '~shared/next-link'
+import { MerchantSignupForm, UserSignupForm } from '@/components/auth'
+import { Layout, NextLink } from '@/components/core'
 
 const Signup = () => {
   const router = useRouter()
@@ -11,7 +9,7 @@ const Signup = () => {
   return (
     <Layout title={`Digihub | Signup as ${userType}`}>
       <div className='mx-auto max-w-xl py-6'>
-        {userType === 'merchant' ? <SignupMerchantForm /> : <SignupUserForm />}{' '}
+        {userType === 'merchant' ? <MerchantSignupForm /> : <UserSignupForm />}{' '}
         <p className='text-center'>
           Already have an account ? {''}
           <NextLink className='link' href='/auth/login'>

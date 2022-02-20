@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-import { PASSWORD_REGEX, PASSWORD_WEAK_MESSAGE } from '~constants/index'
+import { PASSWORD_REGEX, PASSWORD_WEAK_MESSAGE } from '@/constants'
 
 export const signupUserSchema = Yup.object().shape({
   firstName: Yup.string().required(),

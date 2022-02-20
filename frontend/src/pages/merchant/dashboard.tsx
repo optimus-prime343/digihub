@@ -1,21 +1,18 @@
-import { useAuth } from '~context/auth'
-import MerchantOverview from '~merchant/merchant-overview'
-import Layout from '~shared/layout'
-import PrivateRoute from '~shared/private-route'
-import RestrictPageAccess from '~shared/restrict-page-access'
-import { UserRole } from '~types/user'
+import { Layout, WithAuth } from '@/components/core'
+import MerchantOverview from '@/components/merchant/MerchantOverview'
+import { useAuth } from '@/context/auth'
+import { UserRole } from '@/types/user'
 
 const Dashboard = () => {
   const { user } = useAuth()
   return (
     <Layout title={`Digihub | ${user?.merchant?.businessName} Dashboard`}>
-      <PrivateRoute next='/merchant/dashboard'>
-        <RestrictPageAccess restrictTo={UserRole.MERCHANT}>
-          <MerchantOverview />
-        </RestrictPageAccess>
-      </PrivateRoute>
+      <MerchantOverview />
     </Layout>
   )
 }
 
-export default Dashboard
+export default WithAuth(Dashboard, {
+  restrictTo: UserRole.MERCHANT,
+  next: '/merchant/dashboard',
+})

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
-import { useAuth } from '~context/auth'
-import { userService } from '~services/user-service'
-import { UpdateUserPayload } from '~types/user'
+import { useAuth } from '@/context/auth'
+import { userService } from '@/services/user-service'
+import { UpdateUserPayload } from '@/types/user'
 
 import { IUserContext, userContext } from './user-context'
 

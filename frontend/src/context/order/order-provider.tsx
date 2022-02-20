@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useCallback, useEffect, useState } from 'react'
+import { orderService } from 'src/services/order-service'
 
-import { useAuth } from '~context/auth'
-import { orderService } from '~services/order-service'
-import { IOrder, UpdateOrderPayload } from '~types/order'
-import { UserRole } from '~types/user'
+import { useAuth } from '@/context/auth'
+import { IOrder, UpdateOrderPayload } from '@/types/order'
+import { UserRole } from '@/types/user'
 
 import { IOrderContext, orderContext } from './order-context'
 
