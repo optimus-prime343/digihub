@@ -1,9 +1,9 @@
-import { Alert, Button, Textarea, TextInput } from '@mantine/core'
+import { Button, Textarea, TextInput } from '@mantine/core'
 import { useFormik } from 'formik'
 import { FC } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'react-toastify'
 
-import { useMerchant } from '@/context/merchant'
+import { useUpdateMerchant } from '@/hooks/merchant'
 import { IUser } from '@/types/user'
 
 interface Props {
@@ -11,17 +11,23 @@ interface Props {
 }
 
 const BusinessInfoForm: FC<Props> = ({ user }) => {
-  const { updateMerchant, error } = useMerchant()
+  const updateMerchantMutation = useUpdateMerchant()
   const { getFieldProps, handleSubmit } = useFormik({
     initialValues: {
       businessName: user.merchant?.businessName ?? '',
       address: user.merchant?.address ?? '',
       businessDescription: user.merchant?.businessDescription ?? '',
     },
-    onSubmit: values => {
-      updateMerchant(values, () => {
-        toast.success('Business profile updated successfully')
-      })
+    onSubmit: async values => {
+      try {
+        await updateMerchantMutation.mutateAsync(values, {
+          onSuccess: () => {
+            toast.success('Business info updated')
+          },
+        })
+      } catch (error: any) {
+        toast.error(error.message)
+      }
     },
   })
   return (
@@ -31,11 +37,6 @@ const BusinessInfoForm: FC<Props> = ({ user }) => {
         onSubmit={handleSubmit}
       >
         <h4 className='heading-tertiary mb-4'>Business Information</h4>
-        {error && (
-          <Alert color='red' title='Update Failed' variant='filled'>
-            {error}
-          </Alert>
-        )}
         <div className='mt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
           <TextInput label='Business Name' {...getFieldProps('businessName')} />
           <TextInput label='Address' {...getFieldProps('address')} />

@@ -3,7 +3,7 @@ import React from 'react'
 import { AiOutlineClockCircle, AiOutlinePieChart } from 'react-icons/ai'
 import { BsWallet } from 'react-icons/bs'
 
-import { useAuth } from '@/context/auth'
+import { useUser } from '@/hooks/auth'
 
 import WithdrawAmountPrompt from './WithdrawAmountPrompt'
 
@@ -15,7 +15,7 @@ const icon = (label: string) =>
   })
 
 const EarningOverview = () => {
-  const { user } = useAuth()
+  const { user } = useUser()
   const { netIncome, pendingAmount, withdrawAmount } = {
     netIncome: user?.merchant?.netIncome ?? 0,
     pendingAmount: user?.merchant?.pendingAmount ?? 0,

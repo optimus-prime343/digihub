@@ -1,32 +1,33 @@
-import { Alert, Button, PasswordInput } from '@mantine/core'
+import { Button, PasswordInput } from '@mantine/core'
 import { useFormik } from 'formik'
-import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
 
-import { useAuth } from '@/context/auth'
+import { useChangePassword } from '@/hooks/auth'
 
 const ChangePasswordForm = () => {
-  const { loading, changePassword, error } = useAuth()
-  const { getFieldProps, handleSubmit } = useFormik({
+  const router = useRouter()
+  const changePassword = useChangePassword()
+  const { getFieldProps, handleSubmit, isSubmitting } = useFormik({
     initialValues: {
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
     },
     onSubmit: async values => {
-      await changePassword(values, () => {
+      try {
+        await changePassword(values)
+        await router.push('/auth/login')
         toast.success('Password changed successfully')
-      })
+      } catch (error: any) {
+        toast.error(error.message)
+      }
     },
   })
   return (
     <div className='rounded-md bg-gray-800 p-4 shadow-md'>
       <h4 className='heading-tertiary mb-4'>Change Password</h4>
       <form className='space-y-4' onSubmit={handleSubmit}>
-        {error && (
-          <Alert color='red' title='Fail to change password' variant='filled'>
-            {error}
-          </Alert>
-        )}
         <PasswordInput
           label='Current Password'
           {...getFieldProps('currentPassword')}
@@ -44,7 +45,7 @@ const ChangePasswordForm = () => {
             placeholder='********'
           />
         </div>
-        <Button className='bg-indigo-600' disabled={loading} type='submit'>
+        <Button className='bg-indigo-600' loading={isSubmitting} type='submit'>
           Change Password
         </Button>
       </form>

@@ -5,18 +5,16 @@ import {
   randProductName,
 } from '@ngneat/falso'
 import { useFormik } from 'formik'
-import { useRouter } from 'next/router'
 import React, { ChangeEvent, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'react-toastify'
 
 import { PreviewImages } from '@/components/core'
 import MerchantSidebar from '@/components/ui/MerchantSidebar'
-import { useProduct } from '@/context/product'
+import { useAddProduct } from '@/hooks/product'
 import { addProductSchema } from '@/schemas/add-product-schema'
 
 const AddProductForm = () => {
-  const { addProduct, loading, error } = useProduct()
-  const router = useRouter()
+  const { mutateAsync, isLoading, error } = useAddProduct()
   const [fileList, setFileList] = useState<FileList | undefined>()
   const [images, setImages] = useState<string[]>([])
 
@@ -28,35 +26,37 @@ const AddProductForm = () => {
       setImages(imageUrls)
     }
   }
-  const { getFieldProps, errors, touched, handleSubmit, values } = useFormik({
-    initialValues: {
-      name: randProductName(),
-      description: randProductDescription(),
-      price: randNumber({ min: 500, max: 3000 }),
-      quantity: randNumber({ min: 1, max: 50 }),
-    },
-    validationSchema: addProductSchema,
-    onSubmit: async values => {
-      if (!fileList) {
-        toast.error('At least one image is required')
-      } else {
-        const formData = new FormData()
+  const { getFieldProps, errors, touched, handleSubmit, values, resetForm } =
+    useFormik({
+      initialValues: {
+        name: randProductName(),
+        description: randProductDescription(),
+        price: randNumber({ min: 500, max: 3000 }),
+        quantity: randNumber({ min: 1, max: 50 }),
+      },
+      validationSchema: addProductSchema,
+      onSubmit: async values => {
+        if (!fileList) {
+          toast.error('At least one image is required')
+        } else {
+          const formData = new FormData()
 
-        for (const [key, value] of Object.entries(values)) {
-          formData.append(key, value.toString())
-        }
+          for (const [key, value] of Object.entries(values)) {
+            formData.append(key, value.toString())
+          }
 
-        for (const file of Array.from(fileList ?? []))
-          formData.append('productImage', file)
-
-        await addProduct(formData, () => {
-          router.push('/merchant/products').then(() => {
+          for (const file of Array.from(fileList ?? []))
+            formData.append('productImage', file)
+          try {
+            await mutateAsync(formData)
+            resetForm()
             toast.success('Product added successfully')
-          })
-        })
-      }
-    },
-  })
+          } catch (error: any) {
+            toast.error(error.message)
+          }
+        }
+      },
+    })
   const getFieldError = (fieldName: keyof typeof values) => {
     return errors[fieldName] && touched[fieldName]
       ? errors[fieldName]
@@ -118,7 +118,7 @@ const AddProductForm = () => {
             />
             {images.length > 0 && <PreviewImages images={images} />}
           </div>
-          <Button className='bg-indigo-600' disabled={loading} type='submit'>
+          <Button className='bg-indigo-600' disabled={isLoading} type='submit'>
             Add Product
           </Button>
         </form>

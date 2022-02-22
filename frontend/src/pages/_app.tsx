@@ -1,21 +1,28 @@
 import '@/styles/globals.css'
 import '@/styles/nprogress.css'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 import { MantineProvider } from '@mantine/core'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { done, start } from 'nprogress'
 import { useEffect } from 'react'
-import { Toaster } from 'react-hot-toast'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import { ToastContainer } from 'react-toastify'
 
 import { ClientOnly } from '@/components/core'
 import { Navbar } from '@/components/ui'
-import { AuthProvider } from '@/context/auth'
-import { MerchantProvider } from '@/context/merchant'
-import OrderProvider from '@/context/order/order-provider'
-import { ProductProvider } from '@/context/product'
-import { UserProvider } from '@/context/user'
 import { theme } from '@/utils/theme'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+})
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -25,22 +32,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     router.events.on('routeChangeError', done)
   }, [router.events])
   return (
-    <ClientOnly>
-      <AuthProvider>
-        <UserProvider>
-          <MerchantProvider>
-            <ProductProvider>
-              <OrderProvider>
-                <MantineProvider theme={theme}>
-                  <Navbar />
-                  <Toaster />
-                  <Component {...pageProps} />
-                </MantineProvider>
-              </OrderProvider>
-            </ProductProvider>
-          </MerchantProvider>
-        </UserProvider>
-      </AuthProvider>
-    </ClientOnly>
+    <QueryClientProvider client={queryClient}>
+      <ClientOnly>
+        <ReactQueryDevtools />
+        <MantineProvider theme={theme}>
+          <Navbar />
+          <ToastContainer autoClose={5000} theme='dark' />
+          <Component {...pageProps} />
+        </MantineProvider>
+      </ClientOnly>
+    </QueryClientProvider>
   )
 }

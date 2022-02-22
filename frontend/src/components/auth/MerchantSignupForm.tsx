@@ -1,15 +1,9 @@
-import {
-  Alert,
-  Button,
-  PasswordInput,
-  Textarea,
-  TextInput,
-} from '@mantine/core'
+import { Button, PasswordInput, Textarea, TextInput } from '@mantine/core'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
-import toast from 'react-hot-toast'
+import { toast } from 'react-toastify'
 
-import { useAuth } from '@/context/auth'
+import { useSignup } from '@/hooks/auth'
 import { signupMerchantSchema } from '@/schemas/signup-merchant-schema'
 import { MerchantSignupPayload } from '@/types/merchant'
 
@@ -26,9 +20,9 @@ const initialValues: MerchantSignupPayload = {
 }
 
 const MerchantSignupForm = () => {
-  const { loading, error, signup } = useAuth()
+  const signupMutation = useSignup()
   const router = useRouter()
-  const { getFieldProps, handleSubmit, touched, errors } =
+  const { getFieldProps, handleSubmit, touched, errors, isSubmitting } =
     useFormik<MerchantSignupPayload>({
       initialValues,
       validationSchema: signupMerchantSchema,
@@ -47,11 +41,16 @@ const MerchantSignupForm = () => {
             phoneNumber: values.phoneNumber,
           },
         }
-        signup(data, () => {
-          router.push('/auth/login').then(() => {
-            toast.success('Please check your email to verify your account')
+        try {
+          await signupMutation.mutateAsync(data, {
+            onSuccess: async () => {
+              await router.push('/auth/login')
+              toast.success('Please check your email for verification')
+            },
           })
-        })
+        } catch (error: any) {
+          toast.error(error.message)
+        }
       },
     })
   const getFieldError = (fieldName: keyof MerchantSignupPayload) => {
@@ -69,11 +68,6 @@ const MerchantSignupForm = () => {
         </p>
       </div>
       <form className='mt-4 space-y-4' onSubmit={handleSubmit}>
-        {error && (
-          <Alert color='red' title='Signup Failed' variant='filled'>
-            {error}
-          </Alert>
-        )}
         <TextInput
           error={getFieldError('firstName')}
           label='First Name'
@@ -131,7 +125,7 @@ const MerchantSignupForm = () => {
         />
         <Button
           className='mt-4 bg-indigo-600'
-          disabled={loading}
+          disabled={isSubmitting}
           fullWidth
           type='submit'
         >

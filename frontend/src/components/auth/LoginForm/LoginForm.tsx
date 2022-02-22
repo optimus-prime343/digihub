@@ -1,12 +1,12 @@
-import { Alert, Button, PasswordInput, TextInput } from '@mantine/core'
+import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
-import toast from 'react-hot-toast'
 import { FaUserCircle } from 'react-icons/fa'
 import { MdPassword } from 'react-icons/md'
+import { toast } from 'react-toastify'
 
 import { NextLink } from '@/components/core'
-import { useAuth } from '@/context/auth'
+import { useLogin } from '@/hooks/auth'
 import { loginSchema } from '@/schemas/login-schema'
 import { LoginPayload } from '@/types/user'
 
@@ -16,19 +16,23 @@ const initialValues: LoginPayload = {
 }
 
 const LoginForm = () => {
-  const { loading, error, login } = useAuth()
+  const login = useLogin()
   const router = useRouter()
-  const { getFieldProps, errors, touched, handleSubmit } = useFormik({
-    initialValues,
-    validationSchema: loginSchema,
-    onSubmit: async data => {
-      login(data, () => {
-        router.push('/').then(() => {
-          toast.success('Login successful!')
-        })
-      })
-    },
-  })
+  const { getFieldProps, errors, touched, handleSubmit, isSubmitting } =
+    useFormik({
+      initialValues,
+      validationSchema: loginSchema,
+      onSubmit: async data => {
+        try {
+          await login(data)
+          //check whether there is next query param attached to the login route
+          //if there is, redirect user to that page after successfull login else redirect to homepage
+          router.push((router.query.next as string) ?? '/')
+        } catch (error: any) {
+          toast.error(error.message)
+        }
+      },
+    })
   const getFieldError = (fieldName: keyof typeof initialValues) => {
     return errors[fieldName] && touched[fieldName]
       ? errors[fieldName]
@@ -44,11 +48,6 @@ const LoginForm = () => {
         </p>
       </div>
       <form className='space-y-4' onSubmit={handleSubmit}>
-        {error && (
-          <Alert color='red' title='Login Failed' variant='filled'>
-            {error}
-          </Alert>
-        )}
         <TextInput
           error={getFieldError('username')}
           icon={<FaUserCircle />}
@@ -66,7 +65,7 @@ const LoginForm = () => {
         <Button
           aria-label='Login'
           className='bg-indigo-600'
-          disabled={loading}
+          disabled={isSubmitting}
           fullWidth
           type='submit'
         >

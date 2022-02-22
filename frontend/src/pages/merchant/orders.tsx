@@ -1,12 +1,12 @@
 import React from 'react'
-import { useAuth } from 'src/context/auth'
 
 import { Layout, WithAuth } from '@/components/core'
 import { MerchantOrders } from '@/components/merchant'
+import { useUser } from '@/hooks/auth'
 import { UserRole } from '@/types/user'
 
 const OrdersPage = () => {
-  const { user } = useAuth()
+  const { user } = useUser()
   return (
     <Layout title={`Digihub | ${user?.merchant?.businessName} Orders`}>
       <MerchantOrders />
@@ -14,4 +14,6 @@ const OrdersPage = () => {
   )
 }
 
-export default WithAuth(OrdersPage, { restrictTo: UserRole.MERCHANT })
+export default WithAuth(OrdersPage, {
+  restrictTo: UserRole.MERCHANT,
+})

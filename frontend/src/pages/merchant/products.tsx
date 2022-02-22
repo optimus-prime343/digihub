@@ -1,10 +1,10 @@
 import { Layout, WithAuth } from '@/components/core'
 import { MerchantProducts } from '@/components/merchant'
-import { useAuth } from '@/context/auth'
+import { useUser } from '@/hooks/auth'
 import { UserRole } from '@/types/user'
 
 const ProductsPage = () => {
-  const { user } = useAuth()
+  const { user } = useUser()
   return (
     <Layout title={`Digihub | ${user?.merchant?.businessName} Products`}>
       <MerchantProducts />
@@ -12,4 +12,6 @@ const ProductsPage = () => {
   )
 }
 
-export default WithAuth(ProductsPage, { restrictTo: UserRole.MERCHANT })
+export default WithAuth(ProductsPage, {
+  restrictTo: UserRole.MERCHANT,
+})

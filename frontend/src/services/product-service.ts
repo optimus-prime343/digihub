@@ -2,26 +2,80 @@ import { IProduct, UpdateProductPayload } from '@/types/product'
 import { axiosClient } from '@/utils/axiosClient'
 
 export class ProductService {
-  async fetchProducts() {
-    const { data } = await axiosClient.get<IProduct[]>('/products')
-    return data
+  async getProduct(id: string) {
+    try {
+      const { data } = await axiosClient.get<IProduct[]>(`/products/${id}`)
+      return data
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message ?? 'Failed to get product')
+    }
+  }
+  async fetchProducts(page?: number) {
+    try {
+      const pageQuery = page ? `?page=${page}` : ''
+      const { data } = await axiosClient.get<IProduct[]>(
+        `/products${pageQuery}`
+      )
+      return data
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to fetch products'
+      )
+    }
   }
   async fetchMerchantProducts() {
-    const { data } = await axiosClient.get<IProduct[]>('/products/me')
-    return data
+    try {
+      const { data } = await axiosClient.get<IProduct[]>('/products/me')
+      return data
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to fetch merchant products'
+      )
+    }
+  }
+  async searchProducts(searchQuery: string) {
+    try {
+      const { data } = await axiosClient.get<IProduct[]>(
+        `/products/search?searchQuery=${searchQuery}`
+      )
+      return data
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to search products'
+      )
+    }
   }
   async addProduct(formData: FormData) {
-    const { data } = await axiosClient.post<IProduct>('/products', formData)
-    return data
+    try {
+      const { data } = await axiosClient.post<IProduct>('/products', formData)
+      return data
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message ?? 'Failed to add product')
+    }
   }
   async deleteProduct(id: string) {
-    const { data } = await axiosClient.delete<string>(`/products/${id}`)
-    return data
+    try {
+      const { data } = await axiosClient.delete<string>(`/products/${id}`)
+      return data
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to delete product'
+      )
+    }
   }
   async updateProduct(updateProductPayload: UpdateProductPayload) {
-    const { id, ...rest } = updateProductPayload
-    const { data } = await axiosClient.patch<IProduct>(`/products/${id}`, rest)
-    return data
+    try {
+      const { id, ...rest } = updateProductPayload
+      const { data } = await axiosClient.patch<IProduct>(
+        `/products/${id}`,
+        rest
+      )
+      return data
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to update product'
+      )
+    }
   }
 }
 export const productService = new ProductService()

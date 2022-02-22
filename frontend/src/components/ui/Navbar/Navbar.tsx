@@ -7,7 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 
 import { NextLink } from '@/components/core'
 import { SearchProducts } from '@/components/user'
-import { useAuth } from '@/context/auth'
+import { useUser } from '@/hooks/auth'
 import { UserRole } from '@/types/user'
 
 import InitialNavbar from './InitialNavbar'
@@ -26,7 +26,7 @@ const navLinkList = (showNav: boolean) =>
 
 const DefaultNavbar = () => {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user } = useUser()
   const navbarReference = useRef<HTMLUListElement | null>(null)
   const [showNav, setShowNav] = useState(false)
 

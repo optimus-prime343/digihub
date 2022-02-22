@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { FC, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'react-toastify'
 
 import { UpdateOrderForm } from '@/components/order'
 import { IOrder } from '@/types/order'

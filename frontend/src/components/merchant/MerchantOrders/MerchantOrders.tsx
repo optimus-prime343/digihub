@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 
 import { MerchantSidebar } from '@/components/ui'
-import { useOrder } from '@/context/order'
+import { useMerchantOrders } from '@/hooks/order'
 import { IOrder } from '@/types/order'
 import { OrderStatus } from '@/types/orderStatus'
 
@@ -11,7 +11,7 @@ import MerchantOrderRow from './MerchantOrderRow'
 
 const MerchantOrderList = () => {
   const router = useRouter()
-  const { orders } = useOrder()
+  const { orders } = useMerchantOrders()
   const [filterBy, setFilterBy] = useState((router.query.show as string) ?? '')
   const filteredOrders = useMemo(
     () =>

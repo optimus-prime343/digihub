@@ -1,22 +1,14 @@
 import { TextInput } from '@mantine/core'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import { MdOutlineClear } from 'react-icons/md'
 
 import ProductAutocomplete from '@/components/ui/ProductAutocomplete'
-import { useProduct } from '@/context/product'
+import { useProductsSearch } from '@/hooks/product'
 
 const SearchProducts = () => {
-  const { products } = useProduct()
   const [searchQuery, setSearchQuery] = useState('')
-  // Products which are shown as an autocomplete after user searches for a product
-  const filteredProducts = useMemo(
-    () =>
-      products.filter(product =>
-        product.name.toLowerCase().startsWith(searchQuery.toLowerCase())
-      ),
-    [products, searchQuery]
-  )
+  const { products } = useProductsSearch(searchQuery)
   return (
     <div className='relative hidden max-w-lg flex-1 lg:block'>
       <TextInput
@@ -31,10 +23,10 @@ const SearchProducts = () => {
         size='md'
         value={searchQuery}
       />
-      {searchQuery && filteredProducts.length > 0 ? (
+      {searchQuery && products.length > 0 ? (
         <ProductAutocomplete
           onClickOutside={() => setSearchQuery('')}
-          products={filteredProducts}
+          products={products}
           searchQuery={searchQuery}
         />
       ) : null}

@@ -1,8 +1,10 @@
 import { ResetPasswordPayload } from '@/types/auth'
+import { MerchantSignupPayload } from '@/types/merchant'
 import {
   ChangePasswordPayload,
   IUser,
   LoginPayload,
+  SignupPayload,
   UpdateUserPayload,
 } from '@/types/user'
 import { axiosClient } from '@/utils/axiosClient'
@@ -16,10 +18,10 @@ class AuthService {
       )
       return data
     } catch (error: any) {
-      throw new Error(error.response.data.message)
+      throw new Error(error.response?.data?.message ?? 'Login failed')
     }
   }
-  async signup<T>(signupPayload: T) {
+  async signup(signupPayload: SignupPayload | MerchantSignupPayload) {
     try {
       const { data } = await axiosClient.post<string>(
         '/auth/signup',

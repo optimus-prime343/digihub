@@ -7,12 +7,13 @@ import {
     NotFoundException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { ILike, Repository } from 'typeorm'
 
 import { MerchantStatus } from '../common/types'
 import { PRODUCT_NOT_FOUND_MESSAGE } from '../constants'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { CreateProductDto } from './dtos/createProduct.dto'
+import { FilterProductsDto } from './dtos/filterProduct.dto'
 import { UpdateProductDto } from './dtos/updateProduct.dto'
 import { Product } from './entities/product.entity'
 
@@ -52,13 +53,29 @@ export class ProductsService {
         this.loggger.log(`${merchant.businessName} fetching all their products`)
         return this.productRepository.find({
             where: { merchant },
+            order: { createdAt: 'DESC' },
         })
     }
 
-    public findAll(): Promise<Product[]> {
-        return this.productRepository.find({ relations: ['merchant'] })
+    public findAll(filterProductDto: FilterProductsDto): Promise<Product[]> {
+        const page = filterProductDto.page ? Number(filterProductDto.page) : 1
+        const limit = filterProductDto.limit
+            ? Number(filterProductDto.limit)
+            : 10
+        const skip = (page - 1) * limit
+        return this.productRepository.find({
+            relations: ['merchant'],
+            take: limit,
+            skip,
+            order: { createdAt: 'DESC' },
+        })
     }
-
+    public async SearchProducts(searchQuery: string): Promise<Product[]> {
+        return this.productRepository.find({
+            where: { name: ILike(`%${searchQuery}%`) },
+            select: ['id', 'name', 'price', 'images', 'description'],
+        })
+    }
     public async findProductById(id: string): Promise<Product> {
         const product = await this.productRepository.findOne({
             where: { id },

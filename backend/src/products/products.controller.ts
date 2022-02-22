@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     UploadedFiles,
     UseGuards,
     UseInterceptors,
@@ -23,6 +24,7 @@ import { randomFileName } from '../helpers/randomFileName'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { User } from '../users/entities/user.entity'
 import { CreateProductDto } from './dtos/createProduct.dto'
+import { FilterProductsDto } from './dtos/filterProduct.dto'
 import { UpdateProductDto } from './dtos/updateProduct.dto'
 import { Product } from './entities/product.entity'
 import { ProductsService } from './products.service'
@@ -66,10 +68,17 @@ export class ProductsController {
     }
 
     @Get()
-    public findAll(): Promise<Product[]> {
-        return this.productsService.findAll()
+    public findAll(
+        @Query() filterProductDto: FilterProductsDto
+    ): Promise<Product[]> {
+        return this.productsService.findAll(filterProductDto)
     }
-
+    @Get('search')
+    public search(
+        @Query('searchQuery') searchQuery: string
+    ): Promise<Product[]> {
+        return this.productsService.SearchProducts(searchQuery)
+    }
     @Get(':id')
     public findProductById(@Param('id') id: string): Promise<Product> {
         return this.productsService.findProductById(id)

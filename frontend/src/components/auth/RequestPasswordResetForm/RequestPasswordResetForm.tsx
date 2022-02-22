@@ -1,14 +1,14 @@
 import { Button, TextInput } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'react-toastify'
 
-import { useAuth } from '@/context/auth'
+import { useUser } from '@/hooks/auth'
 import { axiosClient } from '@/utils/axiosClient'
 
 const RequestPasswordResetForm = () => {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user } = useUser()
   const [email, setEmail] = useState('')
   const handlePasswordResetRequest = async (
     event: FormEvent<HTMLFormElement>,
@@ -20,7 +20,7 @@ const RequestPasswordResetForm = () => {
       email,
     })
     toast.promise(response, {
-      loading: 'Sending password reset instructions',
+      pending: 'Sending password reset instructions...',
       success: 'Check your email for password reset instructions',
       error: 'Invalid email or email does not exist',
     })

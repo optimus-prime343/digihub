@@ -1,11 +1,11 @@
 import EarningOverview from '@/components/merchant/EarningOverview'
 import MerchantOrdersOverview from '@/components/merchant/MerchantOrdersOverview'
 import { MerchantSidebar } from '@/components/ui'
-import { useAuth } from '@/context/auth'
+import { useUser } from '@/hooks/auth'
 import { getGreetingTime } from '@/utils/get-greeting-time'
 
 const MerchantOverview = () => {
-  const { user } = useAuth()
+  const { user } = useUser()
   return (
     <MerchantSidebar>
       <h4 className='heading-tertiary mb-2'>

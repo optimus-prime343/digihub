@@ -4,12 +4,12 @@ import { BsCheck2Circle } from 'react-icons/bs'
 import { MdClose, MdPendingActions } from 'react-icons/md'
 
 import { NextLink } from '@/components/core'
-import { useOrder } from '@/context/order'
+import { useMerchantOrders } from '@/hooks/order'
 import { OrderStatus } from '@/types/orderStatus'
 import { getOrderSummary } from '@/utils/get-order-summary'
 
 const MerchantOrdersOverview = () => {
-  const { orders } = useOrder()
+  const { orders } = useMerchantOrders()
   const summary = useMemo(() => getOrderSummary(orders), [orders])
   const summaryBox = classNames('bg-gray-800 p-4 flex gap-6 rounded-md')
   // classnames for order status,icon and their corresponding values

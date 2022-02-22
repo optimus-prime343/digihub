@@ -3,11 +3,11 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 
 import { NextLink } from '@/components/core'
 import ProductListItem from '@/components/product/ProductListItem'
-import { useProduct } from '@/context/product'
+import { useMerchantProducts } from '@/hooks/product'
 
 const MerchantProductsPreview = () => {
-  const { merchantProducts } = useProduct()
-  if (merchantProducts.length === 0)
+  const { products } = useMerchantProducts()
+  if (products.length === 0)
     return (
       <div className='p-4 lg:p-6'>
         <p className='inline-block rounded-md bg-yellow-50 p-4 text-lg text-yellow-600'>
@@ -23,7 +23,7 @@ const MerchantProductsPreview = () => {
       <div>
         <h3 className='heading-secondary mb-6'>Your Products</h3>
         <div className='flex flex-col items-start gap-4 lg:flex-row lg:items-center'>
-          {merchantProducts.slice(0, 4).map(product => (
+          {products.slice(0, 4).map(product => (
             <ProductListItem key={product.id} product={product} />
           ))}
           <button className='btn bg-indigo-600'>

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { FC } from 'react'
 
-import { NextLink } from '@/components/core'
+import { NextLink, RatingStars } from '@/components/core'
 import { IProduct } from '@/types/product'
 import { getProductImageUrl } from '@/utils/getImageUrl'
 
@@ -11,7 +11,7 @@ interface Props {
 
 const ProductListItem: FC<Props> = ({ product }) => {
   return (
-    <article key={product.id}>
+    <article className='rounded-md bg-gray-800' key={product.id}>
       <Image
         alt={`${product.name} cover`}
         className='rounded-md bg-green-600'
@@ -20,8 +20,8 @@ const ProductListItem: FC<Props> = ({ product }) => {
         src={getProductImageUrl(product.images[0])}
         width={400}
       />
-      <div className='py-2'>
-        <h4 className='mt-4'>
+      <div className='space-y-2 py-2 px-4'>
+        <h4 className='flex items-center justify-between'>
           <NextLink
             className='text-xl font-semibold hover:text-neutral-300'
             href={`/products/${product.id}`}
@@ -29,7 +29,8 @@ const ProductListItem: FC<Props> = ({ product }) => {
             {product.name}
           </NextLink>
         </h4>
-        <p className='mt-2 text-xl font-bold'>Rs. {product.price}</p>
+        <RatingStars rating={product.totalRatings} />
+        <p className='mt-0 text-xl font-bold'>Rs. {product.price}</p>
       </div>
     </article>
   )

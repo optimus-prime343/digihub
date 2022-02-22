@@ -10,4 +10,6 @@ const AddProductPage = () => {
   )
 }
 
-export default WithAuth(AddProductPage, { restrictTo: UserRole.MERCHANT })
+export default WithAuth(AddProductPage, {
+  restrictTo: UserRole.MERCHANT,
+})

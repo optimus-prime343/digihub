@@ -7,8 +7,8 @@ import {
 } from 'typeorm'
 
 import { OrderStatus } from '../../common/types/orderStatus.enum'
-import { Product } from '../../products/entities/product.entity'
 import { Merchant } from '../../merchants/entity/merchant.entity'
+import { Product } from '../../products/entities/product.entity'
 import { User } from '../../users/entities/user.entity'
 
 @Entity()

@@ -2,20 +2,21 @@ import { Alert } from '@mantine/core'
 import { AiOutlineWarning } from 'react-icons/ai'
 
 import { NextLink } from '@/components/core'
-import { MerchantSidebar } from '@/components/ui'
-import { useProduct } from '@/context/product'
+import { FullPageLoader, MerchantSidebar } from '@/components/ui'
+import { useMerchantProducts } from '@/hooks/product'
 
 import MerchantProductItem from './MerchantProductItem'
 
 const MerchantProducts = () => {
-  const { merchantProducts } = useProduct()
+  const { products, isLoading } = useMerchantProducts()
+  if (isLoading) return <FullPageLoader />
   return (
     <MerchantSidebar>
-      {merchantProducts.length > 0 ? (
+      {products.length > 0 ? (
         <div>
           <h4 className='heading-tertiary mb-4'>Your Products</h4>
           <div className='grid gap-6 lg:grid-cols-3'>
-            {merchantProducts.map(product => (
+            {products.map(product => (
               <MerchantProductItem key={product.id} product={product} />
             ))}
           </div>

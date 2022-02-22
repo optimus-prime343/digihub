@@ -1,8 +1,8 @@
-import { Alert, Button, Select, Textarea } from '@mantine/core'
+import { Button, Select, Textarea } from '@mantine/core'
 import React, { FC, FormEvent, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'react-toastify'
 
-import { useOrder } from '@/context/order'
+import { useUpdateOrder } from '@/hooks/order'
 import { OrderStatus } from '@/types/orderStatus'
 
 interface IUpdateOrderFormProperties {
@@ -18,7 +18,7 @@ const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
   customerName,
   onOrderUpdated,
 }) => {
-  const { updateOrder, error, loading } = useOrder()
+  const { mutateAsync, isLoading } = useUpdateOrder()
 
   const [status, setStatus] = useState<string | null>('PENDING')
   const [message, setMessage] = useState('')
@@ -30,13 +30,16 @@ const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
     ],
     []
   )
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (status) {
-      updateOrder({ id, status: status as OrderStatus, message }, () => {
-        onOrderUpdated()
+      try {
+        await mutateAsync({ id, status: status as OrderStatus, message })
         toast.success('Order updated successfully')
-      })
+        onOrderUpdated()
+      } catch (error: any) {
+        toast.error(error.message)
+      }
     }
   }
   return (
@@ -45,11 +48,6 @@ const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
         <h4 className='text-xl font-medium'>
           {`${productName} by ${customerName}`}
         </h4>
-        {error && (
-          <Alert color='red' variant='filled'>
-            {error}
-          </Alert>
-        )}
         <Select
           data={orderStatus}
           label='Order status'
@@ -67,7 +65,7 @@ const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
         <Button
           className='bg-indigo-600'
           fullWidth
-          loading={loading}
+          loading={isLoading}
           type='submit'
         >
           Update
