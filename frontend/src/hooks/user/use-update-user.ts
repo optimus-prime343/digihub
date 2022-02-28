@@ -7,6 +7,6 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient()
   return useMutation<unknown, unknown, UpdateUserPayload>(
     data => userService.updateUser(data),
-    { onSettled: () => queryClient.invalidateQueries('user') }
+    { onSuccess: () => queryClient.invalidateQueries('user') }
   )
 }

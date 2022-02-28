@@ -14,7 +14,7 @@ const Layout = ({ title, children }: Props) => {
         </title>
         <meta key='title' property='og:title' title={title} />
       </Head>
-      <main className='mb-6 min-h-screen'>{children}</main>
+      <main className='mb-6'>{children}</main>
     </>
   )
 }

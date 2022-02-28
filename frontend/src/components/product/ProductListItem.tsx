@@ -11,14 +11,17 @@ interface Props {
 
 const ProductListItem: FC<Props> = ({ product }) => {
   return (
-    <article className='rounded-md bg-gray-800' key={product.id}>
+    <article
+      className='rounded-md bg-gray-600/75 backdrop-blur-2xl'
+      key={product.id}
+    >
       <Image
         alt={`${product.name} cover`}
         className='rounded-md bg-green-600'
-        height={300}
+        height={250}
         objectFit='cover'
         src={getProductImageUrl(product.images[0])}
-        width={400}
+        width={500}
       />
       <div className='space-y-2 py-2 px-4'>
         <h4 className='flex items-center justify-between'>

@@ -6,3 +6,6 @@ export const PHONE_NUMBER_REGEX =
 
 export const PASSWORD_WEAK_MESSAGE =
   'Password must be at least 8 characters long and contain at least one number, one uppercase letter,one special character and one lowercase letter'
+
+export const STRIPE_PUBLIC_KEY =
+  'pk_test_51KAB9XCO8m1gZ84iEwOb7tJiPsKI22FKxVfRZ6ekhK42IEEKdA1MQP2TfX28p3VEmzfobhk3BPg0JJChGQaTdh1Z00XMoPAOFv'

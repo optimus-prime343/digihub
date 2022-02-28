@@ -25,7 +25,7 @@ const MerchantOrderList = () => {
       <MerchantSidebar>
         <div>
           <h4 className='heading-tertiary mb-4'>Your Orders</h4>
-          <div className='my-4 flex rounded-2xl bg-gray-800 p-4'>
+          <div className='my-4 flex rounded-2xl bg-gray-600 p-4'>
             <Select
               data={[
                 {
@@ -69,7 +69,7 @@ const MerchantOrderList = () => {
 const OrderTable = ({ orders }: { orders: IOrder[] }) => {
   const tableHeads = ['Product', 'Status', 'Date', 'Total Price']
   return (
-    <div className='rounded-2xl bg-gray-800 p-4 shadow-md'>
+    <div className='rounded-2xl bg-gray-600 p-4 shadow-md'>
       <table className='w-full table-auto text-left'>
         <thead className='text-xs font-semibold uppercase'>
           <tr>
@@ -80,7 +80,7 @@ const OrderTable = ({ orders }: { orders: IOrder[] }) => {
             ))}
           </tr>
         </thead>
-        <tbody className='divide-y divide-gray-700'>
+        <tbody className='divide-y divide-gray-400'>
           {orders.map(order => (
             <MerchantOrderRow key={order.id} order={order} />
           ))}

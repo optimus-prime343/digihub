@@ -56,7 +56,7 @@ const OverviewContainer = ({
 }) => {
   // const icon
   return (
-    <div className='flex gap-6 rounded-lg bg-gray-800 p-4'>
+    <div className='flex gap-6 rounded-lg bg-gray-600 p-4'>
       {icon}
       <div className='space-y-2 text-lg'>
         <h4 className='font-bold uppercase'>{label}</h4>

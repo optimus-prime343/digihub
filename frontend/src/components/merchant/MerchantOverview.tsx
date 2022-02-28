@@ -11,7 +11,7 @@ const MerchantOverview = () => {
       <h4 className='heading-tertiary mb-2'>
         {getGreetingTime()}, {`Mr ${user?.lastName}`}
       </h4>
-      <p className='mb-6 max-w-xl text-lg font-medium text-gray-400'>
+      <p className='mb-6 max-w-xl text-lg font-medium text-gray-200'>
         Here are your sales overview
       </p>
       <MerchantOrdersOverview />

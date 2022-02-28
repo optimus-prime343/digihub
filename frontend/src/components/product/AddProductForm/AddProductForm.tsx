@@ -64,7 +64,7 @@ const AddProductForm = () => {
   }
   return (
     <MerchantSidebar>
-      <div className='max-w-4xl rounded-md bg-gray-800 p-4 shadow-sm'>
+      <div className='max-w-4xl rounded-md bg-gray-600 p-4 shadow-sm'>
         <h4 className='heading-tertiary mb-4'>Add a New Product</h4>
         <form className='space-y-4' onSubmit={handleSubmit}>
           {error && (

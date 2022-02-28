@@ -12,7 +12,6 @@ import {
     UseInterceptors,
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
-import { diskStorage } from 'multer'
 
 import { Role } from '../common/types'
 import { GetMerchant } from '../decorators/getMerchant.decorator'
@@ -20,7 +19,7 @@ import { GetUser } from '../decorators/getUser.decorator'
 import { Roles } from '../decorators/roles.decorator'
 import { JwtAuthGuard } from '../guards/jwtAuth.guard'
 import { RolesGuard } from '../guards/roles.guard'
-import { randomFileName } from '../helpers/randomFileName'
+import { resizeProductImages } from '../helpers/resizeProductImages'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { User } from '../users/entities/user.entity'
 import { CreateProductDto } from './dtos/createProduct.dto'
@@ -36,25 +35,18 @@ export class ProductsController {
     @Roles(Role.MERCHANT)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
-    @UseInterceptors(
-        FilesInterceptor('productImage', 4, {
-            storage: diskStorage({
-                destination: `${process.cwd()}/public/images/product-images`,
-                filename: randomFileName,
-            }),
-        })
-    )
-    public createProduct(
+    @UseInterceptors(FilesInterceptor('productImage', 4))
+    public async createProduct(
         @GetUser() user: User,
         @Body() createProductDto: Omit<CreateProductDto, 'images'>,
-        @UploadedFiles() files: Express.Multer.File[]
+        @UploadedFiles() uploadedImages: Express.Multer.File[]
     ): Promise<Product> {
-        const fileNames = files.map(file => file.filename)
+        const images = await resizeProductImages(uploadedImages)
         // this route can only be accessed by user registered as seller
         //so we can safely cast user to Merchant
         return this.productsService.createProduct(user.merchant as Merchant, {
             ...createProductDto,
-            images: fileNames,
+            images,
         })
     }
 

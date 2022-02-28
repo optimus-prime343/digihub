@@ -33,7 +33,7 @@ const BusinessInfoForm: FC<Props> = ({ user }) => {
   return (
     <div>
       <form
-        className='rounded-md bg-gray-800 p-4 shadow-md'
+        className='rounded-md bg-gray-600 p-4 shadow-md'
         onSubmit={handleSubmit}
       >
         <h4 className='heading-tertiary mb-4'>Business Information</h4>

@@ -11,7 +11,7 @@ import { getOrderSummary } from '@/utils/get-order-summary'
 const MerchantOrdersOverview = () => {
   const { orders } = useMerchantOrders()
   const summary = useMemo(() => getOrderSummary(orders), [orders])
-  const summaryBox = classNames('bg-gray-800 p-4 flex gap-6 rounded-md')
+  const summaryBox = classNames('bg-gray-600 p-4 flex gap-6 rounded-md')
   // classnames for order status,icon and their corresponding values
   const summaryIcon = (status: string) =>
     classNames('p-2 rounded-md shadow-md', {

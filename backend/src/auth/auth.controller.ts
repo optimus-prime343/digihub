@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common'
 import { Response } from 'express'
 
-import { COOKIE_EXPIRATION_DATE } from '../constants'
 import { GetUser } from '../decorators/getUser.decorator'
 import { JwtAuthGuard } from '../guards/jwtAuth.guard'
 import { CreateUserDto } from '../users/dtos/createUser.dto'
@@ -37,16 +36,9 @@ export class AuthController {
 
     @Post('login')
     public async login(
-        @Res({ passthrough: true }) response: Response,
         @Body() authCredentialsDto: AuthCredentialsDto
     ): Promise<{ accessToken: string }> {
-        const jwtPayload = await this.authService.login(authCredentialsDto)
-        response.cookie('accessToken', jwtPayload.accessToken, {
-            httpOnly: true,
-            expires: COOKIE_EXPIRATION_DATE,
-            secure: process.env.NODE_ENV === 'production',
-        })
-        return jwtPayload
+        return await this.authService.login(authCredentialsDto)
     }
 
     @UseGuards(JwtAuthGuard)

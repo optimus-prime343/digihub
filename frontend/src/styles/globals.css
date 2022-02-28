@@ -8,7 +8,7 @@
 /* Global Styles */
 @layer base {
   body {
-    @apply bg-gray-900 text-white;
+    @apply bg-gray-700 text-white;
   }
 }
 /* Components styles */
@@ -35,9 +35,13 @@
     @apply font-medium text-indigo-600 hover:text-indigo-500;
   }
   .heading-secondary {
-    @apply text-xl font-bold uppercase tracking-tight text-gray-400 lg:text-2xl;
+    @apply mb-4 text-2xl lg:text-3xl;
   }
   .heading-tertiary {
     @apply text-lg font-bold capitalize text-neutral-200 lg:text-xl;
+  }
+  /* forms */
+  .form-container {
+    @apply mx-auto max-w-lg rounded-md bg-gray-600 p-4;
   }
 }

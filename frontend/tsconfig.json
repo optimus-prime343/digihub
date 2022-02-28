@@ -20,6 +20,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@/features/*": [
+        "src/features/*"
+      ],
       "@/components/*": [
         "src/components/*"
       ],
@@ -32,9 +35,6 @@
       "@/utils/*": [
         "src/utils/*"
       ],
-      "@/context/*": [
-        "src/context/*"
-      ],
       "@/styles/*": [
         "src/styles/*"
       ],
@@ -44,9 +44,12 @@
       "@/services/*": [
         "src/services/*"
       ],
+      "@/constants/*": [
+        "src/constants/*"
+      ],
       "@/constants": [
         "src/constants"
-      ]
+      ],
     }
   },
   "include": [

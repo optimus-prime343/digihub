@@ -12,18 +12,18 @@ const Landing = () => {
           platform that is simple, secure, and easy to use for both buyers and
           sellers alike - all in one place.
         </p>
-        <div className='mt-8 flex flex-col justify-center gap-4 md:flex-row'>
+        <div className='mt-8 flex flex-col justify-center gap-2 md:flex-row'>
           <NextLink
             className='btn btn--cta bg-indigo-600'
             href='/auth/signup?as=user'
           >
-            Register as User
+            Signup
           </NextLink>
           <NextLink
-            className='btn btn--cta bg-gray-800'
+            className='btn btn--cta bg-gray-500'
             href='/auth/signup?as=merchant'
           >
-            Register as Merchant
+            Signup as Merchant
           </NextLink>
         </div>
       </main>

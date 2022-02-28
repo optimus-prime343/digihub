@@ -1,5 +1,5 @@
-import { RequestPasswordResetForm } from '@/components/auth'
 import { Layout } from '@/components/core'
+import { RequestPasswordResetForm } from '@/features/auth'
 
 const RequestPasswordResetPage = () => {
   return (

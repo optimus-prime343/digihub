@@ -1,5 +1,5 @@
-import { ChangePasswordForm } from '@/components/auth'
 import UpdateUserProfileForm from '@/components/user/UserProfileForm'
+import { ChangePasswordForm } from '@/features/auth'
 import { useUser } from '@/hooks/auth'
 import { IUser } from '@/types/user'
 

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { Merchant } from '../merchants/entity/merchant.entity'
@@ -16,6 +17,7 @@ import { OrdersService } from './orders.service'
         ProductsModule,
         UsersModule,
         MerchantsModule,
+        ConfigModule,
     ],
     controllers: [OrdersController],
     providers: [OrdersService],

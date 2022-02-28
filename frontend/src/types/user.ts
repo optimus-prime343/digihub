@@ -20,7 +20,7 @@ export interface IUser {
 export type SignupPayload = Pick<
   IUser,
   'firstName' | 'lastName' | 'email' | 'username'
-> & { password: string }
+> & { password: string; passwordConfirm: string }
 
 export type LoginPayload = {
   username: string

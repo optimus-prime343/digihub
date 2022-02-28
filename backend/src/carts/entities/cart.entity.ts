@@ -16,4 +16,7 @@ export class Cart {
 
     @Column({ default: 1 })
     public quantity: number
+
+    @Column()
+    public totalPrice: number
 }

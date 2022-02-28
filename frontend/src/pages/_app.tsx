@@ -1,8 +1,11 @@
 import '@/styles/globals.css'
 import '@/styles/nprogress.css'
 import 'react-toastify/dist/ReactToastify.min.css'
+import '@stripe/stripe-js'
 
 import { MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
+import { NotificationsProvider } from '@mantine/notifications'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { done, start } from 'nprogress'
@@ -36,9 +39,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ClientOnly>
         <ReactQueryDevtools />
         <MantineProvider theme={theme}>
-          <Navbar />
-          <ToastContainer autoClose={5000} theme='dark' />
-          <Component {...pageProps} />
+          <ModalsProvider>
+            <NotificationsProvider>
+              <Navbar />
+              <ToastContainer autoClose={5000} theme='dark' />
+              <Component {...pageProps} />
+            </NotificationsProvider>
+          </ModalsProvider>
         </MantineProvider>
       </ClientOnly>
     </QueryClientProvider>

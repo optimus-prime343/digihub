@@ -4,7 +4,7 @@ export class CreateOrderDto {
     @IsUUID()
     public productId: string
 
-    @Min(0)
-    @Max(10)
+    @Min(1)
+    @Max(20)
     public quantity: number
 }

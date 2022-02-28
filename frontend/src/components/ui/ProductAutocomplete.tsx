@@ -20,7 +20,7 @@ const ProductAutocomplete = ({
   const router = useRouter()
   const ref = useClickOutside(onClickOutside)
   const handleShowAllResults = () => {
-    router.push(`/?search=${searchQuery}`)
+    router.push(`/products/search?searchQuery=${searchQuery}`)
     onClickOutside()
   }
   useEffect(() => {
@@ -32,17 +32,15 @@ const ProductAutocomplete = ({
   })
   return (
     <div
-      className='absolute mt-2 w-full space-y-2 rounded-md bg-gray-800 p-2 shadow-lg'
+      className='absolute z-10 mt-2 w-full space-y-2 rounded-md bg-gray-600 p-2 shadow-lg'
       ref={ref}
     >
-      <h4 className='text-lg font-semibold text-gray-400'>
+      <h4 className='text-lg font-semibold text-gray-200'>
         Found {products.length} {products.length > 1 ? 'results' : 'result'} for{' '}
         <span className='font-bold text-white'>{searchQuery}</span>
       </h4>
-      {/* Show only maximum of 5 results.If user wants to see all results, they can use show all results
-          button
-      */}
-      {products.slice(0, 5).map(product => (
+      {/* Show maximum of 4 results */}
+      {products.slice(0, 4).map(product => (
         <NextLink
           className='group flex items-start gap-4 rounded-md p-2 transition-all hover:bg-indigo-600'
           href={`/products/${product.id}`}
@@ -58,7 +56,7 @@ const ProductAutocomplete = ({
           />
           <div>
             <p className='text-lg font-medium'>{product.name}</p>
-            <p className='max-w-lg text-gray-400 group-hover:text-white'>{`${product.description.slice(
+            <p className='max-w-lg text-gray-200 group-hover:text-white'>{`${product.description.slice(
               0,
               100
             )}...`}</p>

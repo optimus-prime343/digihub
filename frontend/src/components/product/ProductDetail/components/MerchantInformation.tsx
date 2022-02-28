@@ -11,7 +11,7 @@ interface Props {
 
 const MerchantInformation = ({ merchant }: Props) => {
   return (
-    <div className='mt-4 max-w-lg rounded-md bg-gray-800 p-4'>
+    <div className='mt-4 max-w-lg rounded-md bg-gray-600 p-4'>
       <div className='flex items-center justify-between'>
         <h4>
           Sold by <span className='font-bold'>{merchant.businessName}</span>
@@ -20,7 +20,7 @@ const MerchantInformation = ({ merchant }: Props) => {
           Chat Now
         </Button>
       </div>
-      <span className='my-4 block h-px w-full bg-gray-700/75' />
+      <span className='my-4 block h-px w-full bg-gray-400' />
       <div className='space-y-2'>
         <p className='leading-relaxed'>{merchant.businessDescription}</p>
         <p className='flex items-center gap-2'>

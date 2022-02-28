@@ -10,4 +10,8 @@ export const signupUserSchema = Yup.object().shape({
   password: Yup.string()
     .required()
     .matches(PASSWORD_REGEX, { message: PASSWORD_WEAK_MESSAGE }),
+  passwordConfirm: Yup.string().oneOf(
+    [Yup.ref('password'), null],
+    'Passwords must match'
+  ),
 })

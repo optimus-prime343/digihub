@@ -4,6 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter'
+import { StripeModule } from 'nestjs-stripe'
 import { join } from 'node:path'
 
 import { AuthModule } from './auth/auth.module'
@@ -57,6 +58,14 @@ import { UsersModule } from './users/users.module'
                         strict: true,
                     },
                 },
+            }),
+        }),
+        StripeModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (configService: ConfigService) => ({
+                apiKey: configService.get('STRIPE_API_KEY') as string,
+                apiVersion: '2020-08-27',
             }),
         }),
         AuthModule,

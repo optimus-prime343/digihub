@@ -1,5 +1,5 @@
-import { LoginForm } from '@/components/auth'
 import { Layout } from '@/components/core'
+import { LoginForm } from '@/features/auth'
 
 const Login = () => {
   return (

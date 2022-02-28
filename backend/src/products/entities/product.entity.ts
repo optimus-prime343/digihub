@@ -2,11 +2,14 @@ import {
     BeforeUpdate,
     Column,
     Entity,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm'
 
 import { Merchant } from '../../merchants/entity/merchant.entity'
+import { Category } from './category.entity'
 
 @Entity()
 export class Product {
@@ -39,6 +42,10 @@ export class Product {
 
     @Column({ type: Date, nullable: true })
     updatedAt: Date
+
+    @ManyToMany(() => Category, category => category.products)
+    @JoinTable()
+    categories: Category[]
 
     @BeforeUpdate()
     updateTimestamp(): void {

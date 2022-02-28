@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { ResetPasswordForm } from '@/components/auth'
 import { Layout } from '@/components/core'
+import { ResetPasswordForm } from '@/features/auth'
 
 const ResetPasswordPage = () => {
   return (

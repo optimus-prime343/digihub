@@ -202,7 +202,7 @@ export class UsersService {
         } catch (error: any) {
             if (error.code === '23505')
                 throw new ConflictException('Email or username already taken')
-            throw new InternalServerErrorException()
+            throw new InternalServerErrorException(error.message)
         }
     }
     public async updateMerchant(

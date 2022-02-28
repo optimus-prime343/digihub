@@ -4,7 +4,6 @@ import {
     Get,
     Param,
     Patch,
-    Post,
     UploadedFile,
     UseGuards,
     UseInterceptors,
@@ -41,6 +40,7 @@ export class UsersController {
         @GetUser() user: User,
         @Body() updateUserDto: UpdateUserDto
     ): Promise<User | undefined> {
+        console.log(`Updating ${user}`)
         return this.usersService.updateUser(user, updateUserDto)
     }
 
@@ -58,7 +58,7 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post('upload-profile-image')
+    @Patch('upload-profile-image')
     @UseInterceptors(
         FileInterceptor('profileImage', {
             fileFilter,

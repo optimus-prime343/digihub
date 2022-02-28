@@ -14,6 +14,9 @@ export const signupMerchantSchema = Yup.object().shape({
   password: Yup.string().required().matches(PASSWORD_REGEX, {
     message: PASSWORD_WEAK_MESSAGE,
   }),
+  passwordConfirm: Yup.string()
+    .required()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   address: Yup.string().required(),
   businessName: Yup.string().required().min(6).max(45),
   businessDescription: Yup.string().required().min(20).max(600),

@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common'
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Req,
+    UseGuards,
+} from '@nestjs/common'
+import { Request } from 'express'
+import Stripe from 'stripe'
 
 import { Role } from '../common/types'
 import { GetMerchant } from '../decorators/getMerchant.decorator'
@@ -8,6 +19,7 @@ import { JwtAuthGuard } from '../guards/jwtAuth.guard'
 import { RolesGuard } from '../guards/roles.guard'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { User } from '../users/entities/user.entity'
+import { CheckoutDto } from './dto/checkout.dto'
 import { CreateOrderDto } from './dto/createOrder.dto'
 import { UpdateOrderDto } from './dto/updateOrder.dto'
 import { Order } from './entities/order.entity'
@@ -51,5 +63,39 @@ export class OrdersController {
         @Body() updateOrderDto: UpdateOrderDto
     ): Promise<Order> {
         return this.ordersService.updateOrder(merchant, updateOrderDto)
+    }
+
+    @Roles(Role.USER)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Post('cancel-order')
+    public async cancelOrder(
+        @GetUser() user: User,
+        @Body('orderId') orderId: string
+    ): Promise<string> {
+        return this.ordersService.cancelOrder(user, orderId)
+    }
+
+    @Roles(Role.USER)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Post('checkout-session/:productId')
+    public async createCheckoutSession(
+        @Param('productId') productId: string,
+        @Body() checkoutDto: CheckoutDto,
+        @GetUser() user: User
+    ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
+        return this.ordersService.createCheckoutSession(
+            productId,
+            user,
+            checkoutDto
+        )
+    }
+    @Post('webhooks')
+    public async webhookCheckout(
+        @Req() request: Request,
+        @Body() payload: string
+    ): Promise<void> {
+        const signature = request.headers['stripe-signature'] as string
+        // console.log(payload, signature)
+        return this.ordersService.webhookCheckout(payload, signature)
     }
 }

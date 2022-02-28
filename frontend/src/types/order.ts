@@ -1,6 +1,5 @@
 import { OrderStatus } from './orderStatus'
 import { IProduct } from './product'
-import { IUser } from './user'
 
 export interface IOrder {
   id: string
@@ -9,7 +8,6 @@ export interface IOrder {
   createdAt: string
   orderStatus: OrderStatus
   product: IProduct
-  user: IUser
 }
 export interface UpdateOrderPayload {
   id: string

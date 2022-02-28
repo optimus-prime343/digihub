@@ -20,7 +20,7 @@ const MerchantSidebar: FC = ({ children }) => {
     )
   return (
     <div className='grid grid-cols-1 items-start gap-6 p-4 lg:grid-cols-6 lg:px-8 lg:py-6'>
-      <ul className='space-y-2 rounded-2xl bg-gray-800 p-4 shadow-lg lg:sticky lg:top-24 lg:col-start-1 lg:col-end-2'>
+      <ul className='space-y-2 rounded-2xl bg-gray-600 p-4 shadow-lg lg:sticky lg:top-24 lg:col-start-1 lg:col-end-2'>
         {merchantRoutes.map(({ name, path, icon }) => (
           <li key={name}>
             <NextLink className={dashboardLink(path)} href={path}>

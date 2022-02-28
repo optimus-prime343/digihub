@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Layout, WithAuth } from '@/components/core'
 import { AddProductForm } from '@/components/product'
 import { UserRole } from '@/types/user'

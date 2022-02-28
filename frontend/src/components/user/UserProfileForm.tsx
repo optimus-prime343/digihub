@@ -13,7 +13,7 @@ const UpdateUserProfileForm = () => {
   const router = useRouter()
   const { user } = useUser()
   const logout = useLogout()
-  const updateUserMutation = useUpdateUser()
+  const { mutateAsync } = useUpdateUser()
   const { getFieldProps, handleSubmit } = useFormik({
     initialValues: {
       firstName: user?.firstName ?? '',
@@ -23,7 +23,7 @@ const UpdateUserProfileForm = () => {
     },
     onSubmit: async values => {
       try {
-        await updateUserMutation.mutateAsync(values, {
+        await mutateAsync(values, {
           onSuccess: () => {
             toast.success('Profile updated successfully')
           },
@@ -39,7 +39,7 @@ const UpdateUserProfileForm = () => {
     toast.success('Logged out successfully')
   }
   return (
-    <div className='rounded-md bg-gray-800 p-4 shadow-sm'>
+    <div className='rounded-md bg-gray-600 p-4 shadow-sm'>
       <h4 className='heading-tertiary mb-4'>Personal Information</h4>
       <ProfileImageForm user={user as IUser} />
       <form className='mt-4 space-y-4' onSubmit={handleSubmit}>

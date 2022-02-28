@@ -33,7 +33,7 @@ const MerchantProductItem: FC<Props> = ({ product }) => {
         price={product.price}
         setOpened={setShowUpdateModal}
       />
-      <div className='rounded-2xl bg-gray-800 p-4'>
+      <div className='rounded-2xl bg-gray-600 p-4'>
         <ProductListItem product={product} />
         <div className='mt-2 flex gap-4'>
           <Button

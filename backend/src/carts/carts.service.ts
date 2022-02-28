@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
@@ -16,16 +20,32 @@ export class CartsService {
         @InjectRepository(Cart)
         private readonly cartRepository: Repository<Cart>
     ) {}
+    // check whether the product is already in the cart
+    public async cartAlreadyExists(
+        user: User,
+        productId: string
+    ): Promise<boolean> {
+        return (
+            (await this.cartRepository.count({
+                user,
+                product: { id: productId },
+            })) > 0
+        )
+    }
     public async create(
         user: User,
         createCartDto: CreateCartDto
     ): Promise<Cart> {
-        const { productId } = createCartDto
+        const { productId, quantity } = createCartDto
         const product = await this.productService.findProductById(productId)
         if (!product) throw new NotFoundException('Product not found')
+        if (await this.cartAlreadyExists(user, product.id))
+            throw new BadRequestException('Product already in cart')
         const cart = this.cartRepository.create({
             product,
             user,
+            quantity,
+            totalPrice: (quantity ?? 1) * product.price,
         })
         await this.cartRepository.save(cart)
         return cart
@@ -52,7 +72,10 @@ export class CartsService {
         id: string,
         updateCartDto: UpdateCartDto
     ): Promise<Cart> {
-        const cart = await this.cartRepository.findOne(id)
+        const cart = await this.cartRepository.findOne({
+            id,
+            user,
+        })
         if (!cart) throw new NotFoundException(CART_NOT_FOUND)
         cart.quantity = updateCartDto.quantity
         await this.cartRepository.save(cart)

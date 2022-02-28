@@ -1,11 +1,16 @@
 import {
     BadRequestException,
     Injectable,
+    InternalServerErrorException,
     Logger,
     NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MailerService } from '@nestjs-modules/mailer'
+import Dinero from 'dinero.js'
+import { InjectStripe } from 'nestjs-stripe'
+import Stripe from 'stripe'
 import { Repository } from 'typeorm'
 
 import { OrderStatus } from '../common/types'
@@ -13,6 +18,7 @@ import { ICreateOrder } from '../common/types/createOrder.interface'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { ProductsService } from '../products/products.service'
 import { User } from '../users/entities/user.entity'
+import { CheckoutDto } from './dto/checkout.dto'
 import { CreateOrderDto } from './dto/createOrder.dto'
 import { UpdateOrderDto } from './dto/updateOrder.dto'
 import { Order } from './entities/order.entity'
@@ -25,8 +31,13 @@ export class OrdersService {
         private readonly orderRepository: Repository<Order>,
         @InjectRepository(Merchant)
         private readonly merchantRepository: Repository<Merchant>,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
+        @InjectStripe()
+        private readonly stripeClient: Stripe,
         private readonly productService: ProductsService,
-        private readonly mailService: MailerService
+        private readonly mailService: MailerService,
+        private readonly configService: ConfigService
     ) {}
 
     /**
@@ -46,7 +57,7 @@ export class OrdersService {
         return !!order
     }
     /**
-     * Creates an order on both user and merchant side
+     * Creates a new order
      */
     public async create(
         user: User,
@@ -85,6 +96,7 @@ export class OrdersService {
         return this.orderRepository.find({
             where: { user },
             relations: ['product'],
+            order: { createdAt: 'DESC' },
         })
     }
     /**
@@ -137,5 +149,91 @@ export class OrdersService {
             `${merchant.businessName} updated the order status to ${status}`
         )
         return order
+    }
+    public async cancelOrder(user: User, orderId: string): Promise<string> {
+        const order = await this.orderRepository.findOne({
+            where: { id: orderId, user },
+        })
+        if (!order) throw new NotFoundException('Order not found')
+        if (order.orderStatus === OrderStatus.COMPLETED) {
+            throw new BadRequestException('Order is already completed')
+        }
+        order.orderStatus = OrderStatus.CANCELLED
+        await this.orderRepository.save(order)
+        this.logger.log(`${user.username} cancelled the order`)
+        return 'Order cancelled'
+    }
+    public async createCheckoutSession(
+        productId: string,
+        user: User,
+        checkoutDto: CheckoutDto
+    ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
+        try {
+            const product = await this.productService.findProductById(productId)
+            return await this.stripeClient.checkout.sessions.create({
+                payment_method_types: ['card'],
+                success_url: 'http://localhost:3000/order-completed',
+                cancel_url: 'http://localhost:3000/profile',
+                customer_email: user.email,
+                client_reference_id: productId,
+                line_items: [
+                    {
+                        name: product.name,
+                        description: product.description,
+                        //!TODO - SWITCH TO REAL IMAGES ONCE DEPLOYED
+                        images: product.images.map(
+                            () => 'https://picsum.photos/600/600'
+                        ),
+                        // All products on the page displays currency in NPR
+                        // since stripe doesn't support NPR we have to convert NPR to USD
+                        amount: Dinero({
+                            amount: product.price,
+                            currency: 'NPR',
+                        }).getAmount(),
+                        currency: 'usd',
+                        quantity: checkoutDto.quantity,
+                    },
+                ],
+            })
+        } catch (error: any) {
+            throw new InternalServerErrorException(error.message)
+        }
+    }
+    public async webhookCheckout(
+        payload: string,
+        signature: string
+    ): Promise<void> {
+        try {
+            const event = this.stripeClient.webhooks.constructEvent(
+                payload,
+                signature,
+                this.configService.get('STRIPE_WEBHOOK_SECRET') as string
+            )
+            if (event.type === 'checkout.session.completed') {
+                const {
+                    customer_email,
+                    client_reference_id: productId,
+                    amount_subtotal,
+                } = event.data.object as Stripe.Checkout.Session
+                if (!customer_email || !productId)
+                    throw new BadRequestException(
+                        'Customer email or product id not found'
+                    )
+                const user = await this.userRepository.findOne({
+                    email: customer_email,
+                })
+                const product = await this.productService.findProductById(
+                    productId
+                )
+                if (!user || !product)
+                    throw new BadRequestException('User or product not found')
+                await this.create(user, {
+                    productId: product.id,
+                    quantity: (amount_subtotal ?? 0) / product.price,
+                })
+            }
+        } catch (error: any) {
+            throw new InternalServerErrorException(error.message)
+        }
     }
 }
