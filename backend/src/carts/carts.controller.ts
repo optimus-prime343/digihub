@@ -10,14 +10,14 @@ import {
 } from '@nestjs/common'
 
 import { Role } from '../common/types'
-import { GetUser } from '../decorators/getUser.decorator'
+import { GetUser } from '../decorators/get-user.decorator'
 import { Roles } from '../decorators/roles.decorator'
-import { JwtAuthGuard } from '../guards/jwtAuth.guard'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
 import { User } from '../users/entities/user.entity'
 import { CartsService } from './carts.service'
-import { CreateCartDto } from './dtos/createCart.dto'
-import { UpdateCartDto } from './dtos/updateCart.dto'
+import { CreateCartDto } from './dtos/create-cart.dto'
+import { UpdateCartDto } from './dtos/update-cart.dto'
 import { Cart } from './entities/cart.entity'
 
 @Roles(Role.USER)

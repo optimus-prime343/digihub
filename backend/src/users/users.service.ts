@@ -8,19 +8,17 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
-import { MailerService } from '@nestjs-modules/mailer'
 import { compare, hash } from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { Repository } from 'typeorm'
 
-import { ResetPasswordDto } from '../auth/dtos/resetPassword.dto'
+import { ResetPasswordDto } from '../auth/dtos/reset-password.dto'
 import { Role } from '../common/types'
 import { PASSWORD_DONOT_MATCH_MESSAGE } from '../constants'
-import { UpdateMerchantDto } from '../merchants/dtos/updateMerchant.dto'
-import { UpdateMerchanStatusDto } from '../merchants/dtos/updateMerchantStatus.dto'
+import { UpdateMerchantDto } from '../merchants/dtos/update-merchant.dto'
 import { Merchant } from '../merchants/entity/merchant.entity'
-import { CreateUserDto } from './dtos/createUser.dto'
-import { UpdateUserDto } from './dtos/updateUser.dto'
+import { CreateUserDto } from './dtos/create-user.dto'
+import { UpdateUserDto } from './dtos/update-user.dto'
 import { User } from './entities/user.entity'
 
 @Injectable()
@@ -30,8 +28,7 @@ export class UsersService {
         private readonly userRepository: Repository<User>,
         @InjectRepository(Merchant)
         private readonly merchantRepository: Repository<Merchant>,
-        private readonly configService: ConfigService,
-        private readonly mailService: MailerService
+        private readonly configService: ConfigService
     ) {}
     public async findUserByUsername(username: string): Promise<User> {
         const user = await this.userRepository.findOne({ username })
@@ -221,29 +218,6 @@ export class UsersService {
 
         await this.merchantRepository.save(merchant)
         return this.userRepository.findOne({ merchant })
-    }
-    public async updateMerchantStatus(
-        merchantId: string,
-        updateMerchantStatusDto: UpdateMerchanStatusDto
-    ): Promise<string> {
-        const { status } = updateMerchantStatusDto
-        const user = await this.userRepository.findOne({
-            where: { merchant: merchantId },
-        })
-        if (!user || !user.merchant)
-            throw new NotFoundException('Merchant not found')
-        user.merchant.status = status
-        await this.userRepository.save(user)
-        await this.mailService.sendMail({
-            to: user.email,
-            subject: 'Merchant status updated',
-            template: 'merchantStatusUpdate',
-            context: {
-                fullName: `${user.firstName} ${user.lastName}`,
-                status: status,
-            },
-        })
-        return `Merchant status updated to ${status}`
     }
     public async updateProfileImage(
         user: User,

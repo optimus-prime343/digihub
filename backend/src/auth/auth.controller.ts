@@ -11,14 +11,14 @@ import {
 } from '@nestjs/common'
 import { Response } from 'express'
 
-import { GetUser } from '../decorators/getUser.decorator'
-import { JwtAuthGuard } from '../guards/jwtAuth.guard'
-import { CreateUserDto } from '../users/dtos/createUser.dto'
+import { GetUser } from '../decorators/get-user.decorator'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
+import { CreateUserDto } from '../users/dtos/create-user.dto'
 import { User } from '../users/entities/user.entity'
 import { AuthService } from './auth.service'
-import { AuthCredentialsDto } from './dtos/authCredentials.dto'
-import { ChangePasswordDto } from './dtos/changePassword.dto'
-import { ResetPasswordDto } from './dtos/resetPassword.dto'
+import { AuthCredentialsDto } from './dtos/auth-credentials.dto'
+import { ChangePasswordDto } from './dtos/change-password.dto'
+import { ResetPasswordDto } from './dtos/reset-password.dto'
 
 @Controller('auth')
 export class AuthController {

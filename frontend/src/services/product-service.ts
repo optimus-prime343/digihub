@@ -1,16 +1,23 @@
-import { IProduct, UpdateProductPayload } from '@/types/product'
-import { axiosClient } from '@/utils/axiosClient'
+import {
+  AddReviewPayload,
+  IProduct,
+  IProductReview,
+  UpdateProductPayload,
+} from '@/types/product'
+import { axiosClient } from '@/utils/axios-client'
 
 export class ProductService {
   async getProduct(id: string) {
     try {
-      const { data } = await axiosClient.get<IProduct[]>(`/products/${id}`)
+      const { data } = await axiosClient.get<IProduct>(`/products/${id}`)
       return data
     } catch (error: any) {
       throw new Error(error.response?.data?.message ?? 'Failed to get product')
     }
   }
   async fetchProducts(page?: number) {
+    // page is used for pagination
+    //every page has 10 products
     try {
       const pageQuery = page ? `?page=${page}` : ''
       const { data } = await axiosClient.get<IProduct[]>(
@@ -74,6 +81,19 @@ export class ProductService {
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message ?? 'Failed to update product'
+      )
+    }
+  }
+  async addProductReview(addReviewPayload: AddReviewPayload) {
+    try {
+      const { data: review } = await axiosClient.post<IProductReview>(
+        '/reviews',
+        addReviewPayload
+      )
+      return review
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to add product review'
       )
     }
   }

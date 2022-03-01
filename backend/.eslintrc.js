@@ -29,7 +29,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         'simple-import-sort/imports': 'error',
         'simple-import-sort/exports': 'error',
-        'unicorn/filename-case': ['error', { case: 'camelCase' }],
+        'unicorn/filename-case': ['error', { case: 'kebabCase' }],
         'unicorn/no-null': 'off',
     },
 }

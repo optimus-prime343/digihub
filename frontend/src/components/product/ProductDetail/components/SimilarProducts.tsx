@@ -17,7 +17,7 @@ const SimilarProducts = ({ similarTo }: Props) => {
             product.name.toLowerCase().includes(similarTo.toLowerCase())
         )
         .slice(0, 4),
-    [similarTo, products]
+    [products, similarTo]
   )
   if (similarProducts.length === 0) return null
   return (

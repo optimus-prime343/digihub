@@ -1,6 +1,6 @@
 import { destroyCookie, setCookie } from 'nookies'
 
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 export const deleteAuthToken = () => {
   axiosClient.defaults.headers.common['Authorization'] = ''

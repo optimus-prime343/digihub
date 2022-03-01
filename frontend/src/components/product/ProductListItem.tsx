@@ -20,7 +20,7 @@ const ProductListItem: FC<Props> = ({ product }) => {
         className='rounded-md bg-green-600'
         height={250}
         objectFit='cover'
-        src={getProductImageUrl(product.images[0])}
+        src={getProductImageUrl(product.coverImage)}
         width={500}
       />
       <div className='space-y-2 py-2 px-4'>

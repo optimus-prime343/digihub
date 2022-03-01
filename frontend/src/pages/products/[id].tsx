@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import React from 'react'
 
 import { Layout } from '@/components/core'
-import { ProductDetail } from '@/components/product'
+import { ProductDetail } from '@/features/product'
 import { productService } from '@/services/product-service'
 import { IProduct } from '@/types/product'
 

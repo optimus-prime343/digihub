@@ -16,10 +16,10 @@ const ProductDetailImage = ({ images, productName }: Props) => {
       <Image
         alt={`${productName} highlight image`}
         className='rounded-md'
-        height={300}
+        height={400}
         objectFit='cover'
         src={displayImage}
-        width={600}
+        width={400}
       />
       {images.length > 1 && (
         <div className='my-4 flex gap-2'>

@@ -1,5 +1,5 @@
 import { IUser, UpdateUserPayload } from '@/types/user'
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 class UserService {
   async updateUser(updateUserPayload: UpdateUserPayload) {

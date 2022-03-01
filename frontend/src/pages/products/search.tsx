@@ -1,5 +1,5 @@
+import { Title } from '@mantine/core'
 import { GetServerSideProps } from 'next'
-import React from 'react'
 
 import { ProductList } from '@/components/product'
 import { productService } from '@/services/product-service'
@@ -12,11 +12,11 @@ interface Props {
 
 const AllSearchResultsPage = ({ searchQuery, products }: Props) => {
   return (
-    <div className='p-4 lg:px-8 lg:py-4'>
-      <h3 className='heading-secondary mb-4 text-gray-200'>
+    <div className='space-y-4 p-4 lg:px-8 lg:py-4'>
+      <Title order={2}>
         Found {products.length} {products.length > 1 ? 'results' : 'result'} for{' '}
         <span className='font-bold text-white'>{searchQuery}</span>
-      </h3>
+      </Title>
       <ProductList products={products} />
     </div>
   )

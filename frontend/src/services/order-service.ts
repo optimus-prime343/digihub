@@ -1,6 +1,6 @@
 import { AddToCartPayload } from '@/types/cart'
 import { IOrder, UpdateOrderPayload } from '@/types/order'
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 export class OrderService {
   async fetchOrders(whose: 'merchant' | 'user') {

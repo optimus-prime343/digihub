@@ -2,14 +2,13 @@ import {
     BeforeUpdate,
     Column,
     Entity,
-    JoinTable,
-    ManyToMany,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm'
 
 import { Merchant } from '../../merchants/entity/merchant.entity'
-import { Category } from './category.entity'
+import { Review } from '../../reviews/entities/review.entity'
 
 @Entity()
 export class Product {
@@ -25,8 +24,11 @@ export class Product {
     @Column()
     price: number
 
-    @Column({ type: 'simple-array' })
-    images: string[]
+    @Column()
+    quantity: number
+
+    @Column()
+    coverImage: string
 
     @Column({ default: 0 })
     totalRatings: number
@@ -43,9 +45,13 @@ export class Product {
     @Column({ type: Date, nullable: true })
     updatedAt: Date
 
-    @ManyToMany(() => Category, category => category.products)
-    @JoinTable()
-    categories: Category[]
+    @Column({ type: 'simple-array', default: [] })
+    tags: string[]
+
+    @OneToMany(() => Review, review => review.product, {
+        eager: true,
+    })
+    reviews: Review[]
 
     @BeforeUpdate()
     updateTimestamp(): void {

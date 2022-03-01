@@ -53,7 +53,7 @@ export const CartItem = ({ cart }: Props) => {
   }
 
   const handleQuantityChange = async (action: 'increase' | 'decrease') => {
-    if (action === 'increase' && quantity < 20) {
+    if (action === 'increase' && quantity < cart.product.quantity) {
       return setQuantity(currentQuantity => currentQuantity + 1)
     }
     if (action === 'decrease' && quantity > 1) {

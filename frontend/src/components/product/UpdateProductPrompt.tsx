@@ -12,6 +12,7 @@ interface IUpdateProductPromptProperties {
   setOpened: Dispatch<SetStateAction<boolean>>
   price: number
   description: string
+  quantity: number
 }
 
 const UpdateProductPrompt: FC<IUpdateProductPromptProperties> = ({
@@ -21,6 +22,7 @@ const UpdateProductPrompt: FC<IUpdateProductPromptProperties> = ({
   price,
   opened,
   setOpened,
+  quantity,
 }) => {
   const { mutateAsync, isLoading } = useUpdateProduct()
   const { getFieldProps, handleSubmit } = useFormik({
@@ -28,6 +30,7 @@ const UpdateProductPrompt: FC<IUpdateProductPromptProperties> = ({
       name,
       description,
       price,
+      quantity,
     },
     onSubmit: async values => {
       try {
@@ -52,6 +55,11 @@ const UpdateProductPrompt: FC<IUpdateProductPromptProperties> = ({
           {...getFieldProps('description')}
         />
         <TextInput label='Price' type='number' {...getFieldProps('price')} />
+        <TextInput
+          label='quantity'
+          type='number'
+          {...getFieldProps('quantity')}
+        />
         <Button
           className='bg-indigo-600'
           fullWidth

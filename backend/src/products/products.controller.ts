@@ -7,24 +7,24 @@ import {
     Patch,
     Post,
     Query,
-    UploadedFiles,
+    UploadedFile,
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common'
-import { FilesInterceptor } from '@nestjs/platform-express'
+import { FileInterceptor } from '@nestjs/platform-express'
 
 import { Role } from '../common/types'
-import { GetMerchant } from '../decorators/getMerchant.decorator'
-import { GetUser } from '../decorators/getUser.decorator'
+import { GetMerchant } from '../decorators/get-merchant.decorator'
+import { GetUser } from '../decorators/get-user.decorator'
 import { Roles } from '../decorators/roles.decorator'
-import { JwtAuthGuard } from '../guards/jwtAuth.guard'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
-import { resizeProductImages } from '../helpers/resizeProductImages'
+import { resizeProductCoverImage } from '../helpers/resize-product-images'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { User } from '../users/entities/user.entity'
-import { CreateProductDto } from './dtos/createProduct.dto'
-import { FilterProductsDto } from './dtos/filterProduct.dto'
-import { UpdateProductDto } from './dtos/updateProduct.dto'
+import { CreateProductDto } from './dtos/create-product.dto'
+import { FilterProductsDto } from './dtos/filter-product.dto'
+import { UpdateProductDto } from './dtos/update-product.dto'
 import { Product } from './entities/product.entity'
 import { ProductsService } from './products.service'
 
@@ -32,22 +32,28 @@ import { ProductsService } from './products.service'
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
+    @Get('count')
+    public async getTotalProductsInDB(): Promise<number> {
+        return this.productsService.totalProductInDB()
+    }
+
     @Roles(Role.MERCHANT)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
-    @UseInterceptors(FilesInterceptor('productImage', 4))
+    @UseInterceptors(FileInterceptor('coverImage'))
     public async createProduct(
         @GetUser() user: User,
-        @Body() createProductDto: Omit<CreateProductDto, 'images'>,
-        @UploadedFiles() uploadedImages: Express.Multer.File[]
+        @Body() createProductDto: CreateProductDto,
+        @UploadedFile() uploadedFile: Express.Multer.File
     ): Promise<Product> {
-        const images = await resizeProductImages(uploadedImages)
+        const coverImage = await resizeProductCoverImage(uploadedFile)
         // this route can only be accessed by user registered as seller
         //so we can safely cast user to Merchant
-        return this.productsService.createProduct(user.merchant as Merchant, {
-            ...createProductDto,
-            images,
-        })
+        return this.productsService.createProduct(
+            user.merchant as Merchant,
+            createProductDto,
+            coverImage
+        )
     }
 
     @Roles(Role.MERCHANT)
@@ -69,7 +75,7 @@ export class ProductsController {
     public search(
         @Query('searchQuery') searchQuery: string
     ): Promise<Product[]> {
-        return this.productsService.SearchProducts(searchQuery)
+        return this.productsService.searchProducts(searchQuery)
     }
     @Get(':id')
     public findProductById(@Param('id') id: string): Promise<Product> {

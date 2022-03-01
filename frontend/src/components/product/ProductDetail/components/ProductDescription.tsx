@@ -1,8 +1,10 @@
-import { Button } from '@mantine/core'
+import { Button, NumberInput } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { BiPurchaseTag } from 'react-icons/bi'
 import { BsCartPlus } from 'react-icons/bs'
+import { MdOutlineProductionQuantityLimits } from 'react-icons/md'
 
 import { RatingStars } from '@/components/core'
 import { useUser } from '@/hooks/auth'
@@ -22,6 +24,8 @@ const ProductDescription = ({ product }: Props) => {
   const { mutateAsync: addToCart } = useAddToCart()
   const checkoutOrder = useOrderCheckout()
 
+  const [quantity, setQUantity] = useState(1)
+
   const handleAddToCart = async () => {
     if (!user)
       return router.push({
@@ -29,7 +33,7 @@ const ProductDescription = ({ product }: Props) => {
         query: { next: router.pathname },
       })
     try {
-      await addToCart({ productId: product.id, quantity: 1 })
+      await addToCart({ productId: product.id, quantity })
       notifications.showNotification({
         title: 'Added to cart',
         message: `${product.name} has been added to your cart`,
@@ -55,7 +59,25 @@ const ProductDescription = ({ product }: Props) => {
         </span>
       </div>
       <p className='text-lg leading-relaxed'>{product.description}</p>
-      {user?.role === UserRole.USER && (
+      <p className='max-w-xs'>
+        {product.quantity > 0 ? (
+          <NumberInput
+            icon={<MdOutlineProductionQuantityLimits />}
+            max={product.quantity}
+            min={1}
+            onChange={value => setQUantity(value ?? 1)}
+            value={quantity}
+          />
+        ) : (
+          <p className='inline-block rounded-md bg-red-600 p-2 font-bold'>
+            Out of stock
+          </p>
+        )}
+      </p>
+      {/* Only show add-to-cart and order-now button if user role matches 'USER' and the product is not 
+        out of stock
+      */}
+      {user?.role === UserRole.USER && product.quantity > 0 ? (
         <>
           <div className='space-x-2'>
             <Button
@@ -68,14 +90,14 @@ const ProductDescription = ({ product }: Props) => {
             <Button
               className='bg-indigo-600'
               leftIcon={<BiPurchaseTag />}
-              onClick={() => checkoutOrder(product.id, 1)}
+              onClick={() => checkoutOrder(product.id, quantity)}
               variant='filled'
             >
               Order Now
             </Button>
           </div>
         </>
-      )}
+      ) : null}
     </div>
   )
 }

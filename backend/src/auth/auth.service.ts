@@ -4,12 +4,12 @@ import { MailerService } from '@nestjs-modules/mailer'
 import { compare } from 'bcryptjs'
 
 import { Role } from '../common/types'
-import { CreateUserDto } from '../users/dtos/createUser.dto'
+import { CreateUserDto } from '../users/dtos/create-user.dto'
 import { User } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
-import { AuthCredentialsDto } from './dtos/authCredentials.dto'
-import { ChangePasswordDto } from './dtos/changePassword.dto'
-import { ResetPasswordDto } from './dtos/resetPassword.dto'
+import { AuthCredentialsDto } from './dtos/auth-credentials.dto'
+import { ChangePasswordDto } from './dtos/change-password.dto'
+import { ResetPasswordDto } from './dtos/reset-password.dto'
 
 @Injectable()
 export class AuthService {

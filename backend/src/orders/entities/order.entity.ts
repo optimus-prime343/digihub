@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm'
 
-import { OrderStatus } from '../../common/types/orderStatus.enum'
+import { OrderStatus } from '../../common/types/order-status.enum'
 import { Merchant } from '../../merchants/entity/merchant.entity'
 import { Product } from '../../products/entities/product.entity'
 import { User } from '../../users/entities/user.entity'
@@ -19,7 +19,7 @@ export class Order {
     @ManyToOne(() => User, user => user.orders)
     public user: User
 
-    @ManyToOne(() => Product)
+    @ManyToOne(() => Product, { eager: true })
     @JoinTable()
     public product: Product
 

@@ -3,7 +3,7 @@ import {
   ICart,
   UpdateCartQuantityPayload,
 } from '@/types/cart'
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 class CartService {
   async fetchCarts(): Promise<ICart[]> {

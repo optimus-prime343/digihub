@@ -47,7 +47,7 @@ const MerchantOrderRow: FC<Props> = ({ order }) => {
               className='rounded-full'
               height={75}
               objectFit='cover'
-              src={getProductImageUrl(order.product.images[0])}
+              src={getProductImageUrl(order.product.coverImage)}
               width={75}
             />
             <div>

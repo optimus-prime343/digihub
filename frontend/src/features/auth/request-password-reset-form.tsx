@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useUser } from '@/hooks/auth'
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 export const RequestPasswordResetForm = () => {
   const router = useRouter()

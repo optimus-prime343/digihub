@@ -59,7 +59,7 @@ const OrderListItem = ({ order }: Props) => {
           className='rounded-md'
           height={150}
           objectFit='cover'
-          src={getProductImageUrl(order.product.images[0])}
+          src={getProductImageUrl(order.product.coverImage)}
           width={300}
         />
         <div className='w-full max-w-sm space-y-2'>

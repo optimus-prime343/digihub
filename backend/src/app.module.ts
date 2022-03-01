@@ -7,11 +7,13 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter'
 import { StripeModule } from 'nestjs-stripe'
 import { join } from 'node:path'
 
+import { AdminModule } from './admin/admin.module'
 import { AuthModule } from './auth/auth.module'
 import { CartsModule } from './carts/carts.module'
 import { MerchantsModule } from './merchants/merchants.module'
 import { OrdersModule } from './orders/orders.module'
 import { ProductsModule } from './products/products.module'
+import { ReviewsModule } from './reviews/reviews.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
@@ -74,6 +76,8 @@ import { UsersModule } from './users/users.module'
         CartsModule,
         OrdersModule,
         MerchantsModule,
+        AdminModule,
+        ReviewsModule,
     ],
 })
 export class AppModule {}

@@ -14,13 +14,13 @@ import Stripe from 'stripe'
 import { Repository } from 'typeorm'
 
 import { OrderStatus } from '../common/types'
-import { ICreateOrder } from '../common/types/createOrder.interface'
+import { ICreateOrder } from '../common/types/create-order.interface'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { ProductsService } from '../products/products.service'
 import { User } from '../users/entities/user.entity'
 import { CheckoutDto } from './dto/checkout.dto'
-import { CreateOrderDto } from './dto/createOrder.dto'
-import { UpdateOrderDto } from './dto/updateOrder.dto'
+import { CreateOrderDto } from './dto/create-order.dto'
+import { UpdateOrderDto } from './dto/update-order.dto'
 import { Order } from './entities/order.entity'
 
 @Injectable()
@@ -83,6 +83,11 @@ export class OrdersService {
         this.logger.debug(JSON.stringify(requiredData, undefined, 4))
         const order = this.orderRepository.create(requiredData)
         await this.orderRepository.save(order)
+        // once a order is successfully completed , decrease the quantity of the product based on the quantity of the order
+        const remainingProductQuantity = product.quantity - quantity
+        this.productService.updateProduct(product.merchant, product.id, {
+            quantity: remainingProductQuantity,
+        })
         this.logger.log(`${user.username} created a order`)
         this.logger.log(`${product.merchant.businessName} received an order`)
         return order
@@ -181,9 +186,7 @@ export class OrdersService {
                         name: product.name,
                         description: product.description,
                         //!TODO - SWITCH TO REAL IMAGES ONCE DEPLOYED
-                        images: product.images.map(
-                            () => 'https://picsum.photos/600/600'
-                        ),
+                        images: [product.coverImage],
                         // All products on the page displays currency in NPR
                         // since stripe doesn't support NPR we have to convert NPR to USD
                         amount: Dinero({

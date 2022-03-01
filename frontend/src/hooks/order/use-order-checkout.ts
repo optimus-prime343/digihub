@@ -1,7 +1,7 @@
 import { loadStripe } from '@stripe/stripe-js'
 import { useCallback } from 'react'
 
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 export const useOrderCheckout = () => {
   return useCallback(async (productId: string, quantity: number) => {

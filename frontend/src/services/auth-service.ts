@@ -7,7 +7,7 @@ import {
   SignupPayload,
   UpdateUserPayload,
 } from '@/types/user'
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 class AuthService {
   async login(loginPayload: LoginPayload) {

@@ -1,7 +1,7 @@
 import { IMerchant, UpdateMerchantPayload } from '@/types/merchant'
 import { IProduct } from '@/types/product'
 import { IUser } from '@/types/user'
-import { axiosClient } from '@/utils/axiosClient'
+import { axiosClient } from '@/utils/axios-client'
 
 export class MerchantService {
   async fetchProducts(): Promise<IProduct[]> {

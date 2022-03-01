@@ -12,9 +12,9 @@ import { ILike, Repository } from 'typeorm'
 import { MerchantStatus } from '../common/types'
 import { PRODUCT_NOT_FOUND_MESSAGE } from '../constants'
 import { Merchant } from '../merchants/entity/merchant.entity'
-import { CreateProductDto } from './dtos/createProduct.dto'
-import { FilterProductsDto } from './dtos/filterProduct.dto'
-import { UpdateProductDto } from './dtos/updateProduct.dto'
+import { CreateProductDto } from './dtos/create-product.dto'
+import { FilterProductsDto } from './dtos/filter-product.dto'
+import { UpdateProductDto } from './dtos/update-product.dto'
 import { Product } from './entities/product.entity'
 
 @Injectable()
@@ -24,29 +24,49 @@ export class ProductsService {
         @InjectRepository(Product)
         private readonly productRepository: Repository<Product>
     ) {}
+    public async totalProductInDB(): Promise<number> {
+        return this.productRepository.count()
+    }
     public async createProduct(
         merchant: Merchant,
-        createProductDto: CreateProductDto
+        createProductDto: CreateProductDto,
+        coverImage: string
     ): Promise<Product> {
-        const { description, images, name, price } = createProductDto
-        if (merchant.status !== MerchantStatus.APPROVED) {
-            throw new BadRequestException(
-                'You must be approved to create a product'
-            )
+        try {
+            const {
+                description,
+                name,
+                price,
+                quantity,
+                tags: tagSeparatedByCommas,
+            } = createProductDto
+            if (merchant.status !== MerchantStatus.APPROVED) {
+                throw new BadRequestException(
+                    'You must be approved to create a product'
+                )
+            }
+            if (Number(price) < 0) {
+                throw new BadRequestException('Price must be greater than 0')
+            }
+            if (Number(quantity) < 0) {
+                throw new BadRequestException('Quantity must be greater than 0')
+            }
+
+            const product = this.productRepository.create({
+                name,
+                description,
+                price: Number(price),
+                coverImage,
+                merchant,
+                quantity: Number(quantity),
+                tags: tagSeparatedByCommas.split(','),
+            })
+            this.loggger.log(`${merchant.businessName} created a new product`)
+            await this.productRepository.save(product)
+            return product
+        } catch (error: any) {
+            throw new InternalServerErrorException(error.message)
         }
-        if (Number(price) < 0) {
-            throw new BadRequestException('Price must be greater than 0')
-        }
-        const product = this.productRepository.create({
-            name,
-            description,
-            price: Number(price),
-            images,
-            merchant,
-        })
-        this.loggger.log(`${merchant.businessName} created a new product`)
-        await this.productRepository.save(product)
-        return product
     }
 
     public findAllByMerchant(merchant: Merchant): Promise<Product[]> {
@@ -70,10 +90,10 @@ export class ProductsService {
             order: { createdAt: 'DESC' },
         })
     }
-    public async SearchProducts(searchQuery: string): Promise<Product[]> {
+    public async searchProducts(searchQuery: string): Promise<Product[]> {
         return this.productRepository.find({
             where: { name: ILike(`%${searchQuery}%`) },
-            select: ['id', 'name', 'price', 'images', 'description'],
+            select: ['id', 'name', 'price', 'coverImage', 'description'],
         })
     }
     public async findProductById(id: string): Promise<Product> {
@@ -93,7 +113,7 @@ export class ProductsService {
         if (Object.keys(updateProductDto).length === 0) {
             throw new BadRequestException('No fields to update')
         }
-        const { description, name, price } = updateProductDto
+        const { description, name, price, quantity } = updateProductDto
         const product = await this.productRepository.findOne({
             where: {
                 id: productId,
@@ -105,6 +125,7 @@ export class ProductsService {
         if (description) product.description = description
         if (name) product.name = name
         if (price) product.price = price
+        if (quantity) product.quantity = quantity
         await this.productRepository.save(product)
         return product
     }

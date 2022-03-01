@@ -4,7 +4,7 @@ import { add, differenceInBusinessDays, format } from 'date-fns'
 import { Repository } from 'typeorm'
 
 import { User } from '../users/entities/user.entity'
-import { UpdateMerchantDto } from './dtos/updateMerchant.dto'
+import { UpdateMerchantDto } from './dtos/update-merchant.dto'
 import { Merchant } from './entity/merchant.entity'
 
 @Injectable()

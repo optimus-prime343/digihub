@@ -2,7 +2,6 @@ import {
     Body,
     Controller,
     Get,
-    Param,
     Patch,
     UploadedFile,
     UseGuards,
@@ -12,14 +11,13 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 
 import { Role } from '../common/types'
-import { GetUser } from '../decorators/getUser.decorator'
+import { GetUser } from '../decorators/get-user.decorator'
 import { Roles } from '../decorators/roles.decorator'
-import { JwtAuthGuard } from '../guards/jwtAuth.guard'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
-import { fileFilter } from '../helpers/fileFilter'
-import { randomFileName } from '../helpers/randomFileName'
-import { UpdateMerchanStatusDto } from '../merchants/dtos/updateMerchantStatus.dto'
-import { UpdateUserDto } from './dtos/updateUser.dto'
+import { fileFilter } from '../helpers/file-filter'
+import { randomFileName } from '../helpers/random-file-name'
+import { UpdateUserDto } from './dtos/update-user.dto'
 import { User } from './entities/user.entity'
 import { UsersService } from './users.service'
 
@@ -42,19 +40,6 @@ export class UsersController {
     ): Promise<User | undefined> {
         console.log(`Updating ${user}`)
         return this.usersService.updateUser(user, updateUserDto)
-    }
-
-    @Roles(Role.ADMIN)
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch('update-merchant-status/:merchantId')
-    public updateMerchantStatus(
-        @Param('merchantId') merchantId: string,
-        @Body() updateMerchantStatusDto: UpdateMerchanStatusDto
-    ): Promise<string> {
-        return this.usersService.updateMerchantStatus(
-            merchantId,
-            updateMerchantStatusDto
-        )
     }
 
     @UseGuards(JwtAuthGuard)

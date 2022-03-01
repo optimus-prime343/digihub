@@ -9,8 +9,8 @@ import { Repository } from 'typeorm'
 import { CART_NOT_FOUND } from '../constants'
 import { ProductsService } from '../products/products.service'
 import { User } from '../users/entities/user.entity'
-import { CreateCartDto } from './dtos/createCart.dto'
-import { UpdateCartDto } from './dtos/updateCart.dto'
+import { CreateCartDto } from './dtos/create-cart.dto'
+import { UpdateCartDto } from './dtos/update-cart.dto'
 import { Cart } from './entities/cart.entity'
 
 @Injectable()

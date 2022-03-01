@@ -1,45 +1,34 @@
-import { Button, Select, Textarea } from '@mantine/core'
-import React, { FC, FormEvent, useMemo, useState } from 'react'
+import { Button, Textarea } from '@mantine/core'
+import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useUpdateOrder } from '@/hooks/order'
 import { OrderStatus } from '@/types/orderStatus'
 
-interface IUpdateOrderFormProperties {
+interface Props {
   id: string
   productName: string
   customerName: string
   onOrderUpdated: () => void
 }
 
-const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
+const UpdateOrderForm = ({
   id,
   productName,
   customerName,
   onOrderUpdated,
-}) => {
+}: Props) => {
   const { mutateAsync, isLoading } = useUpdateOrder()
-
-  const [status, setStatus] = useState<string | null>('PENDING')
   const [message, setMessage] = useState('')
 
-  const orderStatus = useMemo(
-    () => [
-      { value: 'CANCELLED', label: 'Cancelled' },
-      { value: 'COMPLETED', label: 'Completed' },
-    ],
-    []
-  )
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (status) {
-      try {
-        await mutateAsync({ id, status: status as OrderStatus, message })
-        toast.success('Order updated successfully')
-        onOrderUpdated()
-      } catch (error: any) {
-        toast.error(error.message)
-      }
+    try {
+      await mutateAsync({ id, message, status: OrderStatus.COMPLETED })
+      toast.success('Order updated successfully')
+      onOrderUpdated()
+    } catch (error: any) {
+      toast.error(error.message)
     }
   }
   return (
@@ -48,18 +37,10 @@ const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
         <h4 className='text-xl font-medium'>
           {`${productName} by ${customerName}`}
         </h4>
-        <Select
-          data={orderStatus}
-          label='Order status'
-          onChange={setStatus}
-          placeholder='Choose one'
-          value={status}
-        />
         <Textarea
           label='Message'
           minRows={5}
           onChange={event => setMessage(event.currentTarget.value)}
-          placeholder='Please mention reason for cancelling order or order completed message'
           value={message}
         />
         <Button
@@ -68,7 +49,7 @@ const UpdateOrderForm: FC<IUpdateOrderFormProperties> = ({
           loading={isLoading}
           type='submit'
         >
-          Update
+          Mark as completed
         </Button>
       </form>
     </div>
