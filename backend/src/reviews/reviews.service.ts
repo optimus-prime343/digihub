@@ -35,6 +35,7 @@ export class ReviewsService {
         })
         return !!review
     }
+    // create a new for a specific product
     async create(
         user: User,
         createReviewDto: CreateReviewDto
@@ -75,23 +76,37 @@ export class ReviewsService {
         await this.reviewsRepository.save(newReview)
         return newReview
     }
-
+    // find all reviews related to a specific product
     findAll(productId: string): Promise<Review[]> {
         return this.reviewsRepository.find({
             where: { product: { id: productId } },
         })
     }
-    // returns all the products purchased by the user that has yet to be reviewed
+    // remove review posted by a user for a specific product
     async remove(
         user: User,
         reviewId: string,
         productId: string
     ): Promise<string> {
         const review = await this.reviewsRepository.findOne({
-            where: { id: reviewId, product: { id: productId }, user },
+            where: {
+                id: reviewId,
+                product: { id: productId },
+                user,
+            },
         })
+        const product = await this.productRepository.findOne(productId)
+        if (!product) throw new NotFoundException(`Product doesnt exist`)
         if (!review) throw new NotFoundException(`Review doesnt exist`)
-        this.reviewsRepository.remove(review)
+        product.totalRatings -= 1
+        product.averageRating =
+            product.totalRatings > 0
+                ? (product.averageRating * (product.totalRatings + 1) -
+                      review.rating) /
+                  product.totalRatings
+                : 0
+        await this.productRepository.save(product)
+        await this.reviewsRepository.remove(review)
         return `Review with id ${reviewId} has been deleted`
     }
 }

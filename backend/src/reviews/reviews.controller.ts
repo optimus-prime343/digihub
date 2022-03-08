@@ -39,7 +39,7 @@ export class ReviewsController {
     @Delete(':reviewId/:productId')
     remove(
         @GetUser() user: User,
-        @Param('id') reviewId: string,
+        @Param('reviewId') reviewId: string,
         @Param('productId') productId: string
     ): Promise<string> {
         return this.reviewsService.remove(user, reviewId, productId)

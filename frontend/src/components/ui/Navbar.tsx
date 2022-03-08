@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { Sling as Hamburger } from 'hamburger-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Headroom from 'react-headroom'
 
 import { NextLink } from '@/components/core'
 import { navLinks } from '@/constants/nav-links'
@@ -44,32 +45,34 @@ const DefaultNavbar = () => {
     return () => router.events.off('routeChangeStart', handleRouteChange)
   }, [router])
   return (
-    <header className='sticky top-0 z-10 bg-gray-600/50 px-4 py-3 shadow-sm backdrop-blur-md lg:px-8'>
-      <nav
-        className='relative flex items-center justify-between'
-        ref={navbarRef}
-      >
-        <NextLink href='/'>
-          <img
-            alt='Digihub brand logo'
-            className='h-16'
-            src='/images/logo.png'
-          />
-        </NextLink>
-        <ul className={navLinkList(showNav)}>
-          {navbarLinks.map(({ href, name }) => (
-            <li key={href}>
-              <NextLink className={navLink(href)} href={href}>
-                {name}
-              </NextLink>
-            </li>
-          ))}
-        </ul>
-        <div className='md:hidden'>
-          <Hamburger onToggle={setShowNav} toggled={showNav} />
-        </div>
-      </nav>
-    </header>
+    <Headroom>
+      <header className='sticky top-0 z-10 border-b border-gray-100/10 bg-gray-700/75 px-4 py-2 backdrop-blur-md lg:px-8'>
+        <nav
+          className='relative flex items-center justify-between'
+          ref={navbarRef}
+        >
+          <NextLink href='/'>
+            <img
+              alt='Digihub brand logo'
+              className='h-16'
+              src='/images/logo.png'
+            />
+          </NextLink>
+          <ul className={navLinkList(showNav)}>
+            {navbarLinks.map(({ href, name }) => (
+              <li key={href}>
+                <NextLink className={navLink(href)} href={href}>
+                  {name}
+                </NextLink>
+              </li>
+            ))}
+          </ul>
+          <div className='md:hidden'>
+            <Hamburger onToggle={setShowNav} toggled={showNav} />
+          </div>
+        </nav>
+      </header>
+    </Headroom>
   )
 }
 

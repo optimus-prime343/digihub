@@ -86,14 +86,14 @@ export const CartItem = ({ cart }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart.id, quantity])
   return (
-    <div className='rounded-md bg-gray-600/50 p-4'>
+    <div className='rounded-md bg-gray-600 p-4'>
       <div className='flex flex-col justify-between gap-4 lg:flex-row lg:items-center lg:gap-12'>
         <Image
           alt={`${cart.product.name}`}
           className='rounded-md'
           height={150}
           objectFit='cover'
-          src={getProductImageUrl(cart.product.images[0])}
+          src={getProductImageUrl(cart.product.coverImage)}
           width={150}
         />
         <div className='flex-1 space-y-2'>

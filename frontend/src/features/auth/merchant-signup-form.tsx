@@ -6,9 +6,9 @@ import {
   TextInput,
 } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
+import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 
 import { useSignup } from '@/hooks/auth'
 import { signupMerchantSchema } from '@/schemas/signup-merchant-schema'
@@ -27,6 +27,7 @@ const initialValues: MerchantSignupPayload = {
 }
 
 export const MerchantSignupForm = () => {
+  const { showNotification } = useNotifications()
   const isPhone = useMediaQuery('(max-width: 600px)')
   const signupMutation = useSignup()
   const router = useRouter()
@@ -51,13 +52,20 @@ export const MerchantSignupForm = () => {
         }
         try {
           await signupMutation.mutateAsync(data, {
-            onSuccess: async () => {
+            onSuccess: async data => {
               await router.push('/auth/login')
-              toast.success('Please check your email for verification')
+              showNotification({
+                title: 'Signed up as Merchant',
+                message: data,
+              })
             },
           })
         } catch (error: any) {
-          toast.error(error.message)
+          showNotification({
+            title: 'Signup Failed',
+            message: error.message,
+            color: 'red',
+          })
         }
       },
     })
@@ -68,15 +76,13 @@ export const MerchantSignupForm = () => {
   }
   return (
     <div className='mx-auto flex grow flex-col p-4 lg:px-0'>
-      <div className='mb-4 rounded-md bg-gray-600 p-4 shadow-md'>
-        <h3 className='heading-secondary'>Get started as a seller </h3>
-        <p className='text-gray-200'>
-          Please fill out the form below with all the details to register as a
-          seller.Once approved by our team you can start selling your products.
-        </p>
-      </div>
-      <form className='mt-4 space-y-4' onSubmit={handleSubmit}>
-        <Group direction={isPhone ? 'column' : 'row'} grow>
+      <form
+        className='space-y-4 rounded-md bg-gray-600 p-4 shadow-md'
+        onSubmit={handleSubmit}
+      >
+        <h2 className='heading-secondary'>Create an account as Merchant</h2>
+        <span className='divider'></span>
+        <Group align='start' direction={isPhone ? 'column' : 'row'} grow>
           <TextInput
             error={getFieldError('firstName')}
             label='First Name'
@@ -90,7 +96,7 @@ export const MerchantSignupForm = () => {
             {...getFieldProps('lastName')}
           />
         </Group>
-        <Group direction={isPhone ? 'column' : 'row'} grow>
+        <Group align='start' direction={isPhone ? 'column' : 'row'} grow>
           <TextInput
             error={getFieldError('username')}
             label='Username'

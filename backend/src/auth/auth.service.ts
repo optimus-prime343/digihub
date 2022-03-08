@@ -39,19 +39,18 @@ export class AuthService {
         this.logger.log(`User ${user.username} signed up as ${user.role}`)
         return 'Please check your email to verify your account'
     }
-    public createAdmin(createUserDto: CreateUserDto): Promise<string> {
-        return this.usersService.createAdmin(createUserDto)
-    }
     public async login(
         authCredentialsDto: AuthCredentialsDto
     ): Promise<{ accessToken: string }> {
         const { username, password } = authCredentialsDto
         const user = await this.usersService.findUserByUsername(username)
         if (!(await compare(password, user.password))) {
-            throw new UnauthorizedException('Username or password is incorrect')
+            throw new UnauthorizedException('Invalid username or password')
         }
         if (!user.verified)
-            throw new UnauthorizedException('Please verify your account')
+            throw new UnauthorizedException(
+                'You must verify your account before logging in'
+            )
         const accessToken = this.jwtService.sign({ id: user.id })
         return { accessToken }
     }

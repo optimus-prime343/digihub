@@ -1,9 +1,9 @@
 import { Button, PasswordInput, TextInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
 import { FaUserCircle } from 'react-icons/fa'
 import { MdPassword } from 'react-icons/md'
-import { toast } from 'react-toastify'
 
 import { NextLink } from '@/components/core'
 import { useLogin } from '@/hooks/auth'
@@ -18,6 +18,7 @@ const initialValues: LoginPayload = {
 export const LoginForm = () => {
   const login = useLogin()
   const router = useRouter()
+  const { showNotification } = useNotifications()
   const { getFieldProps, errors, touched, handleSubmit, isSubmitting } =
     useFormik({
       initialValues,
@@ -29,7 +30,11 @@ export const LoginForm = () => {
           //if there is, redirect user to that page after successfull login else redirect to homepage
           router.push((router.query.next as string) ?? '/')
         } catch (error: any) {
-          toast.error(error.message)
+          showNotification({
+            title: 'Login Failed',
+            message: error.message,
+            color: 'red',
+          })
         }
       },
     })

@@ -1,4 +1,4 @@
-import { Card, Text, Title } from '@mantine/core'
+import { Text } from '@mantine/core'
 import Image from 'next/image'
 
 import { NextLink, RatingStars } from '@/components/core'
@@ -10,26 +10,29 @@ interface Props {
 }
 export const ProductItem = ({ product }: Props) => {
   return (
-    <Card padding='sm'>
-      <Card.Section>
-        <Image
-          alt={product.name}
-          height={300}
-          objectFit='cover'
-          src={getProductImageUrl(product.coverImage)}
-          width={400}
-        />
-      </Card.Section>
+    <div className='overflow-hidden rounded-md bg-gray-600 p-2'>
+      <Image
+        alt={product.name}
+        className='rounded-md shadow-md'
+        height={300}
+        objectFit='cover'
+        src={getProductImageUrl(product.coverImage)}
+        width={400}
+      />
       <div className='space-y-2'>
-        <NextLink href={`/products/${product.id}`}>
-          <Title order={4}>{product.name}</Title>
+        <NextLink
+          className='flex justify-between'
+          href={`/products/${product.id}`}
+        >
+          <h3 className='heading-tertiary mt-2'>{product.name}</h3>
         </NextLink>
+        <p className='font-semibold'>{product.merchant.businessName}</p>
         <div className='flex items-center gap-2'>
           <RatingStars rating={product.averageRating} />
           <span>({product.totalRatings})</span>
         </div>
         <Text>Rs {product.price}</Text>
       </div>
-    </Card>
+    </div>
   )
 }

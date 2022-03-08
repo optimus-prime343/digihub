@@ -34,14 +34,20 @@
   .link {
     @apply font-medium text-indigo-600 hover:text-indigo-500;
   }
+  .heading-primary {
+    @apply text-4xl font-bold;
+  }
   .heading-secondary {
-    @apply mb-4 text-2xl lg:text-3xl;
+    @apply text-2xl font-semibold;
   }
   .heading-tertiary {
-    @apply text-lg font-bold capitalize text-neutral-200 lg:text-xl;
+    @apply text-lg font-medium;
   }
   /* forms */
   .form-container {
     @apply mx-auto max-w-lg rounded-md bg-gray-600 p-4;
+  }
+  .divider {
+    @apply block h-px w-full bg-gray-400;
   }
 }

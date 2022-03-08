@@ -1,10 +1,12 @@
 import { Pagination } from '@mantine/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Layout } from '@/components/core'
 import { FullPageLoader } from '@/components/ui'
-import { ProductList, SearchProducts } from '@/features/product'
+import { PRODUCTS_PER_PAGE } from '@/constants'
+import { ProductList, SearchProducts, SortProducts } from '@/features/product'
 import { useProducts } from '@/hooks/product'
+import { IProduct } from '@/types/product'
 
 interface Props {
   /**
@@ -17,17 +19,30 @@ export const UserHomepageContent = ({ totalProducts }: Props) => {
   // pagination
   const [page, setPage] = useState(1)
   const { products, isLoading } = useProducts(page)
+  const [sortedProducts, setSortedProducts] = useState<IProduct[]>([])
+
+  useEffect(() => {
+    setSortedProducts(products)
+  }, [products])
 
   if (isLoading) return <FullPageLoader />
   return (
     <Layout title='Digihub | Browse Products'>
       <div className='space-y-4 p-4 lg:mt-6 lg:px-8 lg:py-0'>
-        <SearchProducts />
-        <ProductList products={products} />
+        <div className='flex flex-col justify-between gap-2 md:flex-row md:gap-0'>
+          <SearchProducts />
+          <SortProducts
+            // it works only when spreading products
+            //idk why
+            onSort={products => setSortedProducts([...products])}
+            products={products}
+          />
+        </div>
+        <ProductList products={sortedProducts} />
         <Pagination
           onChange={setPage}
           page={page}
-          total={Math.ceil(totalProducts / 10)}
+          total={Math.ceil(totalProducts / PRODUCTS_PER_PAGE)}
           withEdges
         />
       </div>

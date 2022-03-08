@@ -1,4 +1,5 @@
 import { Button, PasswordInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -8,6 +9,7 @@ import { useResetPassword, useUser } from '@/hooks/auth'
 import { resetPasswordSchema } from '@/schemas/reset-password-schema'
 
 export const ResetPasswordForm = () => {
+  const { showNotification } = useNotifications()
   const router = useRouter()
   const { mutateAsync } = useResetPassword()
   const { user } = useUser()
@@ -28,7 +30,10 @@ export const ResetPasswordForm = () => {
           await mutateAsync({ token: passwordResetToken, payload: values })
           await router.push('/auth/login')
         } catch (error: any) {
-          toast.error(error.message)
+          showNotification({
+            message: error.message,
+            color: 'red',
+          })
         }
       },
     })
@@ -41,7 +46,7 @@ export const ResetPasswordForm = () => {
     if (user) router.push('/')
   }, [router, user])
   return (
-    <div className='mx-auto max-w-xl py-6'>
+    <div className='my-4 mx-auto max-w-md rounded-md bg-gray-600 p-4 py-6 shadow-md lg:my-12'>
       <h3 className='heading-secondary mb-6'>Reset your password</h3>
       <form className='space-y-4' onSubmit={handleSubmit}>
         <PasswordInput

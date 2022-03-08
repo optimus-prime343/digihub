@@ -1,9 +1,4 @@
-import {
-  AddReviewPayload,
-  IProduct,
-  IProductReview,
-  UpdateProductPayload,
-} from '@/types/product'
+import { IProduct, UpdateProductPayload } from '@/types/product'
 import { axiosClient } from '@/utils/axios-client'
 
 export class ProductService {
@@ -81,19 +76,6 @@ export class ProductService {
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message ?? 'Failed to update product'
-      )
-    }
-  }
-  async addProductReview(addReviewPayload: AddReviewPayload) {
-    try {
-      const { data: review } = await axiosClient.post<IProductReview>(
-        '/reviews',
-        addReviewPayload
-      )
-      return review
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message ?? 'Failed to add product review'
       )
     }
   }

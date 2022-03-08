@@ -23,6 +23,8 @@ export interface IProduct {
   quantity: number
   tags: string[]
   reviews: IProductReview[]
+  createdAt: string
+  updatedAt: string
 }
 export interface UpdateProductPayload {
   id: string
@@ -34,4 +36,8 @@ export interface AddReviewPayload {
   productId: string
   review: string
   rating: number
+}
+export interface DeleteReviewPayload {
+  reviewId: string
+  productId: string
 }

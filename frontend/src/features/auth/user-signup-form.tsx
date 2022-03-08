@@ -55,15 +55,12 @@ export const UserSignupForm = () => {
   }
   return (
     <div className='max-w-lg p-4 lg:p-0'>
-      <div className='mb-4 rounded-md bg-gray-600 p-4'>
-        <h3 className='heading-secondary'>Create a new account</h3>
-        <p className='text-gray-200'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum
-          doloribus quam dignissimos commodi ex quo quas, deserunt dicta
-          eligendi pariatur!
-        </p>
-      </div>
-      <form className='space-y-4' onSubmit={handleSubmit}>
+      <form
+        className='space-y-4 rounded-md bg-gray-600 p-4 shadow-md'
+        onSubmit={handleSubmit}
+      >
+        <h2 className='heading-secondary'>Create an account</h2>
+        <span className='divider' />
         <TextInput
           error={getFieldError('firstName')}
           label='First Name'

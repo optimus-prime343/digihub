@@ -4,9 +4,7 @@ import {
     Injectable,
     InternalServerErrorException,
     NotFoundException,
-    UnauthorizedException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare, hash } from 'bcryptjs'
 import { nanoid } from 'nanoid'
@@ -27,12 +25,14 @@ export class UsersService {
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
         @InjectRepository(Merchant)
-        private readonly merchantRepository: Repository<Merchant>,
-        private readonly configService: ConfigService
+        private readonly merchantRepository: Repository<Merchant>
     ) {}
     public async findUserByUsername(username: string): Promise<User> {
         const user = await this.userRepository.findOne({ username })
-        if (!user) throw new NotFoundException('User not found')
+        if (!user)
+            throw new NotFoundException(
+                'Invalid username or user doesn"t exist'
+            )
         return user
     }
     public async findOne(id: number): Promise<User | undefined> {
@@ -66,7 +66,7 @@ export class UsersService {
                 username,
                 email,
                 password,
-                verificationCode: nanoid(),
+                verificationCode: nanoid(6),
             })
             if (merchant) {
                 const newMerchant = this.merchantRepository.create({
@@ -90,41 +90,6 @@ export class UsersService {
             throw new InternalServerErrorException()
         }
     }
-    public async createAdmin(createUserDto: CreateUserDto): Promise<string> {
-        const {
-            adminPassword,
-            firstName,
-            lastName,
-            email,
-            username,
-            password,
-            passwordConfirm,
-        } = createUserDto
-        if (password !== passwordConfirm) {
-            throw new BadRequestException(PASSWORD_DONOT_MATCH_MESSAGE)
-        }
-        if (
-            adminPassword &&
-            this.configService.get('ADMIN_PASSWORD') === adminPassword
-        ) {
-            const adminUser = this.userRepository.create({
-                firstName,
-                lastName,
-                email,
-                username,
-                password,
-                verified: true,
-                role: Role.ADMIN,
-                verificationCode: null,
-            })
-            await this.userRepository.save(adminUser)
-            return 'Admin user created successfully'
-        }
-        throw new UnauthorizedException(
-            'You are not authorized to perform this action'
-        )
-    }
-
     public async verifyAccount(verificationCode: string): Promise<string> {
         const user = await this.userRepository.findOne({ verificationCode })
         if (!user)

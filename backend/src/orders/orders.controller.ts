@@ -67,16 +67,6 @@ export class OrdersController {
 
     @Roles(Role.USER)
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Post('cancel-order')
-    public async cancelOrder(
-        @GetUser() user: User,
-        @Body('orderId') orderId: string
-    ): Promise<string> {
-        return this.ordersService.cancelOrder(user, orderId)
-    }
-
-    @Roles(Role.USER)
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('checkout-session/:productId')
     public async createCheckoutSession(
         @Param('productId') productId: string,
@@ -95,7 +85,6 @@ export class OrdersController {
         @Body() payload: string
     ): Promise<void> {
         const signature = request.headers['stripe-signature'] as string
-        // console.log(payload, signature)
         return this.ordersService.webhookCheckout(payload, signature)
     }
 }

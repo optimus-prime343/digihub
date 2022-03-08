@@ -1,4 +1,4 @@
-import { ActionIcon, Button, NumberInput, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Button, NumberInput, Textarea } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
 import { useNotifications } from '@mantine/notifications'
 import { randNumber, randParagraph } from '@ngneat/falso'
@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { FormEvent, useState } from 'react'
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
 
-import { useAddProductReview } from '@/hooks/product'
+import { useAddReview } from '@/hooks/review'
 
 export const AddReviewForm = () => {
   const [showForm, setShowForm] = useState(false)
@@ -15,14 +15,17 @@ export const AddReviewForm = () => {
 
   const { showNotification } = useNotifications()
   const router = useRouter()
-  const addProductReview = useAddProductReview()
   const formRef = useClickOutside(() => setShowForm(false))
+
+  // since review can only be added from the product detail page, we can get the product id from the url
+  const productId = router.query.id as string
+  const addProductReview = useAddReview(productId)
 
   const handleAddReview = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       await addProductReview.mutateAsync({
-        productId: router.query.id as string,
+        productId,
         review,
         rating,
       })
@@ -51,7 +54,7 @@ export const AddReviewForm = () => {
         className='flex justify-between'
         onClick={() => setShowForm(currentValue => !currentValue)}
       >
-        <Title order={4}>Leave a review</Title>
+        <h3 className='heading-tertiary'>Leave a review</h3>
         <ActionIcon>
           {showForm ? <BsChevronUp /> : <BsChevronDown />}
         </ActionIcon>

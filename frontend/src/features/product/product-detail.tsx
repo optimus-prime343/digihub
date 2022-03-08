@@ -1,15 +1,8 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  NumberInput,
-  Text,
-  Title,
-} from '@mantine/core'
+import { Alert, Badge, Button, Group, NumberInput, Text } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { useNotifications } from '@mantine/notifications'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BsCart } from 'react-icons/bs'
 import { FaMoneyCheckAlt } from 'react-icons/fa'
@@ -33,6 +26,8 @@ interface Props {
 }
 
 export const ProductDetail = ({ product: initialData }: Props) => {
+  const router = useRouter()
+  const [isRedirectingToPayment, setIsRedirectingToPayment] = useState(false)
   const notifications = useNotifications()
   const orderCheckout = useOrderCheckout()
   const addToCart = useAddToCart()
@@ -48,6 +43,9 @@ export const ProductDetail = ({ product: initialData }: Props) => {
   const recommededProducts = useRecommendProducts(product.tags).filter(
     recommendedProduct => recommendedProduct.id !== product.id
   )
+  const hasAlreadyReviewed = product.reviews.some(
+    review => review.user.id === user?.id
+  )
   const [quantity, setQuantity] = useState(1)
 
   //media query to resize recommened product images on smaller viewports
@@ -55,6 +53,7 @@ export const ProductDetail = ({ product: initialData }: Props) => {
 
   // directly purchase product before adding to the cart
   const handleOrderCheckout = async () => {
+    setIsRedirectingToPayment(true)
     try {
       await orderCheckout(product.id, quantity)
     } catch (error: any) {
@@ -69,6 +68,7 @@ export const ProductDetail = ({ product: initialData }: Props) => {
   const handleAddToCart = async () => {
     try {
       await addToCart.mutateAsync({ productId: product.id, quantity })
+      await router.push('/profile#cart')
       notifications.showNotification({
         title: 'Added to Cart',
         message: `${product?.name} has been added to your cart`,
@@ -80,45 +80,63 @@ export const ProductDetail = ({ product: initialData }: Props) => {
       })
     }
   }
+  const handleContact = () => {
+    if (user && product) {
+      router.push({
+        pathname: '/message',
+        query: {
+          productId: product.id,
+        },
+      })
+    }
+  }
   if (!product) return <p>Product Not found</p>
   return (
     <section className='p-4 lg:px-8 lg:py-4'>
-      <div className='flex flex-col items-start gap-4 lg:flex-row lg:gap-24'>
-        <div className='max-w-md space-y-4'>
+      <div className='flex flex-col items-start gap-4 lg:flex-row lg:gap-12'>
+        <div className='space-y-4'>
           <Image
             alt={`${product.name} cover`}
             className='rounded-md shadow-md'
-            height={450}
+            height={600}
             objectFit='cover'
             src={getProductImageUrl(product.coverImage)}
-            width={450}
+            width={600}
           />
-          <Card padding='sm' shadow='sm'>
-            <Text weight={500}>{product.merchant.businessName}</Text>
-            <Text className='mt-2 leading-relaxed text-gray-200'>
+          <div className='max-w-sm rounded-md bg-gray-600 p-4'>
+            <h3 className='heading-tertiary'>
+              {product.merchant.businessName}
+            </h3>
+            <Text className='mt-2 leading-relaxed'>
               {product.merchant.businessDescription}
             </Text>
-            <Button className='mt-4 bg-indigo-600' fullWidth>
+            <Button
+              className='mt-4 bg-indigo-600'
+              fullWidth
+              onClick={handleContact}
+            >
               Contact Seller
             </Button>
-          </Card>
+          </div>
         </div>
         <div>
           <aside className='max-w-xl space-y-4'>
-            <Title order={1}>{product.name}</Title>
+            <h2 className='heading-primary'>{product.name}</h2>
             <div className='flex items-center gap-2'>
               <RatingStars rating={product.averageRating} />
               <Text size='sm'>
                 {product.totalRatings > 0
-                  ? `of ${product.totalRatings} ratings`
+                  ? `of ${product.totalRatings} ${
+                      product.totalRatings > 1 ? 'ratings' : 'rating'
+                    }`
                   : 'No reviews yet'}
               </Text>
             </div>
-            <p className='space-y-2 text-lg text-gray-200'>
+            <p className='space-y-2 text-lg'>
               {product.description.split('\n').map((line, index) => (
-                <Text className='block leading-relaxed' key={index}>
+                <span className='block' key={index}>
                   {line}
-                </Text>
+                </span>
               ))}
             </p>
             <p className='flex flex-wrap gap-2 capitalize'>
@@ -129,12 +147,20 @@ export const ProductDetail = ({ product: initialData }: Props) => {
               ))}
             </p>
             <Text>Rs {product.price}</Text>
-            {user && user.role === UserRole.USER ? (
+            {product.quantity === 0 && (
+              <Alert color='red' variant='filled'>
+                Out of stock
+              </Alert>
+            )}
+            {/* Show order-now and add-to-cart buttons if the quantity of product is greater than 0
+              and user role matches "USER"
+            */}
+            {user && user.role === UserRole.USER && product.quantity > 0 ? (
               <>
                 <NumberInput
                   className='max-w-xs'
                   max={product.quantity}
-                  min={1}
+                  min={!product.quantity ? 0 : 1}
                   onChange={value => setQuantity(value ?? 1)}
                   value={quantity}
                 />
@@ -142,9 +168,10 @@ export const ProductDetail = ({ product: initialData }: Props) => {
                   <Button
                     className='bg-indigo-600'
                     leftIcon={<FaMoneyCheckAlt />}
+                    loading={isRedirectingToPayment}
                     onClick={handleOrderCheckout}
                   >
-                    Order Now
+                    {isRedirectingToPayment ? 'Processing...' : 'Order Now'}
                   </Button>
                   <Button
                     leftIcon={<BsCart />}
@@ -158,11 +185,14 @@ export const ProductDetail = ({ product: initialData }: Props) => {
             ) : null}
           </aside>
           <div className='mt-6'>
-            {/* Only show add review form if the user has purchased the product */}
-            {hasPurchasedProduct(orders ?? [], product.id) && <AddReviewForm />}
+            {/* Only show add review form if the user has purchased the product and haven't left a review */}
+            {hasPurchasedProduct(orders ?? [], product.id) &&
+            !hasAlreadyReviewed ? (
+              <AddReviewForm />
+            ) : null}
             {product.reviews.length > 0 && (
-              <div className='space-y-2'>
-                <Title order={2}>Reviews</Title>
+              <div className='space-y-4'>
+                <h3 className='text-2xl font-bold'>Reviews</h3>
                 <ProductReviewList reviews={product.reviews} />
               </div>
             )}
@@ -171,7 +201,7 @@ export const ProductDetail = ({ product: initialData }: Props) => {
       </div>
       {recommededProducts.length > 0 && (
         <div className='mt-12'>
-          <Title order={2}>Recommended Products</Title>
+          <h3 className='heading-tertiary'>Recommended Products</h3>
           <div className='mt-4 flex flex-col flex-nowrap items-start gap-4 lg:flex-row'>
             {recommededProducts.map(product => (
               <NextLink href={`/products/${product.id}`} key={product.id}>

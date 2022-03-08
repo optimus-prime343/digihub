@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 
 import { useUpdateOrder } from '@/hooks/order'
 import { OrderStatus } from '@/types/orderStatus'
+import { socket } from '@/utils/socket'
 
 interface Props {
   id: string
@@ -27,6 +28,9 @@ const UpdateOrderForm = ({
       await mutateAsync({ id, message, status: OrderStatus.COMPLETED })
       toast.success('Order updated successfully')
       onOrderUpdated()
+      socket.emit('order-completed', {
+        productName,
+      })
     } catch (error: any) {
       toast.error(error.message)
     }

@@ -1,7 +1,7 @@
 import { Button, TextInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 
 import { useLogout, useUser } from '@/hooks/auth'
 import { useUpdateUser } from '@/hooks/user'
@@ -10,6 +10,7 @@ import { IUser } from '@/types/user'
 import { ChangeProfileImageForm } from './change-profile-image-form'
 
 export const PersonalInformationForm = () => {
+  const { showNotification } = useNotifications()
   const router = useRouter()
   const { user } = useUser()
   const logout = useLogout()
@@ -25,18 +26,25 @@ export const PersonalInformationForm = () => {
       try {
         await mutateAsync(values, {
           onSuccess: () => {
-            toast.success('Profile updated successfully')
+            showNotification({
+              message: 'Profile updated successfully',
+            })
           },
         })
       } catch (error: any) {
-        toast.error(error.message)
+        showNotification({
+          title: 'Update user failed',
+          message: error.message,
+        })
       }
     },
   })
   const handleLogout = async () => {
     await logout()
     await router.push(`/auth/login`)
-    toast.success('Logged out successfully')
+    showNotification({
+      message: 'Logged out successfully',
+    })
   }
   return (
     <div className='rounded-md bg-gray-600 p-4 shadow-sm'>

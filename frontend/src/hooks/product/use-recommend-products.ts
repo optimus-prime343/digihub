@@ -8,7 +8,6 @@ import { IProduct } from '@/types/product'
 export const useRecommendProducts = (tags: string[]) => {
   const queryClient = useQueryClient()
   const products = queryClient.getQueryData<IProduct[]>(['products', 1]) ?? []
-  console.log(products)
   return products.filter(product => {
     return product.tags.some(tag => tags.includes(tag))
   })

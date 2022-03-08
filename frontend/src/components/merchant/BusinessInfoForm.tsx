@@ -31,29 +31,27 @@ const BusinessInfoForm: FC<Props> = ({ user }) => {
     },
   })
   return (
-    <div>
-      <form
-        className='rounded-md bg-gray-600 p-4 shadow-md'
-        onSubmit={handleSubmit}
-      >
-        <h4 className='heading-tertiary mb-4'>Business Information</h4>
-        <div className='mt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
-          <TextInput label='Business Name' {...getFieldProps('businessName')} />
-          <TextInput label='Address' {...getFieldProps('address')} />
-          <Textarea
-            className='col-span-1 lg:col-span-2'
-            label='Business Description'
-            minRows={5}
-            {...getFieldProps('businessDescription')}
-          />
-        </div>
-        <div className='mt-4 flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4'>
-          <Button className='bg-indigo-600' type='submit'>
-            Update Business Information
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form
+      className='rounded-md bg-gray-600 p-4 shadow-md'
+      onSubmit={handleSubmit}
+    >
+      <h4 className='heading-tertiary mb-4'>Business Information</h4>
+      <div className='mt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
+        <TextInput label='Business Name' {...getFieldProps('businessName')} />
+        <TextInput label='Address' {...getFieldProps('address')} />
+        <Textarea
+          className='col-span-1 lg:col-span-2'
+          label='Business Description'
+          minRows={5}
+          {...getFieldProps('businessDescription')}
+        />
+      </div>
+      <div className='mt-4 flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4'>
+        <Button className='bg-indigo-600' type='submit'>
+          Update Business Information
+        </Button>
+      </div>
+    </form>
   )
 }
 

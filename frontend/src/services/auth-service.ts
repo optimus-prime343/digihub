@@ -44,6 +44,19 @@ class AuthService {
       throw new Error(error.response.data.message)
     }
   }
+  async requestPasswordReset(email: string) {
+    try {
+      const { data: message } = await axiosClient.post(
+        '/auth/request-password-reset',
+        { email }
+      )
+      return message
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Request password reset failed'
+      )
+    }
+  }
   async resetPassword(resetToken: string, resetPayload: ResetPasswordPayload) {
     try {
       const { data } = await axiosClient.patch<string>(

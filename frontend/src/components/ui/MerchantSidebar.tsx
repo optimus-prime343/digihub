@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import React, { FC } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
+import { BiMessage } from 'react-icons/bi'
 import { CgProfile } from 'react-icons/cg'
 import { GoPackage } from 'react-icons/go'
 import { IoMdAddCircle } from 'react-icons/io'
@@ -54,6 +55,11 @@ const merchantRoutes = [
     name: 'Orders',
     path: '/merchant/orders',
     icon: <AiOutlineShoppingCart size={30} />,
+  },
+  {
+    name: 'Messages',
+    path: '/merchant/messages',
+    icon: <BiMessage />,
   },
   {
     name: 'Add Product',

@@ -29,16 +29,11 @@ export class AuthController {
         return this.authService.signup(createUserDto)
     }
 
-    @Post('create-admin')
-    public createAdmin(@Body() createAdminDto: CreateUserDto): Promise<string> {
-        return this.authService.createAdmin(createAdminDto)
-    }
-
     @Post('login')
-    public async login(
+    public login(
         @Body() authCredentialsDto: AuthCredentialsDto
     ): Promise<{ accessToken: string }> {
-        return await this.authService.login(authCredentialsDto)
+        return this.authService.login(authCredentialsDto)
     }
 
     @UseGuards(JwtAuthGuard)

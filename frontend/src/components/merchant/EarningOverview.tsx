@@ -28,17 +28,17 @@ const EarningOverview = () => {
         <OverviewContainer
           icon={<BsWallet className={icon('netIncome')} size={50} />}
           label='Net Income'
-          value={`$${netIncome}`}
+          value={`Rs ${netIncome}`}
         />
         <OverviewContainer
           icon={<AiOutlinePieChart className={icon('withDrawn')} size={50} />}
           label='Withdrawn'
-          value={`$${withdrawAmount}`}
+          value={`Rs ${withdrawAmount}`}
         />
         <OverviewContainer
           icon={<AiOutlineClockCircle className={icon('pending')} size={50} />}
           label='Pending'
-          value={`$${pendingAmount}`}
+          value={`Rs ${pendingAmount}`}
         />
       </div>
       {pendingAmount > 5 && <WithdrawAmountPrompt />}

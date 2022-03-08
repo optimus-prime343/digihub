@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { MerchantsModule } from '../merchants/merchants.module'
+import { Product } from '../products/entities/product.entity'
 import { ProductsModule } from '../products/products.module'
 import { User } from '../users/entities/user.entity'
 import { UsersModule } from '../users/users.module'
@@ -13,7 +14,7 @@ import { OrdersService } from './orders.service'
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Order, Merchant, User]),
+        TypeOrmModule.forFeature([Order, Merchant, User, Product]),
         ProductsModule,
         UsersModule,
         MerchantsModule,

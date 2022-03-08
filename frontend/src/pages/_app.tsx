@@ -42,7 +42,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <ModalsProvider>
             <NotificationsProvider>
               <Navbar />
-              <ToastContainer autoClose={5000} theme='dark' />
+              <ToastContainer
+                autoClose={5000}
+                position='bottom-right'
+                theme='dark'
+              />
               <Component {...pageProps} />
             </NotificationsProvider>
           </ModalsProvider>

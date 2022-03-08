@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Digihub Backend",
+            "args": [
+                "${workspaceFolder}/src/main.ts"
+            ],
+            "runtimeArgs": [
+                "--no-lazy",
+                "-r",
+                "ts-node/register",
+            ],
+            "sourceMaps": true,
+            "envFile": "${workspaceFolder}/.env",
+            "cwd": "${workspaceFolder}/backend",
+            "console": "integratedTerminal",
+            "protocol": "inspector",
+        }
+    ]
+}

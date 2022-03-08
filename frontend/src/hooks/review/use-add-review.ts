@@ -1,19 +1,16 @@
-import { useRouter } from 'next/router'
 import { useMutation, useQueryClient } from 'react-query'
 
-import { productService } from '@/services/product-service'
+import { reviewService } from '@/services/review-service'
 import { AddReviewPayload, IProductReview } from '@/types/product'
 
-export const useAddProductReview = () => {
-  const router = useRouter()
+export const useAddReview = (productId: string) => {
   const queryClient = useQueryClient()
   return useMutation<IProductReview, Error, AddReviewPayload>(
-    addProductReviewPayload =>
-      productService.addProductReview(addProductReviewPayload),
+    addProductReviewPayload => reviewService.addReview(addProductReviewPayload),
     {
       onSuccess: () => {
         // once a review is added, we need to refetch the product reviews based on the product id
-        queryClient.invalidateQueries(['product', router.query.id as string])
+        queryClient.invalidateQueries(['product', productId])
       },
     }
   )
