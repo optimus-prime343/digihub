@@ -1,6 +1,5 @@
 export { default as AddProductForm } from './AddProductForm/AddProductForm'
 export { default as MerchantProductsPreview } from './MerchantProductsPreview'
 export { default as ProductCategories } from './ProductCategories'
-export { default as ProductDetail } from './ProductDetail/ProductDetail'
 export { default as ProductList } from './ProductList'
 export { default as ProductListItem } from './ProductListItem'

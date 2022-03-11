@@ -9,7 +9,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { PreviewImages } from '@/components/core'
-import MerchantSidebar from '@/components/ui/MerchantSidebar'
+import { MerchantSidebar } from '@/components/ui'
 import { useAddProduct } from '@/hooks/product'
 import { addProductSchema } from '@/schemas/add-product-schema'
 

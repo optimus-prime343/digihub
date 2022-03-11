@@ -89,6 +89,7 @@ export class ProductsController {
         @Param('productId') productId: string,
         @Body() updateProductDto: UpdateProductDto
     ): Promise<Product> {
+        console.log(updateProductDto)
         return this.productsService.updateProduct(
             merchant,
             productId,

@@ -159,7 +159,7 @@ export class OrdersService {
             return await this.stripeClient.checkout.sessions.create({
                 payment_method_types: ['card'],
                 success_url: 'http://localhost:3000/profile#orders',
-                cancel_url: 'http://localhost:3000',
+                cancel_url: `http://localhost:3000/products/${productId}`,
                 customer_email: user.email,
                 client_reference_id: productId,
                 line_items: [

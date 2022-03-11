@@ -13,9 +13,11 @@ class ChatService {
       )
     }
   }
-  async getMessages(fromId?: string, toId?: string): Promise<IMessage[]> {
+  async getMessages(receiverId?: string): Promise<IMessage[]> {
     try {
-      const { data } = await axiosClient.get<any[]>(`/chat/${fromId}/${toId}`)
+      const { data } = await axiosClient.get<any[]>(
+        `/chat/messages/${receiverId}`
+      )
       return data
     } catch (error: any) {
       throw new Error(

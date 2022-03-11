@@ -16,8 +16,8 @@ export const SearchProducts = () => {
   const searchContainerRef = useClickOutside(() => setSearchQuery(''))
   const { products } = useProductsSearch(searchQuery)
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
       router.push({ pathname: '/products/search', query: { searchQuery } })
     }
   }
@@ -67,7 +67,7 @@ const SearchAutocomplete = ({
           <div className='space-y-2'>
             {products.slice(0, 3).map(product => (
               <NextLink
-                className='group flex flex-col items-start gap-4 rounded-md p-2 transition-colors duration-500 hover:bg-gray-500 md:flex-row'
+                className='flex flex-col items-center gap-4 rounded-md p-2 transition-colors duration-500 hover:bg-gray-500 md:flex-row'
                 href={`/products/${product.id}`}
                 key={product.id}
               >
@@ -79,7 +79,7 @@ const SearchAutocomplete = ({
                   src={getProductImageUrl(product.coverImage)}
                   width={100}
                 />
-                <div className='flex-1 group-hover:text-white'>
+                <div className='w-96'>
                   <h3 className='heading-tertiary'>{product.name}</h3>
                   <Text className='text-gray-100'>
                     {product.description.slice(0, 100)}...
@@ -88,9 +88,10 @@ const SearchAutocomplete = ({
               </NextLink>
             ))}
           </div>
-          {/* Only show "Show all results" button when there are more than 3 search results since the
-      max displayed search result items are 3
-      */}
+          {/* 
+          Only show "Show all results" button when there are more than 3 search results since the
+          max displayed search result items are 3
+          */}
           {products.length > 3 && (
             <Button
               className='bg-indigo-600'

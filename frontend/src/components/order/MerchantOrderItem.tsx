@@ -17,7 +17,7 @@ const MerchantOrderItem: FC<Props> = ({ order }) => {
         className='rounded-md'
         height={300}
         objectFit='cover'
-        src={getProductImageUrl(order.product.images[1])}
+        src={getProductImageUrl(order.product.coverImage)}
         width={300}
       />
       <p className='text-2xl font-medium'>

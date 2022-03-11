@@ -10,7 +10,7 @@ interface Props {
 }
 export const ProductItem = ({ product }: Props) => {
   return (
-    <div className='overflow-hidden rounded-md bg-gray-600 p-2'>
+    <div className='overflow-hidden rounded-md bg-gray-600/75 p-2 backdrop-blur-sm'>
       <Image
         alt={product.name}
         className='rounded-md shadow-md'

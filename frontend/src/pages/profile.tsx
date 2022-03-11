@@ -5,7 +5,7 @@ import { BiMessageAlt, BiPurchaseTag } from 'react-icons/bi'
 import { BsCart } from 'react-icons/bs'
 import { CgProfile } from 'react-icons/cg'
 
-import { WithAuth } from '@/components/core'
+import { Layout, WithAuth } from '@/components/core'
 import { OrderList } from '@/components/order'
 import { CartList } from '@/features/cart'
 import { ContactList } from '@/features/chat'
@@ -31,22 +31,28 @@ const ProfilePage = () => {
     setActiveTab(tab)
   }
   return (
-    <div className='p-4 lg:px-8 lg:py-4'>
-      <Tabs active={activeTab} onTabChange={handleTabChange} variant='default'>
-        <Tabs.Tab icon={<BsCart />} label='Cart'>
-          <CartList cartItems={cartItems} />
-        </Tabs.Tab>
-        <Tabs.Tab icon={<BiPurchaseTag />} label='Orders'>
-          <OrderList orders={orders ?? []} />
-        </Tabs.Tab>
-        <Tabs.Tab icon={<BiMessageAlt />} label='Messages'>
-          <ContactList />
-        </Tabs.Tab>
-        <Tabs.Tab icon={<CgProfile />} label='Account'>
-          <Profile />
-        </Tabs.Tab>
-      </Tabs>
-    </div>
+    <Layout title={`Digihub profile | ${TABS[activeTab]}`}>
+      <div className='p-4 lg:px-8 lg:py-4'>
+        <Tabs
+          active={activeTab}
+          onTabChange={handleTabChange}
+          variant='default'
+        >
+          <Tabs.Tab icon={<BsCart />} label='Cart'>
+            <CartList cartItems={cartItems} />
+          </Tabs.Tab>
+          <Tabs.Tab icon={<BiPurchaseTag />} label='Orders'>
+            <OrderList orders={orders ?? []} />
+          </Tabs.Tab>
+          <Tabs.Tab icon={<BiMessageAlt />} label='Messages'>
+            <ContactList />
+          </Tabs.Tab>
+          <Tabs.Tab icon={<CgProfile />} label='Account'>
+            <Profile />
+          </Tabs.Tab>
+        </Tabs>
+      </div>
+    </Layout>
   )
 }
 export default WithAuth(ProfilePage, {

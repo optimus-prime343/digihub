@@ -1,4 +1,10 @@
-import { ActionIcon, Button, Group, Text } from '@mantine/core'
+import {
+  ActionIcon,
+  Button,
+  Group,
+  NumberInput,
+  NumberInputHandlers,
+} from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import { useNotifications } from '@mantine/notifications'
 import Image from 'next/image'
@@ -19,20 +25,21 @@ interface Props {
 export const CartItem = ({ cart }: Props) => {
   const loading = useRef(false)
   const modals = useModals()
-  const notifications = useNotifications()
+  const { showNotification } = useNotifications()
 
   const updateQuantity = useUpdateCartQuantity()
   const deleteCart = useDeleteCart()
   const orderCheckout = useOrderCheckout()
 
   const [quantity, setQuantity] = useState(cart.quantity)
+  const quantityHandlers = useRef<NumberInputHandlers>()
 
   const handleOrderCheckout = async () => {
     try {
       loading.current = true
       await orderCheckout(cart.product.id, quantity)
     } catch (error: any) {
-      notifications.showNotification({
+      showNotification({
         color: 'red',
         title: 'Order Checkout Failed',
         message: error.message,
@@ -43,8 +50,7 @@ export const CartItem = ({ cart }: Props) => {
   const removeFromCart = async () => {
     try {
       await deleteCart.mutateAsync(cart.id)
-      notifications.showNotification({
-        title: 'Successfully removed from cart!',
+      showNotification({
         message: `${cart.product.name} has been removed from cart!`,
       })
     } catch (error: any) {
@@ -52,22 +58,13 @@ export const CartItem = ({ cart }: Props) => {
     }
   }
 
-  const handleQuantityChange = async (action: 'increase' | 'decrease') => {
-    if (action === 'increase' && quantity < cart.product.quantity) {
-      return setQuantity(currentQuantity => currentQuantity + 1)
-    }
-    if (action === 'decrease' && quantity > 1) {
-      return setQuantity(currentQuantity => currentQuantity - 1)
-    }
-  }
-
   const openConfirmModal = () => {
     modals.openConfirmModal({
       title: 'Remove from cart',
       children: (
-        <Text size='sm'>
+        <p>
           Are you sure you want to order {cart.product.name} from your cart?
-        </Text>
+        </p>
       ),
       centered: true,
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
@@ -102,20 +99,31 @@ export const CartItem = ({ cart }: Props) => {
               {cart.product.name}
             </NextLink>
           </h4>
-          <p>Rs {cart.product.price * quantity}</p>
+          <p>
+            <span>{quantity}</span> * <span>Rs {cart.product.price}</span> = Rs{' '}
+            {cart.product.price * quantity}
+          </p>
         </div>
         <Group>
           <ActionIcon
             color='indigo'
-            onClick={() => handleQuantityChange('increase')}
+            onClick={() => quantityHandlers.current?.increment()}
             variant='outline'
           >
             <BsPlus />
           </ActionIcon>
-          <p>{quantity}</p>
+          <NumberInput
+            className='w-12'
+            handlersRef={quantityHandlers}
+            hideControls
+            max={cart.product.quantity}
+            min={1}
+            onChange={value => setQuantity(value ?? 1)}
+            value={quantity}
+          />
           <ActionIcon
             color='red'
-            onClick={() => handleQuantityChange('decrease')}
+            onClick={() => quantityHandlers.current?.decrement()}
             variant='outline'
           >
             <BiMinus />

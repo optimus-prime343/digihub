@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import React from 'react'
 
 import { Layout } from '@/components/core'
 import { ProductDetail } from '@/features/product'

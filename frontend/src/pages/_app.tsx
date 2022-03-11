@@ -10,12 +10,13 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { done, start } from 'nprogress'
 import { useEffect } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ToastContainer } from 'react-toastify'
 
 import { ClientOnly } from '@/components/core'
-import { Navbar } from '@/components/ui'
+import { FullPageError, Navbar } from '@/components/ui'
 import { theme } from '@/utils/theme'
 
 const queryClient = new QueryClient({
@@ -35,23 +36,25 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     router.events.on('routeChangeError', done)
   }, [router.events])
   return (
-    <QueryClientProvider client={queryClient}>
-      <ClientOnly>
-        <ReactQueryDevtools />
-        <MantineProvider theme={theme}>
-          <ModalsProvider>
-            <NotificationsProvider>
-              <Navbar />
-              <ToastContainer
-                autoClose={5000}
-                position='bottom-right'
-                theme='dark'
-              />
-              <Component {...pageProps} />
-            </NotificationsProvider>
-          </ModalsProvider>
-        </MantineProvider>
-      </ClientOnly>
-    </QueryClientProvider>
+    <ErrorBoundary FallbackComponent={FullPageError}>
+      <QueryClientProvider client={queryClient}>
+        <ClientOnly>
+          <ReactQueryDevtools />
+          <MantineProvider theme={theme}>
+            <ModalsProvider>
+              <NotificationsProvider>
+                <Navbar />
+                <ToastContainer
+                  autoClose={5000}
+                  position='bottom-right'
+                  theme='dark'
+                />
+                <Component {...pageProps} />
+              </NotificationsProvider>
+            </ModalsProvider>
+          </MantineProvider>
+        </ClientOnly>
+      </QueryClientProvider>
+    </ErrorBoundary>
   )
 }

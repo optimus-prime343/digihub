@@ -1,4 +1,4 @@
-import { Divider, Menu, Text } from '@mantine/core'
+import { Menu, Text } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import { useNotifications } from '@mantine/notifications'
 import { format } from 'date-fns'
@@ -18,6 +18,7 @@ export const ProductReviewItem = ({ review }: Props) => {
   const router = useRouter()
   const modal = useModals()
   const { showNotification } = useNotifications()
+
   const { user } = useUser()
 
   const productId = router.query.id as string
@@ -69,10 +70,9 @@ export const ProductReviewItem = ({ review }: Props) => {
         width={50}
       />
       <div className='flex-1'>
-        {/* <RatingStars rating={review.rating} size={25} /> */}
         <Text weight={700}>{review.rating} out of 5</Text>
         <Text size='sm'>{format(new Date(review.createdAt), 'PPP')}</Text>
-        <Divider my='xs' />
+        <span className='divider my-2' />
         <Text className='max-w-md leading-relaxed'>{review.review}</Text>
       </div>
       {user && user.id === review.user.id && (

@@ -1,12 +1,12 @@
-import { IsNumber, IsOptional, Length, Min } from 'class-validator'
+import { IsNumber, IsOptional, Length, Min, MinLength } from 'class-validator'
 
 export class UpdateProductDto {
     @IsOptional()
-    @Length(5, 30)
+    @Length(5, 50)
     name?: string
 
     @IsOptional()
-    @Length(10, 350)
+    @MinLength(15)
     description?: string
 
     @IsOptional()

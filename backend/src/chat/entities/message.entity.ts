@@ -10,10 +10,12 @@ export class Message {
     @Column()
     text: string
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { eager: true })
     author: User
+
+    @Column()
+    receiverId: string
 
     @Column({ type: Date, default: new Date() })
     createdAt: string
 }
-//add to contact

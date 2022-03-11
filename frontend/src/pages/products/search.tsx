@@ -12,9 +12,9 @@ interface Props {
 const AllSearchResultsPage = ({ searchQuery, products }: Props) => {
   return (
     <div className='space-y-4 p-4 lg:px-8 lg:py-4'>
-      <h3 className='heading-tertiary'>
+      <h3 className='heading-secondary'>
         Found {products.length} {products.length > 1 ? 'results' : 'result'} for{' '}
-        <span className='font-bold text-white'>{searchQuery}</span>
+        <span className='text-indigo-600'>{searchQuery}</span>
       </h3>
       <ProductList products={products} />
     </div>

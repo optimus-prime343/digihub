@@ -1,5 +1,9 @@
+import { IsNotEmpty, IsUUID } from 'class-validator'
+
 export class CreateMessageDto {
-    userId: string
-    message: string
-    createdAt: string
+    @IsNotEmpty()
+    text: string
+
+    @IsUUID()
+    receiverId: string
 }

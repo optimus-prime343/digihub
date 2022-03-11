@@ -7,7 +7,7 @@ interface Props {
 }
 export const ProductReviewList = ({ reviews }: Props) => {
   return (
-    <div>
+    <div className='space-y-4'>
       {reviews.map(review => (
         <ProductReviewItem key={review.id} review={review} />
       ))}
