@@ -83,4 +83,12 @@ export class AdminService {
             'You are not authorized to perform this action'
         )
     }
+    async findAllUsers(): Promise<User[]> {
+        return this.userRepository.find()
+    }
+    async findAllMerchants(): Promise<User[]> {
+        return this.userRepository.find({
+            where: { role: Role.MERCHANT },
+        })
+    }
 }

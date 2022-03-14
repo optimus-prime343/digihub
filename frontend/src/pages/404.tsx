@@ -1,29 +1,19 @@
 import { Button } from '@mantine/core'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 const NotFoundPage = () => {
   const router = useRouter()
-  const handleClick = () => {
-    router.push('/')
-  }
   return (
-    <div className='p-4 lg:p-0'>
-      <div className='mx-auto my-4 flex max-w-4xl flex-col items-center gap-4 rounded-md bg-white p-4 text-black backdrop-blur-sm lg:my-12'>
-        <h2 className=' text-4xl font-bold text-red-600 lg:text-6xl'>
-          404 NOT FOUND
-        </h2>
-        <p className='text-lg font-medium'>{`${router.asPath} doesn't exist`}</p>
-        <Button className='bg-indigo-600' onClick={handleClick}>
-          Return To Homepage
+    <div className='flex min-h-[calc(100vh-6rem)] items-center justify-center'>
+      <div className='flex flex-col items-center justify-center gap-4'>
+        <h1 className='text-8xl font-bold'>404</h1>
+        <p className='text-lg text-red-400'>
+          The page you are looking for does not exist
+        </p>
+        <Button className='bg-indigo-600' onClick={() => router.replace('/')}>
+          Return Home
         </Button>
-        <Image
-          alt='Page not found'
-          height={350}
-          src='/images/404_not_found.svg'
-          width={350}
-        />
       </div>
     </div>
   )

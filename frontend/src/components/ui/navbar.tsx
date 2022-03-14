@@ -26,6 +26,7 @@ export const Navbar = () => {
   const { user } = useUser()
   const [showNav, setShowNav] = useState(false)
   const navbarRef = useClickOutside(() => setShowNav(false))
+  // render different navbar links based on user role
   const navbarLinks = !user
     ? navLinks.regular
     : user.role === UserRole.MERCHANT

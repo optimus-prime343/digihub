@@ -1,0 +1,44 @@
+{
+  "name": "remix-app-template",
+  "private": true,
+  "description": "",
+  "license": "",
+  "sideEffects": false,
+  "scripts": {
+    "build": "cross-env NODE_ENV=production remix build",
+    "dev": "cross-env NODE_ENV=development remix dev",
+    "postinstall": "remix setup node"
+  },
+  "dependencies": {
+    "@mantine/core": "^4.0.4",
+    "@mantine/hooks": "^4.0.4",
+    "@mantine/notifications": "^4.0.4",
+    "@mantine/ssr": "^4.0.4",
+    "@remix-run/react": "^1.2.3",
+    "@remix-run/vercel": "^1.2.3",
+    "axios": "^0.26.1",
+    "formik": "^2.2.9",
+    "js-cookie": "^3.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-query": "^3.34.16",
+    "remix": "^1.2.3",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^1.2.3",
+    "@remix-run/eslint-config": "^1.2.3",
+    "@remix-run/serve": "^1.2.3",
+    "@types/js-cookie": "^3.0.1",
+    "@types/react": "^17.0.24",
+    "@types/react-dom": "^17.0.9",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.9.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "typescript": "^4.5.5"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

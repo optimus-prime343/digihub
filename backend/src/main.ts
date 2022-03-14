@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app.module'
 import { API_GLOBAL_PREFIX, PORT } from './constants'
-import { registerMiddlewares } from './registerMiddlewares'
+import { registerMiddlewares } from './register-middlewares'
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
