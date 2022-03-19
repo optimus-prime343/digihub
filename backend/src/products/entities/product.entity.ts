@@ -1,10 +1,11 @@
 import {
-    BeforeUpdate,
     Column,
+    CreateDateColumn,
     Entity,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm'
 
 import { Merchant } from '../../merchants/entity/merchant.entity'
@@ -39,10 +40,10 @@ export class Product {
     @ManyToOne(() => Merchant, merchant => merchant.products)
     merchant: Merchant
 
-    @Column({ type: Date, default: new Date() })
+    @CreateDateColumn()
     createdAt: Date
 
-    @Column({ type: Date, nullable: true })
+    @UpdateDateColumn()
     updatedAt: Date
 
     @Column({ type: 'simple-array', default: [] })
@@ -52,9 +53,4 @@ export class Product {
         eager: true,
     })
     reviews: Review[]
-
-    @BeforeUpdate()
-    updateTimestamp(): void {
-        this.updatedAt = new Date()
-    }
 }

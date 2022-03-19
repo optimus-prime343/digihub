@@ -60,12 +60,7 @@ const UpdateProductPrompt: FC<IUpdateProductPromptProperties> = ({
           type='number'
           {...getFieldProps('quantity')}
         />
-        <Button
-          className='bg-indigo-600'
-          fullWidth
-          loading={isLoading}
-          type='submit'
-        >
+        <Button fullWidth loading={isLoading} type='submit'>
           Confirm Update
         </Button>
       </form>

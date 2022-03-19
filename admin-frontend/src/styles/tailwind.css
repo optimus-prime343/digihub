@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .heading {
+    @apply text-xl font-bold uppercase;
+  }
+  .label {
+    @apply mb-2 inline-block text-gray-400;
+  }
+  .input {
+    @apply w-full rounded-md border border-gray-700 bg-transparent px-4 py-3 focus:border-indigo-600 focus:outline-none focus:ring-0;
+  }
+  .divider {
+    @apply my-4 block h-px w-full bg-gray-700;
+  }
+  .btn {
+    @apply rounded-md bg-indigo-600 px-4 py-3 text-lg text-white hover:brightness-95 focus:ring-indigo-600 focus:ring-offset-2;
+  }
+}

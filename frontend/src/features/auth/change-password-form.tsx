@@ -45,7 +45,7 @@ export const ChangePasswordForm = () => {
             placeholder='********'
           />
         </div>
-        <Button className='bg-indigo-600' loading={isSubmitting} type='submit'>
+        <Button loading={isSubmitting} type='submit'>
           Change Password
         </Button>
       </form>

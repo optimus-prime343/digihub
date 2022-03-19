@@ -6,7 +6,13 @@ import {
 } from '@nestjs/websockets'
 import { Socket } from 'socket.io'
 
-import { CreateMessageDto } from '../dtos/create-message.dto'
+import { User } from '../../users/entities/user.entity'
+import { ChatService } from '../chat.service'
+import { SendMessageDto } from '../dtos/send-message.dto'
+
+interface Message extends SendMessageDto {
+    sender: User
+}
 
 @WebSocketGateway({
     cors: {
@@ -16,11 +22,18 @@ import { CreateMessageDto } from '../dtos/create-message.dto'
     },
 })
 export class ChatGateway {
+    constructor(private readonly chatService: ChatService) {}
+
     @SubscribeMessage('message')
-    handleMessage(
-        @MessageBody() createMessageDto: CreateMessageDto,
+    async handleMessage(
+        @MessageBody() sendMessageDto: Message,
         @ConnectedSocket() client: Socket
-    ): void {
-        client.broadcast.emit('message', createMessageDto)
+    ): Promise<void> {
+        const { sender, recipient, content } = sendMessageDto
+        const newMessage = await this.chatService.sendMessage(sender, {
+            recipient,
+            content,
+        })
+        client.broadcast.emit('message', newMessage)
     }
 }

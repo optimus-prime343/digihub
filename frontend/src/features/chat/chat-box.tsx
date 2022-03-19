@@ -1,4 +1,3 @@
-import { IMerchant } from '@/types/merchant'
 import { IUser } from '@/types/user'
 
 interface Props {

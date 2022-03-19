@@ -13,6 +13,7 @@ import { Role } from '../common/types'
 import { PASSWORD_DONOT_MATCH_MESSAGE } from '../constants'
 import { UpdateMerchanStatusDto } from '../merchants/dtos/update-merchant-status.dto'
 import { Merchant } from '../merchants/entity/merchant.entity'
+import { Order } from '../orders/entities/order.entity'
 import { CreateUserDto } from '../users/dtos/create-user.dto'
 import { User } from '../users/entities/user.entity'
 
@@ -23,6 +24,8 @@ export class AdminService {
         private readonly merchantRepository: Repository<Merchant>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @InjectRepository(Order)
+        private readonly ordersRepository: Repository<Order>,
         private readonly mailService: MailerService,
         private readonly configService: ConfigService
     ) {}
@@ -84,11 +87,16 @@ export class AdminService {
         )
     }
     async findAllUsers(): Promise<User[]> {
-        return this.userRepository.find()
-    }
-    async findAllMerchants(): Promise<User[]> {
         return this.userRepository.find({
-            where: { role: Role.MERCHANT },
+            where: {
+                role: Role.USER,
+            },
         })
+    }
+    async findAllMerchants(): Promise<Merchant[]> {
+        return this.merchantRepository.find()
+    }
+    async findAllOrders(): Promise<Order[]> {
+        return this.ordersRepository.find({ relations: ['user', 'merchant'] })
     }
 }

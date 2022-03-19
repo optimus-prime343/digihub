@@ -13,14 +13,11 @@ export const Landing = () => {
           sellers alike - all in one place.
         </p>
         <div className='mt-8 flex flex-col justify-center gap-2 md:flex-row'>
-          <NextLink
-            className='btn btn--cta bg-indigo-600'
-            href='/auth/signup?as=user'
-          >
+          <NextLink className='btn bg-indigo-600' href='/auth/signup?as=user'>
             Signup
           </NextLink>
           <NextLink
-            className='btn btn--cta bg-gray-500'
+            className='btn btn--cta bg-gray-600'
             href='/auth/signup?as=merchant'
           >
             Signup as Merchant

@@ -5,6 +5,8 @@ import { Roles } from '../decorators/roles.decorator'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
 import { UpdateMerchanStatusDto } from '../merchants/dtos/update-merchant-status.dto'
+import { Merchant } from '../merchants/entity/merchant.entity'
+import { Order } from '../orders/entities/order.entity'
 import { CreateUserDto } from '../users/dtos/create-user.dto'
 import { User } from '../users/entities/user.entity'
 import { AdminService } from './admin.service'
@@ -30,7 +32,12 @@ export class AdminController {
         return this.adminService.findAllUsers()
     }
     @Get('merchants')
-    public findAllMerchants(): Promise<User[]> {
+    public findAllMerchants(): Promise<Merchant[]> {
         return this.adminService.findAllMerchants()
+    }
+
+    @Get('orders')
+    public findAllOrders(): Promise<Order[]> {
+        return this.adminService.findAllOrders()
     }
 }

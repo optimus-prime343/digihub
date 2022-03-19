@@ -40,9 +40,7 @@ const DeleteProductPrompt: FC<IDeleteProductPromptProperties> = ({
           >
             Confirm
           </Button>
-          <Button className='bg-indigo-600' onClick={() => setOpened(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setOpened(false)}>Cancel</Button>
         </div>
       </div>
     </Modal>

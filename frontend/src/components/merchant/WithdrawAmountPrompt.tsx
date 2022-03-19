@@ -35,12 +35,12 @@ const WithdrawAmountPrompt = () => {
             onChange={value => setAmount(value ?? 0)}
             value={0}
           />
-          <Button className='bg-indigo-600' fullWidth type='submit'>
+          <Button fullWidth type='submit'>
             Confirm withdrawal
           </Button>
         </form>
       </Modal>
-      <Button className='mt-4 bg-indigo-600' onClick={() => setOpened(true)}>
+      <Button className='mt-4' onClick={() => setOpened(true)}>
         Withdraw
       </Button>
     </>

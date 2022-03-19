@@ -47,12 +47,7 @@ const UpdateOrderForm = ({
           onChange={event => setMessage(event.currentTarget.value)}
           value={message}
         />
-        <Button
-          className='bg-indigo-600'
-          fullWidth
-          loading={isLoading}
-          type='submit'
-        >
+        <Button fullWidth loading={isLoading} type='submit'>
           Mark as completed
         </Button>
       </form>

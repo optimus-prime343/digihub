@@ -98,7 +98,6 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
           />
           <Group>
             <Button
-              className='bg-indigo-600'
               leftIcon={<FaMoneyCheckAlt />}
               loading={isRedirectingToPayment}
               onClick={handleOrderCheckout}

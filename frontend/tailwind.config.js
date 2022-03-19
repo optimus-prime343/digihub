@@ -1,5 +1,3 @@
-const colors = require('tailwindcss/colors')
-
 /** @type {import('tailwindcss/tailwind-config').TailwindConfig} */
 const tailwindCssConfig = {
   content: ['./src/**/*.{ts,tsx}'],
@@ -21,10 +19,9 @@ const tailwindCssConfig = {
           800: '#141517',
           900: '#101113',
         },
-        // gray: colors.neutral,
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 }
 module.exports = tailwindCssConfig

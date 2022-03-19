@@ -55,7 +55,7 @@ export const ChangeProfileImageForm = ({ user }: Props) => {
       </label>
       {imageUrl && (
         <Button
-          className='mb-4 bg-indigo-600'
+          className='mb-4'
           loading={isLoading}
           onClick={handleProfileChange}
           type='submit'

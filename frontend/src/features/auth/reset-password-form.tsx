@@ -63,13 +63,7 @@ export const ResetPasswordForm = () => {
           placeholder='xxxxxxxxxx'
           size='md'
         />
-        <Button
-          className='bg-indigo-600'
-          disabled={isSubmitting}
-          fullWidth
-          size='md'
-          type='submit'
-        >
+        <Button disabled={isSubmitting} fullWidth size='md' type='submit'>
           Reset Password
         </Button>
       </form>

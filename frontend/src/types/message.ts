@@ -2,8 +2,8 @@ import { IUser } from '@/types/user'
 
 export interface IMessage {
   id: string
-  text: string
+  content: string
   createdAt: Date
-  author: IUser
-  receiverId: string
+  sender: IUser
+  recipient: string
 }

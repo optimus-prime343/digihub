@@ -74,11 +74,7 @@ export const AddReviewForm = () => {
             placeholder='Write your review here'
             value={review}
           />
-          <Button
-            className='bg-indigo-600'
-            loading={addProductReview.isLoading}
-            type='submit'
-          >
+          <Button loading={addProductReview.isLoading} type='submit'>
             Add Review
           </Button>
         </div>

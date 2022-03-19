@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import { done, start } from 'nprogress'
 import { useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ToastContainer } from 'react-toastify'
 
@@ -40,16 +40,21 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ClientOnly>
           <ReactQueryDevtools />
-          <MantineProvider theme={theme}>
+          <MantineProvider
+            emotionOptions={{ key: 'mantine', prepend: false }}
+            theme={theme}
+          >
             <ModalsProvider>
               <NotificationsProvider>
-                <Navbar />
                 <ToastContainer
                   autoClose={5000}
                   position='bottom-right'
                   theme='dark'
                 />
-                <Component {...pageProps} />
+                <Hydrate state={pageProps.dehydratedState}>
+                  <Navbar />
+                  <Component {...pageProps} />
+                </Hydrate>
               </NotificationsProvider>
             </ModalsProvider>
           </MantineProvider>

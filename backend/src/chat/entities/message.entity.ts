@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm'
 
 import { User } from '../../users/entities/user.entity'
 
@@ -7,15 +13,15 @@ export class Message {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @Column()
-    text: string
-
     @ManyToOne(() => User, { eager: true })
-    author: User
+    sender: User
 
     @Column()
-    receiverId: string
+    recipient: string
 
-    @Column({ type: Date, default: new Date() })
-    createdAt: string
+    @Column()
+    content: string
+
+    @CreateDateColumn()
+    createdAt: Date
 }

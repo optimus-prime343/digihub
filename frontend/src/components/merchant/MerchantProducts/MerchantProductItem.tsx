@@ -38,7 +38,6 @@ const MerchantProductItem: FC<Props> = ({ product }) => {
         <ProductListItem product={product} />
         <div className='mt-2 flex gap-4'>
           <Button
-            className='bg-indigo-600'
             leftIcon={<MdSystemUpdateAlt />}
             onClick={() => setShowUpdateModal(true)}
             variant='filled'

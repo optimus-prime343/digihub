@@ -142,7 +142,7 @@ export const MerchantSignupForm = () => {
           {...getFieldProps('phoneNumber')}
         />
         <Button
-          className='mt-4 bg-indigo-600'
+          className='mt-4'
           disabled={isSubmitting}
           fullWidth
           type='submit'

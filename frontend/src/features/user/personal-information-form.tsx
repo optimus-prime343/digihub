@@ -61,10 +61,7 @@ export const PersonalInformationForm = () => {
           <Button className='bg-indigo-600' type='submit'>
             Update Personal Information
           </Button>
-          <Button
-            className='bg-red-600 hover:bg-red-500'
-            onClick={handleLogout}
-          >
+          <Button color='red' onClick={handleLogout}>
             Logout
           </Button>
         </div>

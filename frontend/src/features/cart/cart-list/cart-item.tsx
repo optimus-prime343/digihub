@@ -130,17 +130,10 @@ export const CartItem = ({ cart }: Props) => {
           </ActionIcon>
         </Group>
         <div className='flex items-center gap-2'>
-          <Button
-            className='bg-indigo-600'
-            loading={loading.current}
-            onClick={openConfirmModal}
-          >
+          <Button loading={loading.current} onClick={openConfirmModal}>
             Order
           </Button>
-          <Button
-            className='bg-red-600 hover:bg-red-500'
-            onClick={removeFromCart}
-          >
+          <Button color='red' onClick={removeFromCart}>
             Remove
           </Button>
         </div>

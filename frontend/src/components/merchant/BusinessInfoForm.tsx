@@ -47,9 +47,7 @@ const BusinessInfoForm: FC<Props> = ({ user }) => {
         />
       </div>
       <div className='mt-4 flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4'>
-        <Button className='bg-indigo-600' type='submit'>
-          Update Business Information
-        </Button>
+        <Button type='submit'>Update Business Information</Button>
       </div>
     </form>
   )

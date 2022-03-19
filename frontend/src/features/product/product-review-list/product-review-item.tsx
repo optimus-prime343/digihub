@@ -37,7 +37,6 @@ export const ProductReviewItem = ({ review }: Props) => {
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       confirmProps: {
-        className: 'bg-red-600 hover:bg-red-500',
         loading: deleteReview.isLoading,
       },
       onConfirm: async () => {
@@ -84,12 +83,7 @@ export const ProductReviewItem = ({ review }: Props) => {
           >
             Update
           </Menu.Item>
-          <Menu.Item
-            className='text-white hover:bg-red-500'
-            color='red'
-            icon={<BsTrash />}
-            onClick={openDeleteModal}
-          >
+          <Menu.Item color='red' icon={<BsTrash />} onClick={openDeleteModal}>
             Delete
           </Menu.Item>
         </Menu>

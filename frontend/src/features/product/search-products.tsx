@@ -28,7 +28,6 @@ export const SearchProducts = () => {
         onChange={event => setSearchQuery(event.currentTarget.value)}
         onKeyDown={handleKeyDown}
         placeholder='Search products'
-        size='md'
         value={searchQuery}
       />
       {/* 

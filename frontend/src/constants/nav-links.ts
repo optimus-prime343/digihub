@@ -12,6 +12,10 @@ export const navLinks: NavLink = {
       href: '/',
     },
     {
+      name: 'Cart',
+      href: '/profile#cart',
+    },
+    {
       name: 'Profile',
       href: '/profile',
     },

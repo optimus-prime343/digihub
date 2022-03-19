@@ -1,10 +1,12 @@
 import { GetServerSideProps } from 'next'
+import { dehydrate, QueryClient } from 'react-query'
 
 import { Layout } from '@/components/core'
 import { MerchantHome } from '@/components/merchant'
 import { FullPageLoader, Landing } from '@/components/ui'
 import { UserHomepageContent } from '@/features/user'
 import { useUser } from '@/hooks/auth'
+import { productService } from '@/services/product-service'
 import { UserRole } from '@/types/user'
 import { axiosClient } from '@/utils/axios-client'
 
@@ -25,12 +27,17 @@ export default function Home({ totalProducts }: Props) {
   )
 }
 export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery('products', () =>
+    productService.fetchProducts()
+  )
   const { data: totalProducts } = await axiosClient.get<number>(
     '/products/count'
   )
   return {
     props: {
       totalProducts: totalProducts,
+      dehydratedState: dehydrate(queryClient),
     },
   }
 }

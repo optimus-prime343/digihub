@@ -1,0 +1,18 @@
+{
+	"name": "digihub",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/optimus-prime343/Digihub.git",
+	"author": "morganTuber <sachinaryal300@gmail.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"concurrently": "^7.0.0"
+	},
+	"scripts": {
+		"db:start": "sudo service postgresql restart",
+		"admin:frontend": "cd admin-frontend && yarn dev",
+		"frontend": "cd frontend && yarn dev",
+		"backend": "cd backend && yarn start:dev",
+		"start": "yarn db:start && concurrently \"yarn backend\" \"yarn admin:frontend\" \"yarn frontend\""
+	}
+}

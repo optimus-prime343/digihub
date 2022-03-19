@@ -1,6 +1,6 @@
 export interface IContact {
   id: string
-  userName: string
+  username: string
   image: string
   lastMessage: string
   lastMessageDate: Date

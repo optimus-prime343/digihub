@@ -13,9 +13,9 @@ class ChatService {
       )
     }
   }
-  async getMessages(receiverId?: string): Promise<IMessage[]> {
+  async getMessages(receiverId: string): Promise<IMessage[]> {
     try {
-      const { data } = await axiosClient.get<any[]>(
+      const { data } = await axiosClient.get<IMessage[]>(
         `/chat/messages/${receiverId}`
       )
       return data
