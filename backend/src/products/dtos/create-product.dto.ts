@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString, Length, Min } from 'class-validator'
+import {
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    Length,
+    MinLength,
+} from 'class-validator'
 
 export class CreateProductDto {
     @IsString()
@@ -6,7 +12,7 @@ export class CreateProductDto {
     public name: string
 
     @IsString()
-    @Min(15)
+    @MinLength(15)
     public description: string
 
     @IsNotEmpty()

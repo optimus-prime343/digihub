@@ -29,11 +29,6 @@ export class ChatGateway {
         @MessageBody() sendMessageDto: Message,
         @ConnectedSocket() client: Socket
     ): Promise<void> {
-        const { sender, recipient, content } = sendMessageDto
-        const newMessage = await this.chatService.sendMessage(sender, {
-            recipient,
-            content,
-        })
-        client.broadcast.emit('message', newMessage)
+        client.broadcast.emit('message', sendMessageDto)
     }
 }

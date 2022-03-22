@@ -1,6 +1,6 @@
 import { Alert, Transition } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useUser } from '@/hooks/auth'
 import { useContacts, useMessages } from '@/hooks/chat'
@@ -30,6 +30,11 @@ export const ContactList = () => {
   // automatically close the messages container when clicked outside
   const containerRef = useClickOutside(() => setReceiverId(undefined))
 
+  useEffect(() => {
+    // fetch messages whenever their is receiver or receiver changes
+    if (receiverId) refetch()
+  }, [receiverId, refetch])
+
   if (contacts.length === 0)
     return (
       <Alert>
@@ -46,10 +51,7 @@ export const ContactList = () => {
             contact={contact}
             isChatWindowOpen={receiverId === contact.id}
             key={contact.id}
-            onClick={async () => {
-              setReceiverId(contact.id)
-              await refetch()
-            }}
+            onClick={() => setReceiverId(contact.id)}
           />
         ))}
       </div>

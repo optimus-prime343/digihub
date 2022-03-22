@@ -1,4 +1,8 @@
-import { IMerchant, UpdateMerchantPayload } from '@/types/merchant'
+import {
+  IMerchant,
+  ReportMerchantPayload,
+  UpdateMerchantPayload,
+} from '@/types/merchant'
 import { IProduct } from '@/types/product'
 import { IUser } from '@/types/user'
 import { axiosClient } from '@/utils/axios-client'
@@ -24,6 +28,19 @@ export class MerchantService {
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message ?? 'Failed to update merchant'
+      )
+    }
+  }
+  async reportMerchant(reportMerchantPayload: ReportMerchantPayload) {
+    try {
+      const { data: message } = await axiosClient.post<string>(
+        '/reports',
+        reportMerchantPayload
+      )
+      return message
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to report merchant'
       )
     }
   }

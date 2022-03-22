@@ -14,6 +14,7 @@ import { ChatModule } from './chat/chat.module'
 import { MerchantsModule } from './merchants/merchants.module'
 import { OrdersModule } from './orders/orders.module'
 import { ProductsModule } from './products/products.module'
+import { ReportsModule } from './reports/reports.module'
 import { ReviewsModule } from './reviews/reviews.module'
 import { UsersModule } from './users/users.module'
 
@@ -80,6 +81,7 @@ import { UsersModule } from './users/users.module'
         AdminModule,
         ReviewsModule,
         ChatModule,
+        ReportsModule,
     ],
 })
 export class AppModule {}

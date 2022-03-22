@@ -9,7 +9,7 @@ export interface IMerchant {
   withDrawAmount: number
   pendingAmount: number
 }
-export type MerchantSignupPayload = {
+export interface MerchantSignupPayload {
   firstName: string
   lastName: string
   email: string
@@ -20,8 +20,14 @@ export type MerchantSignupPayload = {
   businessName: string
   phoneNumber: string
 }
-export type UpdateMerchantPayload = {
+export interface UpdateMerchantPayload {
   businessName: string
   businessDescription: string
   address: string
+}
+export interface ReportMerchantPayload {
+  title: string
+  text: string
+  reportedBy: string
+  reportedBusiness: string
 }

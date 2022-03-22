@@ -13,8 +13,10 @@ const PreviewImages = ({ images, width, height, ...rest }: Props) => {
       {images.map((image, index) => (
         <Image
           alt={`Preview image ${index}`}
+          className='rounded-md'
           height={height ?? 200}
           key={index}
+          objectFit='cover'
           src={image}
           width={width ?? 200}
         />

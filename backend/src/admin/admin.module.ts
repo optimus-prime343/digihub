@@ -4,12 +4,16 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { Order } from '../orders/entities/order.entity'
+import { Product } from '../products/entities/product.entity'
 import { User } from '../users/entities/user.entity'
 import { AdminController } from './admin.controller'
 import { AdminService } from './admin.service'
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Merchant, User, Order]), ConfigModule],
+    imports: [
+        TypeOrmModule.forFeature([Merchant, User, Order, Product]),
+        ConfigModule,
+    ],
     controllers: [AdminController],
     providers: [AdminService],
 })

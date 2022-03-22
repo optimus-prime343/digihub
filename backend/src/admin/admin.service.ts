@@ -14,6 +14,7 @@ import { PASSWORD_DONOT_MATCH_MESSAGE } from '../constants'
 import { UpdateMerchanStatusDto } from '../merchants/dtos/update-merchant-status.dto'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { Order } from '../orders/entities/order.entity'
+import { Product } from '../products/entities/product.entity'
 import { CreateUserDto } from '../users/dtos/create-user.dto'
 import { User } from '../users/entities/user.entity'
 
@@ -26,6 +27,8 @@ export class AdminService {
         private readonly userRepository: Repository<User>,
         @InjectRepository(Order)
         private readonly ordersRepository: Repository<Order>,
+        @InjectRepository(Product)
+        private readonly productsRepository: Repository<Product>,
         private readonly mailService: MailerService,
         private readonly configService: ConfigService
     ) {}
@@ -83,7 +86,7 @@ export class AdminService {
             return 'Admin user created successfully'
         }
         throw new UnauthorizedException(
-            'You are not authorized to perform this action'
+            'Invalid superuser password, please try again'
         )
     }
     async findAllUsers(): Promise<User[]> {
@@ -94,9 +97,12 @@ export class AdminService {
         })
     }
     async findAllMerchants(): Promise<Merchant[]> {
-        return this.merchantRepository.find()
+        return this.merchantRepository.find({ relations: ['user'] })
     }
     async findAllOrders(): Promise<Order[]> {
         return this.ordersRepository.find({ relations: ['user', 'merchant'] })
+    }
+    async findAllProducts(): Promise<Product[]> {
+        return this.productsRepository.find()
     }
 }

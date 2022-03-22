@@ -44,8 +44,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             emotionOptions={{ key: 'mantine', prepend: false }}
             theme={theme}
           >
-            <ModalsProvider>
-              <NotificationsProvider>
+            <NotificationsProvider>
+              <ModalsProvider>
                 <ToastContainer
                   autoClose={5000}
                   position='bottom-right'
@@ -55,8 +55,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   <Navbar />
                   <Component {...pageProps} />
                 </Hydrate>
-              </NotificationsProvider>
-            </ModalsProvider>
+              </ModalsProvider>
+            </NotificationsProvider>
           </MantineProvider>
         </ClientOnly>
       </QueryClientProvider>

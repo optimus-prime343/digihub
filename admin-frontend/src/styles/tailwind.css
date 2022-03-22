@@ -16,6 +16,6 @@
     @apply my-4 block h-px w-full bg-gray-700;
   }
   .btn {
-    @apply rounded-md bg-indigo-600 px-4 py-3 text-lg text-white hover:brightness-95 focus:ring-indigo-600 focus:ring-offset-2;
+    @apply rounded-md bg-violet-600 px-4 py-3 text-lg text-white hover:brightness-95 focus:ring-violet-600 focus:ring-offset-2;
   }
 }

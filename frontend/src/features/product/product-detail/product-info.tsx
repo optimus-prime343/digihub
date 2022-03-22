@@ -71,13 +71,13 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
           </span>
         ))}
       </p>
-      <p className='flex flex-wrap gap-2 capitalize'>
+      <div className='flex flex-wrap gap-2 capitalize'>
         {product.tags.map((tag, index) => (
           <Badge key={index} size='md'>
             {tag}
           </Badge>
         ))}
-      </p>
+      </div>
       <p>Rs {product.price}</p>
       {product.quantity === 0 && (
         <Alert color='red' variant='filled'>
@@ -85,8 +85,8 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         </Alert>
       )}
       {/* Show order-now and add-to-cart buttons if the quantity of product is greater than 0
-              and user role matches "USER"
-            */}
+          and user role matches "USER"
+      */}
       {user && user.role === UserRole.USER && product.quantity > 0 ? (
         <>
           <NumberInput

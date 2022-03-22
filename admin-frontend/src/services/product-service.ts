@@ -3,7 +3,7 @@ import { axiosClient } from '../utils/axios-client'
 
 export const getProducts = async (): Promise<IProduct[]> => {
   try {
-    const { data } = await axiosClient.get<IProduct[]>('/products')
+    const { data } = await axiosClient.get<IProduct[]>('/admin/products')
     return data
   } catch (error: any) {
     throw new Error(error.response?.data?.message ?? 'Error fetching products')

@@ -21,3 +21,13 @@ export const getUser = async (): Promise<IUser> => {
     throw new Error(error.response?.data?.message ?? 'Failed to get user')
   }
 }
+export const createAdmin = async (
+  formData: Record<string, FormDataEntryValue>
+): Promise<string> => {
+  try {
+    const { data: message } = await axiosClient.post<string>('/admin', formData)
+    return message
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message ?? 'Failed to create admin')
+  }
+}

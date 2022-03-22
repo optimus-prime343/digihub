@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Patch,
+    Post,
+    UseGuards,
+} from '@nestjs/common'
 
 import { Role } from '../common/types'
 import { Roles } from '../decorators/roles.decorator'
@@ -7,6 +15,7 @@ import { RolesGuard } from '../guards/roles.guard'
 import { UpdateMerchanStatusDto } from '../merchants/dtos/update-merchant-status.dto'
 import { Merchant } from '../merchants/entity/merchant.entity'
 import { Order } from '../orders/entities/order.entity'
+import { Product } from '../products/entities/product.entity'
 import { CreateUserDto } from '../users/dtos/create-user.dto'
 import { User } from '../users/entities/user.entity'
 import { AdminService } from './admin.service'
@@ -24,7 +33,8 @@ export class AdminController {
         return this.adminService.updateMerchantStatus(updateMerchantStatusDto)
     }
     @Post()
-    public createAdmin(createUserDto: CreateUserDto): Promise<string> {
+    public createAdmin(@Body() createUserDto: CreateUserDto): Promise<string> {
+        console.log('CREATE ADMIN DTO', createUserDto)
         return this.adminService.createAdmin(createUserDto)
     }
     @Get('users')
@@ -34,6 +44,10 @@ export class AdminController {
     @Get('merchants')
     public findAllMerchants(): Promise<Merchant[]> {
         return this.adminService.findAllMerchants()
+    }
+    @Get('products')
+    public findAllProducts(): Promise<Product[]> {
+        return this.adminService.findAllProducts()
     }
 
     @Get('orders')

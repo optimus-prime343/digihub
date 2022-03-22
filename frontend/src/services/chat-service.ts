@@ -6,6 +6,7 @@ class ChatService {
   async getContacts(): Promise<IContact[]> {
     try {
       const { data } = await axiosClient.get<IContact[]>('/chat/contacts')
+      console.log(data)
       return data
     } catch (error: any) {
       throw new Error(

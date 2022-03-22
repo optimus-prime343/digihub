@@ -55,6 +55,7 @@ export class CartsService {
         return this.cartRepository.find({
             where: { user },
             relations: ['product'],
+            order: { totalPrice: 'DESC' },
         })
     }
 

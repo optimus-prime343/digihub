@@ -6,9 +6,9 @@ export const resizeProductCoverImage = async (
 ): Promise<string> => {
     const imageName = `product-${nanoid()}-${Date.now()}.jpeg`
     await sharp(uploadedCoverImage.buffer)
-        .resize(600)
+        .resize({ width: 600, height: 400 })
         .toFormat('jpeg')
-        .jpeg({ quality: 95 })
+        .jpeg({ quality: 100, chromaSubsampling: '4:4:4', mozjpeg: true })
         .toFile(`${process.cwd()}/public/images/product-images/${imageName}`)
     return imageName
 }

@@ -1,29 +1,31 @@
 import { Alert, Button, Textarea, TextInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import {
   randNumber,
   randProductDescription,
   randProductName,
 } from '@ngneat/falso'
 import { useFormik } from 'formik'
+import Image from 'next/image'
 import React, { ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { PreviewImages } from '@/components/core'
 import { MerchantSidebar } from '@/components/ui'
 import { useAddProduct } from '@/hooks/product'
 import { addProductSchema } from '@/schemas/add-product-schema'
 
 const AddProductForm = () => {
+  const { showNotification } = useNotifications()
   const { mutateAsync, isLoading, error } = useAddProduct()
-  const [fileList, setFileList] = useState<FileList | undefined>()
-  const [images, setImages] = useState<string[]>([])
+  const [file, setFile] = useState<File | undefined>()
+  const [image, setImage] = useState<string | undefined>()
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
-    if (files) {
-      setFileList(files)
-      const imageUrls = Array.from(files).map(file => URL.createObjectURL(file))
-      setImages(imageUrls)
+    const file = event.target.files ? event.target.files[0] : undefined
+    if (file) {
+      setFile(file)
+      const imageUrl = URL.createObjectURL(file)
+      setImage(imageUrl)
     }
   }
   const { getFieldProps, errors, touched, handleSubmit, values, resetForm } =
@@ -33,26 +35,27 @@ const AddProductForm = () => {
         description: randProductDescription(),
         price: randNumber({ min: 500, max: 3000 }),
         quantity: randNumber({ min: 1, max: 50 }),
+        tags: '',
       },
       validationSchema: addProductSchema,
       onSubmit: async values => {
-        if (!fileList) {
-          toast.error('At least one image is required')
+        if (!file) {
+          showNotification({ message: 'Product image cover is required' })
         } else {
           const formData = new FormData()
-
+          console.log(values)
           for (const [key, value] of Object.entries(values)) {
             formData.append(key, value.toString())
           }
-
-          for (const file of Array.from(fileList ?? []))
-            formData.append('productImage', file)
+          formData.append('coverImage', file)
           try {
             await mutateAsync(formData)
             resetForm()
-            toast.success('Product added successfully')
+            showNotification({ message: 'Product added successfully' })
           } catch (error: any) {
-            toast.error(error.message)
+            toast.error(
+              error.response?.data?.message ?? 'Failed to add product'
+            )
           }
         }
       },
@@ -104,6 +107,13 @@ const AddProductForm = () => {
               type='number'
               {...getFieldProps('quantity')}
             />
+            <TextInput
+              error={getFieldError('tags')}
+              label='Tags'
+              placeholder='Product tags'
+              type='text'
+              {...getFieldProps('tags')}
+            />
           </div>
           <div>
             <label className='mb-2 block' htmlFor='product-images'>
@@ -116,7 +126,15 @@ const AddProductForm = () => {
               onChange={handleFileUpload}
               type='file'
             />
-            {images.length > 0 && <PreviewImages images={images} />}
+            {image && (
+              <Image
+                alt='Cover'
+                height={200}
+                objectFit='cover'
+                src={image}
+                width={400}
+              />
+            )}
           </div>
           <Button className='bg-indigo-600' disabled={isLoading} type='submit'>
             Add Product

@@ -7,7 +7,7 @@ import { Repository } from 'typeorm'
 
 import { MerchantStatus, Role } from '../../common/types'
 import { User } from '../../users/entities/user.entity'
-import { JwtPayload } from '../interfaces/jwtPayload.interface'
+import { JwtPayload } from '../interfaces/jwt-payload.interface'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

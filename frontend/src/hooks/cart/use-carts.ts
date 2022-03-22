@@ -12,3 +12,4 @@ export const useCarts = () => {
     data: query.data ?? [],
   }
 }
+export const useCartsLength = () => useCarts().data.length

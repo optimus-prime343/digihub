@@ -14,9 +14,9 @@ export const MerchantSidebar: FC = ({ children }) => {
   const router = useRouter()
   const dashboardLink = (pathname: string) =>
     classNames(
-      'inline-flex items-center w-full rounded-md px-4 py-3 text-lg font-medium transition-all duration-300 hover:bg-indigo-600',
+      'inline-flex items-center w-full rounded-md px-4 py-3 text-lg font-medium transition-all duration-300 hover:bg-violet-600',
       {
-        'bg-indigo-600 shadow-2xl': router.pathname === pathname,
+        'bg-violet-600 shadow-2xl': router.pathname === pathname,
       }
     )
   return (

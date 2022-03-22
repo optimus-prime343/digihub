@@ -1,8 +1,9 @@
 import { GetServerSideProps } from 'next'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
+import { dehydrate, QueryClient } from 'react-query'
 
 import { ProductList } from '../../components/product'
 import { Sidebar } from '../../components/sidebar'
+import { useProducts } from '../../hooks/use-products'
 import { getProducts } from '../../services/product-service'
 import { IProduct } from '../../typings/product'
 
@@ -10,9 +11,7 @@ interface Props {
   initialProducts: IProduct[]
 }
 const ProductListPage = ({ initialProducts }: Props) => {
-  const { data: products } = useQuery<IProduct[]>('products', getProducts, {
-    initialData: initialProducts,
-  })
+  const { data: products } = useProducts(initialProducts)
   return (
     <Sidebar>
       <ProductList products={products ?? []} />

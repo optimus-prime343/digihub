@@ -8,4 +8,5 @@ export const addProductSchema = Yup.object().shape({
     .positive('Quantity must be positive')
     .min(1)
     .required(),
+  tags: Yup.string().required(),
 })

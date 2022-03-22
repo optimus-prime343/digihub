@@ -34,7 +34,7 @@ export const ProductDetail = ({ product: initialData }: Props) => {
           <Image
             alt={`${product.name} cover`}
             className='rounded-md shadow-md'
-            height={600}
+            height={400}
             objectFit='cover'
             src={getProductImageUrl(product.coverImage)}
             width={600}

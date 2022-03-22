@@ -14,6 +14,8 @@ export class RolesGuard implements CanActivate {
         ])
         // if there is no roles in route handler, this means that the route is public
         if (!roles) return true
+        // if the role is admin, then provide access to the route
+        if (roles.includes(Role.ADMIN)) return true
         const { user } = context.switchToHttp().getRequest<{ user: User }>()
         return roles.includes(user.role)
     }

@@ -1,3 +1,5 @@
+import { IUser } from './user'
+
 export interface IMerchant {
   id: string
   businessName: string
@@ -9,10 +11,15 @@ export interface IMerchant {
   withDrawAmount: number
   pendingAmount: number
   lastWithDrawDate?: string
+  user: IUser
 }
 export enum MerchantStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',
   BLOCKED = 'BLOCKED',
+}
+export interface UpdateMerchantStatusPayload {
+  id: string
+  status: MerchantStatus
 }

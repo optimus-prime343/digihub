@@ -19,4 +19,12 @@ export const sidebarLinks = [
     name: 'Orders',
     href: '/orders',
   },
+  {
+    name: 'Reports',
+    href: '/reports',
+  },
+  {
+    name: 'Create Admin',
+    href: '/create-admin',
+  },
 ]
