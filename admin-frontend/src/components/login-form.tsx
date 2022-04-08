@@ -13,8 +13,8 @@ interface Props {
 export const LoginForm = ({ redirectTo }: Props) => {
   const { showNotification } = useNotifications()
   const router = useRouter()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('Isabel.Ren')
+  const [password, setPassword] = useState('Sachin123@')
 
   const login = useLogin()
 

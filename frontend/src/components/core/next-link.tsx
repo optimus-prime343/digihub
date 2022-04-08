@@ -6,12 +6,10 @@ interface Props extends HTMLAttributes<HTMLAnchorElement> {
   children: ReactNode
 }
 
-const NextLink = ({ href, children, ...rest }: Props) => {
+export const NextLink = ({ href, children, ...rest }: Props) => {
   return (
     <Link href={href}>
       <a {...rest}>{children}</a>
     </Link>
   )
 }
-
-export default NextLink

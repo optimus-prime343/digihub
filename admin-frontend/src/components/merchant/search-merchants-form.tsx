@@ -9,9 +9,12 @@ interface Props {
   onSearchComplete: (merchants: IMerchant[]) => void
 }
 export const SearchMerchantsForm = ({ merchants, onSearchComplete }: Props) => {
-  const fuse = new Fuse(merchants, { keys: ['businessName,user.email'] })
+  const fuse = new Fuse(merchants, {
+    keys: ['businessName', 'status'],
+  })
   const handleSearch = (searchQuery: string) => {
     const results = fuse.search(searchQuery).map(result => result.item)
+    console.log(merchants)
     onSearchComplete(results.length > 0 ? results : merchants)
   }
   return (

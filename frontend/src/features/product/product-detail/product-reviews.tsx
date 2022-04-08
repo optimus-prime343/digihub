@@ -12,7 +12,7 @@ export const ProductReviews = ({ product }: { product: IProduct }) => {
     review => review.user.id === user?.id
   )
   return (
-    <div className='mt-6'>
+    <div>
       {/* Only show add review form if the user has purchased the product and haven't left a review */}
       {hasPurchasedProduct(orders ?? [], product.id) && !hasAlreadyReviewed ? (
         <AddReviewForm />

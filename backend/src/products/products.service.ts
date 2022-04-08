@@ -72,7 +72,7 @@ export class ProductsService {
     public findAllByMerchant(merchant: Merchant): Promise<Product[]> {
         this.loggger.log(`${merchant.businessName} fetching all their products`)
         return this.productRepository.find({
-            where: { merchant },
+            where: { merchant: { id: merchant.id } },
             order: { createdAt: 'DESC' },
         })
     }
@@ -87,10 +87,11 @@ export class ProductsService {
             relations: ['merchant'],
             take: limit,
             skip,
-            order: { createdAt: 'DESC' },
+            order: { averageRating: 'DESC' },
         })
     }
     public async searchProducts(searchQuery: string): Promise<Product[]> {
+        if (!searchQuery) return []
         return this.productRepository.find({
             where: { name: ILike(`%${searchQuery}%`) },
             select: ['id', 'name', 'price', 'coverImage', 'description'],
@@ -117,7 +118,7 @@ export class ProductsService {
         const product = await this.productRepository.findOne({
             where: {
                 id: productId,
-                merchant,
+                merchant: { id: merchant.id },
             },
             relations: ['merchant'],
         })
@@ -137,7 +138,7 @@ export class ProductsService {
         try {
             const product = await this.productRepository.delete({
                 id: productId,
-                merchant,
+                merchant: { id: merchant.id },
             })
             if (product.affected === 0) {
                 throw new NotFoundException(PRODUCT_NOT_FOUND_MESSAGE)

@@ -7,7 +7,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
 
-import { MessageList } from '@/features/chat'
 import { useUser } from '@/hooks/auth'
 import { useMessages } from '@/hooks/chat'
 import { IMessage } from '@/types/message'
@@ -22,7 +21,7 @@ const ChatTest = () => {
   const messagesRef = useRef<HTMLDivElement | null>(null)
   const { user } = useUser()
 
-  const receiverId = router.query.receiver as string | undefined
+  const receiverId = router.query.receiverId as string | undefined
 
   const { data: initialMessages = [] } = useMessages(receiverId)
   const [message, setMessage] = useState(randQuote())
@@ -51,7 +50,7 @@ const ChatTest = () => {
     }
     setMessages(previousMessages => [...previousMessages, newMessage])
     socket.emit('message', newMessage)
-    setMessage('')
+    setMessage(randQuote())
     playMessageSentSound()
   }
   useEffect(() => {
@@ -79,6 +78,7 @@ const ChatTest = () => {
                 alt={message.sender.id}
                 className='rounded-full'
                 height={50}
+                objectFit='cover'
                 src={getProfileImageUrl(message.sender.image)}
                 width={50}
               />
@@ -99,7 +99,7 @@ const ChatTest = () => {
           placeholder='Send Message'
           value={message}
         />
-        <Button type='submit' variant='outline'>
+        <Button disabled={!message} type='submit' variant='outline'>
           Send Message
         </Button>
       </form>

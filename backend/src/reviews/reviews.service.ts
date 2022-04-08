@@ -10,6 +10,7 @@ import { OrderStatus } from '../common/types'
 import { Product } from '../products/entities/product.entity'
 import { User } from '../users/entities/user.entity'
 import { CreateReviewDto } from './dto/create-review.dto'
+import { UpdateReviewDto } from './dto/update-review.dto'
 import { Review } from './entities/review.entity'
 
 @Injectable()
@@ -31,7 +32,7 @@ export class ReviewsService {
     //check if user has already reviewed the product
     async hasAlreadyReviewed(user: User, product: Product): Promise<boolean> {
         const review = await this.reviewsRepository.findOne({
-            where: { user, product },
+            where: { user: { id: user.id }, product: { id: product.id } },
         })
         return !!review
     }
@@ -41,7 +42,9 @@ export class ReviewsService {
         createReviewDto: CreateReviewDto
     ): Promise<Review> {
         const { productId, rating, review } = createReviewDto
-        const product = await this.productRepository.findOne(productId)
+        const product = await this.productRepository.findOneBy({
+            id: productId,
+        })
         // since user object doesnt have order relations by default,we are querying the db again to get the orders
         const userWithOrders = await this.userRepository.findOne({
             where: { id: user.id },
@@ -92,10 +95,12 @@ export class ReviewsService {
             where: {
                 id: reviewId,
                 product: { id: productId },
-                user,
+                user: { id: user.id },
             },
         })
-        const product = await this.productRepository.findOne(productId)
+        const product = await this.productRepository.findOneBy({
+            id: productId,
+        })
         if (!product) throw new NotFoundException(`Product doesnt exist`)
         if (!review) throw new NotFoundException(`Review doesnt exist`)
         product.totalRatings -= 1
@@ -108,5 +113,27 @@ export class ReviewsService {
         await this.productRepository.save(product)
         await this.reviewsRepository.remove(review)
         return `Review with id ${reviewId} has been deleted`
+    }
+    async update(
+        user: User,
+        reviewId: string,
+        productId: string,
+        updateReviewDto: UpdateReviewDto
+    ): Promise<Review> {
+        console.log(`PRODUCT IS IS ${productId}`)
+        const review = await this.reviewsRepository.findOne({
+            where: {
+                id: reviewId,
+                user: { id: user.id },
+                product: { id: productId },
+            },
+            relations: ['product'],
+        })
+        if (!review) throw new NotFoundException(`Review doesnt exist`)
+        const { rating, review: reviewText } = updateReviewDto
+        if (rating) review.rating = rating
+        if (reviewText) review.review = reviewText
+        await this.reviewsRepository.save(review)
+        return review
     }
 }

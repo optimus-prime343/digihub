@@ -4,6 +4,7 @@ import {
     Delete,
     Get,
     Param,
+    Patch,
     Post,
     UseGuards,
 } from '@nestjs/common'
@@ -43,5 +44,21 @@ export class ReviewsController {
         @Param('productId') productId: string
     ): Promise<string> {
         return this.reviewsService.remove(user, reviewId, productId)
+    }
+
+    @Patch(':reviewId/:productId')
+    update(
+        @GetUser() user: User,
+        @Param('reviewId') reviewId: string,
+        @Param('productId') productId: string,
+        @Body() createReviewDto: CreateReviewDto
+    ): Promise<Review> {
+        console.log(productId, reviewId)
+        return this.reviewsService.update(
+            user,
+            reviewId,
+            productId,
+            createReviewDto
+        )
     }
 }

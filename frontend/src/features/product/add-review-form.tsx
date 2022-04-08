@@ -46,7 +46,7 @@ export const AddReviewForm = () => {
   }
   return (
     <form
-      className='mb-4 space-y-2 rounded-md bg-gray-600 px-4 py-2'
+      className='mb-4 space-y-2 rounded-md bg-gray-600 px-4 py-2 lg:max-w-md'
       onSubmit={handleAddReview}
       ref={formRef}
     >

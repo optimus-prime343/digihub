@@ -40,8 +40,8 @@ export class CartsController {
     }
 
     @Get(':id')
-    findOne(@GetUser() user: User, @Param('id') id: string): Promise<Cart> {
-        return this.cartsService.findOne(user, id)
+    findOneBy(@GetUser() user: User, @Param('id') id: string): Promise<Cart> {
+        return this.cartsService.findOneBy(user, id)
     }
 
     @Patch(':id')

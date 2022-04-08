@@ -5,7 +5,7 @@ interface Props {
   title?: string
   children: ReactNode
 }
-const Layout = ({ title, children }: Props) => {
+export const Layout = ({ title, children }: Props) => {
   return (
     <>
       <Head>
@@ -18,5 +18,3 @@ const Layout = ({ title, children }: Props) => {
     </>
   )
 }
-
-export default Layout

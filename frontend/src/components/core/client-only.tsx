@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
-/**
- * @description Render the childrens only when in the browser.
- */
-const ClientOnly: FC = ({ children }) => {
+interface Props {
+  children: ReactNode
+}
+export const ClientOnly = ({ children }: Props) => {
   const [isClient, setIsClient] = useState(false)
   useEffect(() => {
     setIsClient(true)
@@ -11,5 +11,3 @@ const ClientOnly: FC = ({ children }) => {
   if (!isClient) return null
   return <>{children}</>
 }
-
-export default ClientOnly

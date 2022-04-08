@@ -52,7 +52,7 @@ export class OrdersService {
     ): Promise<boolean> {
         const order = await this.orderRepository.findOne({
             where: {
-                user,
+                user: { id: user.id },
                 product: { id: productId },
                 orderStatus: OrderStatus.PENDING,
             },
@@ -98,7 +98,7 @@ export class OrdersService {
     public findAllUserOrders(user: User): Promise<Order[]> {
         this.logger.log(`Retrieving all the orders created by ${user.username}`)
         return this.orderRepository.find({
-            where: { user },
+            where: { user: { id: user.id } },
             relations: ['product'],
             order: { createdAt: 'DESC' },
         })
@@ -111,8 +111,9 @@ export class OrdersService {
             `Retrieving all the orders received by ${merchant.businessName}`
         )
         return this.orderRepository.find({
-            where: { product: { merchant } },
+            where: { product: { merchant: { id: merchant.id } } },
             relations: ['product', 'user'],
+            order: { createdAt: 'DESC' },
         })
     }
     /**
@@ -124,7 +125,7 @@ export class OrdersService {
     ): Promise<Order> {
         const { id, status, message } = updateOrderStatusDto
         const order = await this.orderRepository.findOne({
-            where: { id, merchant },
+            where: { id, merchant: { id: merchant.id } },
             relations: ['product', 'user', 'merchant', 'merchant.user'],
         })
         if (!order) throw new NotFoundException('Order not found')
@@ -203,7 +204,7 @@ export class OrdersService {
                     throw new BadRequestException(
                         'Customer email or product id not found'
                     )
-                const user = await this.userRepository.findOne({
+                const user = await this.userRepository.findOneBy({
                     email: customer_email,
                 })
                 const product = await this.productService.findProductById(

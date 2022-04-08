@@ -41,3 +41,9 @@ export interface DeleteReviewPayload {
   reviewId: string
   productId: string
 }
+export interface UpdateReviewPayload {
+  productId: string
+  reviewId: string
+  review: string
+  rating: number
+}

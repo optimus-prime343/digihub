@@ -28,15 +28,15 @@ export class UsersService {
         private readonly merchantRepository: Repository<Merchant>
     ) {}
     public async findUserByUsername(username: string): Promise<User> {
-        const user = await this.userRepository.findOne({ username })
+        const user = await this.userRepository.findOneBy({ username })
         if (!user)
             throw new NotFoundException(
                 'Invalid username or user doesn"t exist'
             )
         return user
     }
-    public async findOne(id: string): Promise<User> {
-        const user = await this.userRepository.findOne(id)
+    public async findOneBy(id: string): Promise<User> {
+        const user = await this.userRepository.findOneBy({ id })
         if (!user) throw new NotFoundException('User not found')
         return user
     }
@@ -83,15 +83,16 @@ export class UsersService {
             return user
         } catch (error: any) {
             if (error.code === '23505') {
+                console.log(error.message)
                 throw new BadRequestException(
-                    'Email or username already exists'
+                    'Email, phone or username already taken'
                 )
             }
             throw new InternalServerErrorException()
         }
     }
     public async verifyAccount(verificationCode: string): Promise<string> {
-        const user = await this.userRepository.findOne({ verificationCode })
+        const user = await this.userRepository.findOneBy({ verificationCode })
         if (!user)
             throw new NotFoundException(`Invalid or expired verification code`)
         user.verified = true
@@ -101,7 +102,7 @@ export class UsersService {
     }
 
     public async setPasswordResetToken(email: string): Promise<string> {
-        const user = await this.userRepository.findOne({ email })
+        const user = await this.userRepository.findOneBy({ email })
         if (!user)
             throw new NotFoundException('User with that email doesn"t exist')
         const resetToken = nanoid()
@@ -115,7 +116,7 @@ export class UsersService {
         resetPasswordDto: ResetPasswordDto
     ): Promise<string> {
         const { password, passwordConfirm } = resetPasswordDto
-        const user = await this.userRepository.findOne({
+        const user = await this.userRepository.findOneBy({
             passwordResetToken: resetToken,
         })
         if (!user) throw new NotFoundException('Invalid or expired token')
@@ -170,7 +171,7 @@ export class UsersService {
     public async updateMerchant(
         merchant: Merchant,
         updateMerchantDto: UpdateMerchantDto
-    ): Promise<User | undefined> {
+    ): Promise<string> {
         if (Object.keys(updateMerchantDto).length === 0) {
             throw new BadRequestException('No fields to update')
         }
@@ -182,7 +183,7 @@ export class UsersService {
         if (address) merchant.address = address
 
         await this.merchantRepository.save(merchant)
-        return this.userRepository.findOne({ merchant })
+        return `successfully updated merchant`
     }
     public async updateProfileImage(
         user: User,

@@ -11,6 +11,8 @@ import { useDeleteReview } from '@/hooks/review'
 import { IProductReview } from '@/types/product'
 import { getProfileImageUrl } from '@/utils/getImageUrl'
 
+import { UpdateReviewForm } from '../update-review-form'
+
 interface Props {
   review: IProductReview
 }
@@ -27,6 +29,7 @@ export const ProductReviewItem = ({ review }: Props) => {
   const openUpdateModal = () =>
     modal.openModal({
       title: 'Update Review',
+      children: <UpdateReviewForm productId={productId} review={review} />,
     })
   const openDeleteModal = () =>
     modal.openConfirmModal({
@@ -71,8 +74,7 @@ export const ProductReviewItem = ({ review }: Props) => {
       <div className='flex-1'>
         <Text weight={700}>{review.rating} out of 5</Text>
         <Text size='sm'>{format(new Date(review.createdAt), 'PPP')}</Text>
-        <span className='divider my-2' />
-        <Text className='max-w-md leading-relaxed'>{review.review}</Text>
+        <Text className='mt-2 max-w-2xl leading-relaxed'>{review.review}</Text>
       </div>
       {user && user.id === review.user.id && (
         <Menu>

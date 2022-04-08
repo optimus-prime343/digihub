@@ -6,7 +6,7 @@ export const signupUserSchema = Yup.object().shape({
   firstName: Yup.string().required(),
   lastName: Yup.string().required(),
   email: Yup.string().required().email(),
-  username: Yup.string().required().min(4).max(16),
+  username: Yup.string().required().min(4).max(24),
   password: Yup.string()
     .required()
     .matches(PASSWORD_REGEX, { message: PASSWORD_WEAK_MESSAGE }),

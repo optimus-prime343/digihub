@@ -1,5 +1,5 @@
 import { Button, TextInput } from '@mantine/core'
-import { randUuid } from '@ngneat/falso'
+import { randQuote, randUuid } from '@ngneat/falso'
 import { FormEvent, useState } from 'react'
 import { BiMessage, BiSend } from 'react-icons/bi'
 
@@ -27,7 +27,7 @@ export const AddMessageForm = ({ recipient, onSend }: Props) => {
       }
       onSend(newMessage)
       socket.emit('message', newMessage)
-      setMessage('')
+      setMessage(randQuote())
     }
   }
   return (
@@ -39,7 +39,12 @@ export const AddMessageForm = ({ recipient, onSend }: Props) => {
         placeholder='Send Message'
         value={message}
       />
-      <Button className='bg-indigo-600' leftIcon={<BiSend />} type='submit'>
+      <Button
+        className='bg-indigo-600'
+        disabled={Boolean(message)}
+        leftIcon={<BiSend />}
+        type='submit'
+      >
         Send
       </Button>
     </form>

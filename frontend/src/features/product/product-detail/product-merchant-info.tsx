@@ -1,5 +1,6 @@
 import { Divider, Menu } from '@mantine/core'
 import { useModals } from '@mantine/modals'
+import { useRouter } from 'next/router'
 import { BiMessageAlt } from 'react-icons/bi'
 import { VscReport } from 'react-icons/vsc'
 
@@ -10,6 +11,7 @@ import { IMerchant } from '@/types/merchant'
 export const ProductMerchantInfo = ({ merchant }: { merchant: IMerchant }) => {
   const { user } = useUser()
   const modals = useModals()
+  const router = useRouter()
 
   const handleReport = () => {
     modals.openModal({
@@ -28,7 +30,17 @@ export const ProductMerchantInfo = ({ merchant }: { merchant: IMerchant }) => {
       <div className='flex justify-between'>
         <h3 className='heading-tertiary'>{merchant.businessName}</h3>
         <Menu>
-          <Menu.Item icon={<BiMessageAlt />}>Message</Menu.Item>
+          <Menu.Item
+            icon={<BiMessageAlt />}
+            onClick={() =>
+              router.push({
+                pathname: '/chat-test',
+                query: { receiverId: merchant.id },
+              })
+            }
+          >
+            Message
+          </Menu.Item>
           <Menu.Item color='red' icon={<VscReport />} onClick={handleReport}>
             Report
           </Menu.Item>

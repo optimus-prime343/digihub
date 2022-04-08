@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { add, differenceInBusinessDays, format } from 'date-fns'
 import { Repository } from 'typeorm'
 
-import { User } from '../users/entities/user.entity'
 import { UpdateMerchantDto } from './dtos/update-merchant.dto'
 import { Merchant } from './entity/merchant.entity'
 
@@ -11,14 +10,12 @@ import { Merchant } from './entity/merchant.entity'
 export class MerchantsService {
     constructor(
         @InjectRepository(Merchant)
-        private readonly merchantRepository: Repository<Merchant>,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly merchantRepository: Repository<Merchant>
     ) {}
     public async updateMerchant(
         merchant: Merchant,
         updateMerchantDto: UpdateMerchantDto
-    ): Promise<User | undefined> {
+    ): Promise<string> {
         if (Object.keys(updateMerchantDto).length === 0) {
             throw new BadRequestException('No fields to update')
         }
@@ -30,7 +27,7 @@ export class MerchantsService {
         if (address) merchant.address = address
 
         await this.merchantRepository.save(merchant)
-        return this.userRepository.findOne({ merchant })
+        return `Merchant ${merchant.id} updated`
     }
     public async withdraw(
         merchant: Merchant,

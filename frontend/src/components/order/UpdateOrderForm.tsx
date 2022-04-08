@@ -1,4 +1,5 @@
 import { Button, Textarea } from '@mantine/core'
+import { randTextRange } from '@ngneat/falso'
 import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -20,7 +21,7 @@ const UpdateOrderForm = ({
   onOrderUpdated,
 }: Props) => {
   const { mutateAsync, isLoading } = useUpdateOrder()
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(randTextRange({ min: 100, max: 200 }))
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

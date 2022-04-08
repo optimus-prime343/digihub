@@ -1,4 +1,4 @@
-import { Alert, Button, Textarea, TextInput } from '@mantine/core'
+import { Button, Textarea, TextInput } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import {
   randNumber,
@@ -8,7 +8,7 @@ import {
 import { useFormik } from 'formik'
 import Image from 'next/image'
 import React, { ChangeEvent, useState } from 'react'
-import { toast } from 'react-toastify'
+import { BsImage } from 'react-icons/bs'
 
 import { MerchantSidebar } from '@/components/ui'
 import { useAddProduct } from '@/hooks/product'
@@ -16,7 +16,7 @@ import { addProductSchema } from '@/schemas/add-product-schema'
 
 const AddProductForm = () => {
   const { showNotification } = useNotifications()
-  const { mutateAsync, isLoading, error } = useAddProduct()
+  const { mutateAsync, isLoading } = useAddProduct()
   const [file, setFile] = useState<File | undefined>()
   const [image, setImage] = useState<string | undefined>()
 
@@ -43,7 +43,6 @@ const AddProductForm = () => {
           showNotification({ message: 'Product image cover is required' })
         } else {
           const formData = new FormData()
-          console.log(values)
           for (const [key, value] of Object.entries(values)) {
             formData.append(key, value.toString())
           }
@@ -53,9 +52,11 @@ const AddProductForm = () => {
             resetForm()
             showNotification({ message: 'Product added successfully' })
           } catch (error: any) {
-            toast.error(
-              error.response?.data?.message ?? 'Failed to add product'
-            )
+            showNotification({
+              title: 'Failed to add product',
+              message: error.message,
+              color: 'red',
+            })
           }
         }
       },
@@ -69,30 +70,14 @@ const AddProductForm = () => {
     <MerchantSidebar>
       <div className='max-w-4xl rounded-md bg-gray-600 p-4 shadow-sm'>
         <h4 className='heading-tertiary mb-4'>Add a New Product</h4>
-        <form className='space-y-4' onSubmit={handleSubmit}>
-          {error && (
-            <Alert
-              color='red'
-              title='Failed to add new product'
-              variant='filled'
-            >
-              {error}
-            </Alert>
-          )}
-          <TextInput
-            error={getFieldError('name')}
-            label='Name'
-            placeholder='Netflix Gift Card'
-            {...getFieldProps('name')}
-          />
-          <Textarea
-            error={getFieldError('description')}
-            label='Description'
-            placeholder='Short description about your product'
-            {...getFieldProps('description')}
-            minRows={5}
-          />
+        <form onSubmit={handleSubmit}>
           <div className='grid grid-cols-2 gap-4'>
+            <TextInput
+              error={getFieldError('name')}
+              label='Name'
+              placeholder='Netflix Gift Card'
+              {...getFieldProps('name')}
+            />
             <TextInput
               error={getFieldError('price')}
               label='Price(In Rs)'
@@ -115,20 +100,37 @@ const AddProductForm = () => {
               {...getFieldProps('tags')}
             />
           </div>
-          <div>
-            <label className='mb-2 block' htmlFor='product-images'>
-              Images
-            </label>
+          <Textarea
+            error={getFieldError('description')}
+            label='Description'
+            placeholder='Short description about your product'
+            {...getFieldProps('description')}
+            minRows={5}
+          />
+          <div className='my-2'>
+            <Button
+              component='label'
+              htmlFor='cover-image'
+              leftIcon={<BsImage />}
+              variant='outline'
+            >
+              Upload Images
+            </Button>
             <input
               accept='image/*'
-              className='input--file w-full p-2'
+              className='hidden'
+              id='cover-image'
               multiple
               onChange={handleFileUpload}
               type='file'
             />
+          </div>
+          {/* Preview of the uploaded image */}
+          <div>
             {image && (
               <Image
                 alt='Cover'
+                className='rounded'
                 height={200}
                 objectFit='cover'
                 src={image}
@@ -136,7 +138,7 @@ const AddProductForm = () => {
               />
             )}
           </div>
-          <Button className='bg-indigo-600' disabled={isLoading} type='submit'>
+          <Button disabled={isLoading} type='submit'>
             Add Product
           </Button>
         </form>

@@ -10,7 +10,10 @@ interface Props {
 }
 export const ProductItem = ({ product }: Props) => {
   return (
-    <div className='overflow-hidden rounded-md bg-gray-600/75 p-2 backdrop-blur-sm'>
+    <NextLink
+      className='overflow-hidden rounded-md bg-gray-600/75 p-2 backdrop-blur-sm'
+      href={`/products/${product.id}`}
+    >
       <Image
         alt={product.name}
         className='rounded-md shadow-md'
@@ -20,12 +23,7 @@ export const ProductItem = ({ product }: Props) => {
         width={400}
       />
       <div className='space-y-2'>
-        <NextLink
-          className='flex justify-between'
-          href={`/products/${product.id}`}
-        >
-          <h3 className='heading-tertiary mt-2'>{product.name}</h3>
-        </NextLink>
+        <h3 className='heading-tertiary mt-2'>{product.name}</h3>
         <p className='font-semibold'>{product.merchant.businessName}</p>
         <div className='flex items-center gap-2'>
           <RatingStars rating={product.averageRating} />
@@ -33,6 +31,6 @@ export const ProductItem = ({ product }: Props) => {
         </div>
         <Text>Rs {product.price}</Text>
       </div>
-    </div>
+    </NextLink>
   )
 }

@@ -11,6 +11,7 @@ import { AdminModule } from './admin/admin.module'
 import { AuthModule } from './auth/auth.module'
 import { CartsModule } from './carts/carts.module'
 import { ChatModule } from './chat/chat.module'
+import { createTransporter } from './helpers/create-transporter'
 import { MerchantsModule } from './merchants/merchants.module'
 import { OrdersModule } from './orders/orders.module'
 import { ProductsModule } from './products/products.module'
@@ -24,7 +25,7 @@ import { UsersModule } from './users/users.module'
             envFilePath: ['.env'],
         }),
         ServeStaticModule.forRoot({
-            rootPath: join(process.cwd(), 'public'),
+            rootPath: join(process.cwd(), '/public'),
         }),
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -45,16 +46,9 @@ import { UsersModule } from './users/users.module'
             inject: [ConfigService],
             useFactory: async (configService: ConfigService) => ({
                 defaults: {
-                    from: '"Digihub Platform" <digihub@noreply.com>',
+                    from: `Digihub Inc <${configService.get('EMAIL_FROM')}>`,
                 },
-                transport: {
-                    host: configService.get<string>('MAILTRAP_HOST'),
-                    port: configService.get<number>('MAILTRAP_PORT'),
-                    auth: {
-                        user: configService.get<string>('MAILTRAP_USER'),
-                        pass: configService.get<string>('MAILTRAP_PASSWORD'),
-                    },
-                },
+                transport: createTransporter(configService),
                 template: {
                     dir: join(process.cwd(), 'src/assets/templates'),
                     adapter: new PugAdapter(),

@@ -1,26 +1,19 @@
 import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
-import {
-  randEmail,
-  randFirstName,
-  randLastName,
-  randUserName,
-} from '@ngneat/falso'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
-import React from 'react'
 
 import { useSignup } from '@/hooks/auth'
 import { signupUserSchema } from '@/schemas/signup-user-schema'
 import { SignupPayload } from '@/types/user'
 
 const initialValues: SignupPayload = {
-  firstName: randFirstName(),
-  lastName: randLastName(),
-  username: randUserName(),
-  email: randEmail(),
-  password: 'Sachin123@',
-  passwordConfirm: 'Sachin123@',
+  firstName: '',
+  lastName: '',
+  username: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
 }
 
 export const UserSignupForm = () => {
@@ -33,12 +26,12 @@ export const UserSignupForm = () => {
     onSubmit: async values => {
       try {
         const message = await signup.mutateAsync(values)
-        await router.push('/auth/login')
         notifications.showNotification({
           color: 'green',
           title: 'Successfully signed up!',
           message,
         })
+        router.push('/auth/login')
       } catch (error: any) {
         notifications.showNotification({
           color: 'red',
@@ -54,7 +47,7 @@ export const UserSignupForm = () => {
       : undefined
   }
   return (
-    <div className='max-w-lg p-4 lg:p-0'>
+    <div className='mx-auto max-w-lg p-4 lg:p-0'>
       <form
         className='space-y-4 rounded-md bg-gray-600 p-4 shadow-md'
         onSubmit={handleSubmit}

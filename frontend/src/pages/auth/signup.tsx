@@ -8,8 +8,8 @@ const Signup = () => {
   const userType = router.query.as as string
   return (
     <Layout title={`Digihub | Signup as ${userType}`}>
-      <div className='mx-auto max-w-xl py-6'>
-        {userType === 'merchant' ? <MerchantSignupForm /> : <UserSignupForm />}{' '}
+      <div className='mx-auto py-6'>
+        {userType === 'merchant' ? <MerchantSignupForm /> : <UserSignupForm />}
       </div>
     </Layout>
   )

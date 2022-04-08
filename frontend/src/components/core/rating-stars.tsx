@@ -6,7 +6,7 @@ interface Props {
   size?: number
 }
 
-const RatingStars = ({ rating, size }: Props) => {
+export const RatingStars = ({ rating, size }: Props) => {
   const getRatingStars = useCallback(() => {
     const star = 'fill-yellow-600'
     const stars: JSX.Element[] = []
@@ -23,4 +23,3 @@ const RatingStars = ({ rating, size }: Props) => {
   }, [rating, size])
   return <div className='flex gap-2'>{getRatingStars()}</div>
 }
-export default RatingStars

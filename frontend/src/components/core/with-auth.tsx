@@ -9,7 +9,10 @@ import { UserRole } from '@/types/user'
 interface WithAuthOptions {
   restrictTo?: UserRole
 }
-const WithAuth = (Component: ComponentType, options?: WithAuthOptions) => {
+export const WithAuth = (
+  Component: ComponentType,
+  options?: WithAuthOptions
+) => {
   const WrapperComponent = () => {
     const router = useRouter()
     const { user, isLoading, error } = useUser()
@@ -34,4 +37,3 @@ const WithAuth = (Component: ComponentType, options?: WithAuthOptions) => {
   }
   return WrapperComponent
 }
-export default WithAuth

@@ -50,6 +50,9 @@
       "@/constants": [
         "src/constants"
       ],
+      "@/mocks/*": [
+        "src/mocks/*"
+      ]
     }
   },
   "include": [

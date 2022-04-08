@@ -15,6 +15,7 @@ export interface MerchantSignupPayload {
   email: string
   username: string
   password: string
+  passwordConfirm: string
   address: string
   businessDescription: string
   businessName: string

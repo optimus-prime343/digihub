@@ -11,8 +11,8 @@ import { loginSchema } from '@/schemas/login-schema'
 import { LoginPayload } from '@/types/user'
 
 const initialValues: LoginPayload = {
-  username: 'Santos98',
-  password: 'Sachin123@',
+  username: '',
+  password: '',
 }
 
 export const LoginForm = () => {
@@ -28,6 +28,7 @@ export const LoginForm = () => {
           await login(data)
           //check whether there is next query param attached to the login route
           //if there is, redirect user to that page after successfull login else redirect to homepage
+          showNotification({ message: 'Successfully logged in' })
           router.push((router.query.next as string) ?? '/')
         } catch (error: any) {
           showNotification({

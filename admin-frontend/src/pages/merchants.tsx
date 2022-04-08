@@ -1,5 +1,5 @@
 import { Table } from '@mantine/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SearchMerchantsForm, UpdateMerchantStatus } from '../components/merchant'
 import { Sidebar } from '../components/sidebar'
@@ -8,6 +8,7 @@ import { useMerchants } from '../hooks/use-merchants'
 const MerchantListPage = () => {
   const { data = [] } = useMerchants()
   const [filteredMerchants, setFilteredMerchants] = useState(data)
+
   const rows = filteredMerchants.map(merchant => (
     <tr key={merchant.id}>
       <td>{merchant.user.firstName}</td>

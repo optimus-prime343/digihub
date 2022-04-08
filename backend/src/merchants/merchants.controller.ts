@@ -5,7 +5,6 @@ import { GetMerchant } from '../decorators/get-merchant.decorator'
 import { Roles } from '../decorators/roles.decorator'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
-import { User } from '../users/entities/user.entity'
 import { UpdateMerchantDto } from './dtos/update-merchant.dto'
 import { Merchant } from './entity/merchant.entity'
 import { MerchantsService } from './merchants.service'
@@ -20,7 +19,7 @@ export class MerchantsController {
     public updateMerchant(
         @GetMerchant() merchant: Merchant,
         @Body() updateMerchantDto: UpdateMerchantDto
-    ): Promise<User | undefined> {
+    ): Promise<string> {
         return this.merchantService.updateMerchant(merchant, updateMerchantDto)
     }
 

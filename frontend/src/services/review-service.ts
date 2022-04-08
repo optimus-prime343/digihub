@@ -2,6 +2,7 @@ import {
   AddReviewPayload,
   DeleteReviewPayload,
   IProductReview,
+  UpdateReviewPayload,
 } from '@/types/product'
 import { axiosClient } from '@/utils/axios-client'
 
@@ -27,6 +28,20 @@ class ReviewService {
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message ?? 'Failed to delete review'
+      )
+    }
+  }
+  async updateReview(updateReviewPayload: UpdateReviewPayload) {
+    try {
+      const { reviewId, productId, ...rest } = updateReviewPayload
+      const { data } = await axiosClient.patch<IProductReview>(
+        `/reviews/${reviewId}/${productId}`,
+        rest
+      )
+      return data
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message ?? 'Failed to update review'
       )
     }
   }

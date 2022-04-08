@@ -26,8 +26,8 @@ export class CartsService {
         productId: string
     ): Promise<boolean> {
         return (
-            (await this.cartRepository.count({
-                user,
+            (await this.cartRepository.countBy({
+                user: { id: user.id },
                 product: { id: productId },
             })) > 0
         )
@@ -53,15 +53,15 @@ export class CartsService {
 
     public findAll(user: User): Promise<Cart[]> {
         return this.cartRepository.find({
-            where: { user },
+            where: { user: { id: user.id } },
             relations: ['product'],
             order: { totalPrice: 'DESC' },
         })
     }
 
-    public async findOne(user: User, id: string): Promise<Cart> {
+    public async findOneBy(user: User, id: string): Promise<Cart> {
         const cart = await this.cartRepository.findOne({
-            where: { user, id },
+            where: { user: { id: user.id }, id },
             relations: ['product'],
         })
         if (!cart) throw new NotFoundException(CART_NOT_FOUND)
@@ -73,9 +73,9 @@ export class CartsService {
         id: string,
         updateCartDto: UpdateCartDto
     ): Promise<Cart> {
-        const cart = await this.cartRepository.findOne({
+        const cart = await this.cartRepository.findOneBy({
             id,
-            user,
+            user: { id: user.id },
         })
         if (!cart) throw new NotFoundException(CART_NOT_FOUND)
         cart.quantity = updateCartDto.quantity
@@ -84,7 +84,10 @@ export class CartsService {
     }
 
     public async remove(user: User, id: string): Promise<string> {
-        const result = await this.cartRepository.delete({ id, user })
+        const result = await this.cartRepository.delete({
+            id,
+            user: { id: user.id },
+        })
         if (result.affected === 0) throw new NotFoundException(CART_NOT_FOUND)
         return 'Cart deleted successfully'
     }

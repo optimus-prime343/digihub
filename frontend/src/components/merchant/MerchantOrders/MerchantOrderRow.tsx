@@ -1,5 +1,4 @@
 import { Button, Modal } from '@mantine/core'
-import classNames from 'classnames'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { FC, useState } from 'react'
@@ -57,7 +56,12 @@ const MerchantOrderRow: FC<Props> = ({ order }) => {
           </div>
         </td>
         <td>
-          <Button className={button(order.orderStatus)} onClick={handleClick}>
+          <Button
+            onClick={handleClick}
+            variant={
+              order.orderStatus === OrderStatus.COMPLETED ? 'filled' : 'outline'
+            }
+          >
             {order.orderStatus}
           </Button>
         </td>
@@ -67,16 +71,4 @@ const MerchantOrderRow: FC<Props> = ({ order }) => {
     </>
   )
 }
-const button = (orderStatus: string) =>
-  classNames(
-    {
-      'bg-indigo-600': orderStatus === OrderStatus.PENDING,
-    },
-    {
-      'bg-red-600 hover:bg-red-500': orderStatus === OrderStatus.CANCELLED,
-    },
-    {
-      'bg-green-600 hover:bg-green-600': orderStatus === OrderStatus.COMPLETED,
-    }
-  )
 export default MerchantOrderRow

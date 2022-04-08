@@ -12,10 +12,14 @@ export const RecommendedProducts = ({ products }: { products: IProduct[] }) => {
       <h3 className='heading-tertiary'>Recommended Products</h3>
       <div className='mt-4 flex flex-col flex-nowrap items-start gap-4 lg:flex-row'>
         {products.map(product => (
-          <NextLink href={`/products/${product.id}`} key={product.id}>
+          <NextLink
+            className='overflow-hidden rounded-md'
+            href={`/products/${product.id}`}
+            key={product.id}
+          >
             <Image
               alt={product.name}
-              className='overflow-hidden rounded-md transition-transform duration-500 hover:scale-105'
+              className='transition-transform duration-500 hover:scale-105'
               height={isMobile ? 300 : 200}
               objectFit='cover'
               src={getProductImageUrl(product.coverImage)}

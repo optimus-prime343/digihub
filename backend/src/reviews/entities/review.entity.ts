@@ -17,7 +17,7 @@ export class Review {
     @Column()
     review: string
 
-    @Column()
+    @Column({ type: 'float' })
     rating: number
 
     @Column({ type: Date, default: new Date() })
