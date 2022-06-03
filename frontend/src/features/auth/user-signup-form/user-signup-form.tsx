@@ -1,5 +1,11 @@
 import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
+import {
+  randEmail,
+  randFirstName,
+  randLastName,
+  randUserName,
+} from '@ngneat/falso'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
 
@@ -8,12 +14,12 @@ import { signupUserSchema } from '@/schemas/signup-user-schema'
 import { SignupPayload } from '@/types/user'
 
 const initialValues: SignupPayload = {
-  firstName: '',
-  lastName: '',
-  username: '',
-  email: '',
-  password: '',
-  passwordConfirm: '',
+  firstName: randFirstName(),
+  lastName: randLastName(),
+  username: randUserName(),
+  email: randEmail(),
+  password: 'Sachin123@',
+  passwordConfirm: 'Sachin123@',
 }
 
 export const UserSignupForm = () => {

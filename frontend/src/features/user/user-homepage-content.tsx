@@ -32,8 +32,6 @@ export const UserHomepageContent = ({ totalProducts }: Props) => {
         <div className='flex flex-col justify-between gap-2 md:flex-row md:gap-0'>
           <SearchProducts />
           <SortProducts
-            // it works only when spreading products
-            //idk why
             onSort={products => setSortedProducts([...products])}
             products={products}
           />

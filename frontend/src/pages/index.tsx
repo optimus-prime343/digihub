@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import nookies from 'nookies'
 import { dehydrate, QueryClient } from 'react-query'
 
 import { Layout } from '@/components/core'
@@ -8,7 +9,7 @@ import { UserHomepageContent } from '@/features/user'
 import { useUser } from '@/hooks/auth'
 import { productService } from '@/services/product-service'
 import { UserRole } from '@/types/user'
-import { axiosClient } from '@/utils/axios-client'
+import { axiosClient, createAxiosClient } from '@/utils/axios-client'
 
 interface Props {
   totalProducts: number
@@ -26,11 +27,19 @@ export default function Home({ totalProducts }: Props) {
     </Layout>
   )
 }
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async context => {
+  nookies.get(context)
   const queryClient = new QueryClient()
+  // fetch products on server
   await queryClient.prefetchQuery('products', () =>
     productService.fetchProducts()
   )
+  // fetch the user information on the server
+  await queryClient.prefetchQuery('user', async () => {
+    const axiosClient = createAxiosClient(context)
+    const { data } = await axiosClient.get('/users/me')
+    return data
+  })
   const { data: totalProducts } = await axiosClient.get<number>(
     '/products/count'
   )

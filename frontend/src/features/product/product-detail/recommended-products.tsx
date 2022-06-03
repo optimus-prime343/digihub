@@ -8,7 +8,7 @@ import { getProductImageUrl } from '@/utils/getImageUrl'
 export const RecommendedProducts = ({ products }: { products: IProduct[] }) => {
   const isMobile = useMediaQuery('(max-width: 768px)')
   return (
-    <div className='mt-12'>
+    <div>
       <h3 className='heading-tertiary'>Recommended Products</h3>
       <div className='mt-4 flex flex-col flex-nowrap items-start gap-4 lg:flex-row'>
         {products.map(product => (

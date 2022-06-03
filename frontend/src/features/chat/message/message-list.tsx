@@ -1,5 +1,7 @@
+import { randUuid } from '@ngneat/falso'
 import { HTMLAttributes, useEffect, useRef, useState } from 'react'
 
+import { useMessages } from '@/hooks/chat'
 import { IMessage } from '@/types/message'
 import { socket } from '@/utils/socket'
 
@@ -7,18 +9,26 @@ import { AddMessageForm } from '../add-message-form'
 import { MessageItem } from './message-item'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  initialMessages: IMessage[]
   recipient: string
 }
-export const MessageList = ({ recipient, initialMessages, style }: Props) => {
-  const [messages, setMessages] = useState<IMessage[]>(initialMessages)
+export const MessageList = ({ recipient, style }: Props) => {
+  const { data } = useMessages(recipient)
+  const [messages, setMessages] = useState<IMessage[]>(() => data ?? [])
   const messageContainer = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => {
-    socket.on('message', (message: IMessage) => {
-      console.log('message', message)
-      setMessages(previousMessages => [...previousMessages, message])
-    })
+    const handler = (message: IMessage) => {
+      setMessages(oldMessages => [...oldMessages, message])
+    }
+    socket.on('message', handler)
+    return () => {
+      socket.off('message', handler)
+    }
   }, [])
+  useEffect(() => {
+    // every time a new message list is fetched set the messages to the new messages
+    setMessages(data ?? [])
+  }, [data])
   useEffect(() => {
     if (!messageContainer.current) return
     // automatically scroll to the bottom of the message list
@@ -31,7 +41,7 @@ export const MessageList = ({ recipient, initialMessages, style }: Props) => {
         ref={messageContainer}
       >
         {messages.map(message => (
-          <MessageItem key={message.id} message={message} />
+          <MessageItem key={randUuid()} message={message} />
         ))}
       </div>
       <AddMessageForm

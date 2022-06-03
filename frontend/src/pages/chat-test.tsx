@@ -23,7 +23,7 @@ const ChatTest = () => {
 
   const receiverId = router.query.receiverId as string | undefined
 
-  const { data: initialMessages = [] } = useMessages(receiverId)
+  const { data: initialMessages = [] } = useMessages(receiverId ?? '')
   const [message, setMessage] = useState(randQuote())
   const [messages, setMessages] = useState<IMessage[]>(initialMessages)
 

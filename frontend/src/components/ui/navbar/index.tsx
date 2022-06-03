@@ -44,7 +44,7 @@ export const Navbar = () => {
   }, [router])
   return (
     <Headroom>
-      <header className='sticky top-0 z-10 border-b border-gray-100/10 px-4 py-2 backdrop-blur-md lg:bg-gray-700/75 lg:px-8'>
+      <header className='sticky top-0 z-40 border-b border-gray-100/10 px-4 py-2 backdrop-blur-lg lg:bg-gray-700/75 lg:px-8'>
         <nav
           className='relative flex items-center justify-between'
           ref={navbarRef}

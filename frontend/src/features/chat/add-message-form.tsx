@@ -14,7 +14,7 @@ interface Props {
 }
 export const AddMessageForm = ({ recipient, onSend }: Props) => {
   const { user } = useUser()
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(randQuote())
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (message) {
@@ -41,7 +41,7 @@ export const AddMessageForm = ({ recipient, onSend }: Props) => {
       />
       <Button
         className='bg-indigo-600'
-        disabled={Boolean(message)}
+        disabled={!message}
         leftIcon={<BiSend />}
         type='submit'
       >

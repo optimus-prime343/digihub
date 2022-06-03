@@ -1,6 +1,7 @@
 import { Alert } from '@mantine/core'
-import { useRouter } from 'next/router'
+import { useState } from 'react'
 
+import { MessageList } from '@/features/chat/message'
 import { useUser } from '@/hooks/auth'
 import { useContacts } from '@/hooks/chat'
 import { UserRole } from '@/types/user'
@@ -8,9 +9,13 @@ import { UserRole } from '@/types/user'
 import { ContactItem } from './contact-item'
 
 export const ContactList = () => {
-  const router = useRouter()
   const { user } = useUser()
   const { data: contacts } = useContacts()
+  const [receiverId, setReceiverId] = useState<string | undefined>()
+
+  const handleContactClick = async (id: string) => {
+    setReceiverId(id)
+  }
 
   if (contacts.length === 0)
     return (
@@ -26,15 +31,12 @@ export const ContactList = () => {
           <ContactItem
             contact={contact}
             key={contact.recipientId}
-            onClick={() =>
-              router.push({
-                pathname: '/chat-test',
-                query: { receiverId: contact.recipientId },
-              })
-            }
+            onClick={() => handleContactClick(contact.recipientId)}
+            selectedRecipientId={receiverId}
           />
         ))}
       </div>
+      {receiverId && <MessageList recipient={receiverId} />}
     </div>
   )
 }
