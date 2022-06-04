@@ -27,11 +27,14 @@ export const FeaturedProducts = () => {
           src={getProductImageUrl(product.coverImage)}
           width={600}
         />
-        <div className='space-y-2'>
-          <Title order={2}>{product.name}</Title>
+        <div>
+          <Title mb='xs' order={2}>
+            {product.name}
+          </Title>
           <Text className='max-w-xl text-justify'>{product.description}</Text>
           <Button
             leftIcon={<BiDetail />}
+            mt='lg'
             onClick={() => router.push(`/products/${product.id}`)}
           >
             View product page

@@ -41,7 +41,9 @@ export const UserHomepageContent = ({ totalProducts }: Props) => {
             products={products}
           />
         </div>
-        <Title order={2}>Featured Products</Title>
+        <Title className='uppercase' order={2}>
+          Featured Products
+        </Title>
         <FeaturedProducts />
         <ProductList products={sortedProducts} />
         <Pagination

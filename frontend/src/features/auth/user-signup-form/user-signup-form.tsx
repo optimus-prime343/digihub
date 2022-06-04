@@ -1,4 +1,10 @@
-import { Button, PasswordInput, TextInput } from '@mantine/core'
+import {
+  Anchor,
+  Button,
+  Checkbox,
+  PasswordInput,
+  TextInput,
+} from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import {
   randEmail,
@@ -8,7 +14,9 @@ import {
 } from '@ngneat/falso'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
+import { NextLink } from '@/components/core'
 import { useSignup } from '@/hooks/auth'
 import { signupUserSchema } from '@/schemas/signup-user-schema'
 import { SignupPayload } from '@/types/user'
@@ -23,6 +31,9 @@ const initialValues: SignupPayload = {
 }
 
 export const UserSignupForm = () => {
+  // manage whether user has agreed to terms and conditions or not
+  const [agreed, setAgreed] = useState(false)
+
   const router = useRouter()
   const signup = useSignup()
   const notifications = useNotifications()
@@ -96,8 +107,18 @@ export const UserSignupForm = () => {
           {...getFieldProps('passwordConfirm')}
           placeholder='********'
         />
+        <Checkbox
+          defaultChecked={agreed}
+          label={
+            <Anchor component={NextLink} href='/terms-and-conditions'>
+              I agree to Digihub Terms and Conditions
+            </Anchor>
+          }
+          onChange={event => setAgreed(event.currentTarget.checked)}
+        />
         <Button
           className='bg-indigo-600'
+          disabled={!agreed}
           fullWidth
           loading={signup.isLoading}
           type='submit'

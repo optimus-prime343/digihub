@@ -34,9 +34,9 @@ const MerchantProductItem: FC<Props> = ({ product }) => {
         quantity={product.quantity}
         setOpened={setShowUpdateModal}
       />
-      <div className='rounded-2xl bg-gray-600 p-4'>
+      <div className='rounded-md bg-gray-600 p-2'>
         <ProductListItem product={product} />
-        <div className='mt-2 flex gap-4'>
+        <div className='mt-2 flex gap-2'>
           <Button
             leftIcon={<MdSystemUpdateAlt />}
             onClick={() => setShowUpdateModal(true)}

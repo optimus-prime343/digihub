@@ -1,4 +1,4 @@
-import { Button, Table } from '@mantine/core'
+import { Table } from '@mantine/core'
 
 import { Sidebar } from '../components/sidebar'
 import { useUsers } from '../hooks/use-users'
@@ -11,10 +11,7 @@ const UsersListPage = () => {
       <td>{user.lastName}</td>
       <td>{user.email}</td>
       <td>{user.username}</td>
-      <td>{JSON.stringify(user.verified)}</td>
-      <td>
-        <Button>Delete</Button>
-      </td>
+      <td>{user.verified ? 'Verified' : 'Not Verified'}</td>
     </tr>
   ))
   return (
@@ -27,7 +24,6 @@ const UsersListPage = () => {
             <th>Email Address</th>
             <th>Username</th>
             <th>Verified</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

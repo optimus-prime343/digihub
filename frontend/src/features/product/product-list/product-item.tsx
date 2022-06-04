@@ -11,7 +11,7 @@ interface Props {
 export const ProductItem = ({ product }: Props) => {
   return (
     <NextLink
-      className='overflow-hidden rounded-md bg-gray-600/75 p-2 backdrop-blur-sm'
+      className='overflow-hidden rounded-md border border-gray-400 bg-gray-600 p-2'
       href={`/products/${product.id}`}
     >
       <Image

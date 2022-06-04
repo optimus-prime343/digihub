@@ -1,6 +1,6 @@
 import { Button, Modal } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import React, { Dispatch, FC, SetStateAction } from 'react'
-import { toast } from 'react-toastify'
 
 import { useDeleteProduct } from '@/hooks/product'
 
@@ -17,13 +17,16 @@ const DeleteProductPrompt: FC<IDeleteProductPromptProperties> = ({
   opened,
   setOpened,
 }) => {
+  const { showNotification } = useNotifications()
   const { mutateAsync } = useDeleteProduct()
   const handleProductDelete = async () => {
     try {
       await mutateAsync(id)
-      toast.success(`${name} has been deleted`)
+      showNotification({
+        message: `${name} has been deleted`,
+      })
     } catch (error: any) {
-      toast.error(error.message)
+      showNotification({ message: error.message, color: 'red' })
     }
   }
   return (
@@ -34,13 +37,12 @@ const DeleteProductPrompt: FC<IDeleteProductPromptProperties> = ({
         </h4>
         <div className='mt-4 space-x-2'>
           {/* Hide confirm delete button untill there is no error */}
-          <Button
-            className='bg-red-600 hover:bg-red-500'
-            onClick={handleProductDelete}
-          >
+          <Button color='red' onClick={handleProductDelete}>
             Confirm
           </Button>
-          <Button onClick={() => setOpened(false)}>Cancel</Button>
+          <Button onClick={() => setOpened(false)} variant='outline'>
+            Cancel
+          </Button>
         </div>
       </div>
     </Modal>

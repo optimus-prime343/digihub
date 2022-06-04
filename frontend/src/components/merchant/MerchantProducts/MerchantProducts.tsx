@@ -15,7 +15,7 @@ const MerchantProducts = () => {
       {products.length > 0 ? (
         <div>
           <h4 className='heading-tertiary mb-4'>Your Products</h4>
-          <div className='grid gap-6 lg:grid-cols-3'>
+          <div className='grid gap-2 lg:grid-cols-3'>
             {products.map(product => (
               <MerchantProductItem key={product.id} product={product} />
             ))}

@@ -63,7 +63,7 @@ export const ProductReviewItem = ({ review }: Props) => {
       },
     })
   return (
-    <div className='flex flex-col items-start gap-4 rounded-md bg-gray-600 p-2 lg:flex-row'>
+    <div className='flex flex-col items-start gap-4 rounded-md bg-gray-600 p-2 lg:max-w-lg lg:flex-row'>
       <Image
         alt={review.user.username}
         className='rounded-full'
