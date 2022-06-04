@@ -1,8 +1,6 @@
-import { Button } from '@mantine/core'
-import classNames from 'classnames'
+import { Badge } from '@mantine/core'
 import { format } from 'date-fns'
 import Image from 'next/image'
-import { BiMessageAlt } from 'react-icons/bi'
 
 import { NextLink } from '@/components/core'
 import { IOrder } from '@/types/order'
@@ -13,11 +11,12 @@ interface Props {
   order: IOrder
 }
 const OrderListItem = ({ order }: Props) => {
-  const orderStatus = classNames('p-2 rounded-md', {
-    'bg-green-600': order.orderStatus === OrderStatus.COMPLETED,
-    'bg-yellow-600': order.orderStatus === OrderStatus.PENDING,
-    'bg-red-600': order.orderStatus === OrderStatus.CANCELLED,
-  })
+  const orderStatusColor = {
+    [OrderStatus.PENDING]: 'yellow',
+    [OrderStatus.CANCELLED]: 'red',
+    [OrderStatus.COMPLETED]: 'green',
+  }
+
   return (
     <>
       <div className='flex flex-col items-start gap-4 rounded-md bg-gray-600 p-4 lg:flex-row lg:items-center lg:gap-24'>
@@ -39,14 +38,9 @@ const OrderListItem = ({ order }: Props) => {
           <p>Subtotal : Rs {order.totalPrice}</p>
           <p>Ordered on {format(new Date(order.createdAt), 'PPP')}</p>
         </div>
-        <p className={orderStatus}>{order.orderStatus}</p>
-        {order.orderStatus === OrderStatus.PENDING && (
-          <div className='flex space-x-2'>
-            <Button leftIcon={<BiMessageAlt />} variant='outline'>
-              Contact Seller
-            </Button>
-          </div>
-        )}
+        <Badge color={orderStatusColor[order.orderStatus]}>
+          {order.orderStatus}
+        </Badge>
       </div>
     </>
   )

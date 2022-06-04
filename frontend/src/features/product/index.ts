@@ -1,4 +1,5 @@
 export * from './add-review-form'
+export * from './featured-products'
 export * from './product-detail'
 export * from './product-detail'
 export * from './product-list'

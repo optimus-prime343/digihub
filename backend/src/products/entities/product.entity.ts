@@ -37,6 +37,9 @@ export class Product {
     @Column({ default: 0 })
     averageRating: number
 
+    @Column({ default: false })
+    featured: boolean
+
     @ManyToOne(() => Merchant, merchant => merchant.products)
     merchant: Merchant
 

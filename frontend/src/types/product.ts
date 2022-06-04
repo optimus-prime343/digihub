@@ -21,6 +21,7 @@ export interface IProduct {
   averageRating: number
   merchant: IMerchant
   quantity: number
+  featured: boolean
   tags: string[]
   reviews: IProductReview[]
   createdAt: string

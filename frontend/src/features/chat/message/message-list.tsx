@@ -1,4 +1,5 @@
 import { randUuid } from '@ngneat/falso'
+import Image from 'next/image'
 import { HTMLAttributes, useEffect, useRef, useState } from 'react'
 
 import { useMessages } from '@/hooks/chat'
@@ -36,6 +37,14 @@ export const MessageList = ({ recipient, style }: Props) => {
   }, [messages])
   return (
     <div className='flex-1 rounded-md bg-gray-600 p-4' style={style}>
+      {messages.length === 0 && (
+        <Image
+          alt='Begin your conversation'
+          height={400}
+          src='/images/chat.svg'
+          width={400}
+        />
+      )}
       <div
         className='mb-4 flex max-h-[25rem] flex-col gap-4 overflow-y-scroll rounded-md'
         ref={messageContainer}

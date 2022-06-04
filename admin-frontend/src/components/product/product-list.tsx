@@ -6,7 +6,7 @@ interface Props {
 }
 export const ProductList = ({ products }: Props) => {
   return (
-    <div className='grid items-start gap-4 lg:grid-cols-4'>
+    <div className='grid items-start gap-4'>
       {products.map(product => (
         <ProductItem key={product.id} product={product} />
       ))}

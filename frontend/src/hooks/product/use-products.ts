@@ -15,3 +15,5 @@ export const useProducts = (page?: number) => {
     error,
   }
 }
+export const useFeaturedProducts = () =>
+  useProducts().products.filter(product => product.featured)

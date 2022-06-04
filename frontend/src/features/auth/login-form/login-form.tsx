@@ -1,6 +1,14 @@
-import { Button, PasswordInput, TextInput } from '@mantine/core'
+import {
+  Anchor,
+  Button,
+  PasswordInput,
+  Text,
+  TextInput,
+  Title,
+} from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FaUserCircle } from 'react-icons/fa'
 import { MdPassword } from 'react-icons/md'
@@ -45,9 +53,11 @@ export const LoginForm = () => {
       : undefined
   }
   return (
-    <div className='mx-auto my-4 max-w-md space-y-4 rounded-md bg-gray-600 p-6 lg:my-12'>
-      <h3 className='heading-secondary text-center'>Login to Your Account</h3>
-      <span className='my-4 block h-px w-full bg-gray-400' />
+    <div className='mx-auto w-full flex-1 rounded-md'>
+      <Title mb='xs'>WELCOME BACK</Title>
+      <Text color='dimmed' mb='lg' size='sm'>
+        Welcome back! Please enter your details
+      </Text>
       <form className='space-y-4' onSubmit={handleSubmit}>
         <TextInput
           error={getFieldError('username')}
@@ -63,6 +73,13 @@ export const LoginForm = () => {
           {...getFieldProps('password')}
           icon={<MdPassword />}
         />
+        <Anchor
+          className='mr-auto block'
+          component={NextLink}
+          href='/auth/request-password-reset'
+        >
+          Forgot password ?
+        </Anchor>
         <Button
           aria-label='Login'
           className='bg-indigo-600'
@@ -73,21 +90,17 @@ export const LoginForm = () => {
           Login
         </Button>
       </form>
-      <div className='flex flex-col items-center gap-2'>
+      <div className='mt-4 flex flex-col items-center gap-2'>
         {helperLinks.map(({ href, name }) => (
-          <NextLink className='hover:text-indigo-400' href={href} key={href}>
+          <Anchor component={NextLink} href={href} key={href}>
             {name}
-          </NextLink>
+          </Anchor>
         ))}
       </div>
     </div>
   )
 }
 const helperLinks = [
-  {
-    name: 'Forgot your password ?',
-    href: '/auth/request-password-reset',
-  },
   {
     name: 'Create an account',
     href: '/auth/signup?as=user',

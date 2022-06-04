@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Patch,
@@ -53,5 +54,19 @@ export class AdminController {
     @Get('orders')
     public findAllOrders(): Promise<Order[]> {
         return this.adminService.findAllOrders()
+    }
+    @Patch('/update-product/:productId')
+    public updateProduct(
+        @Param('productId') productId: string,
+        @Body() updateProductDto: Partial<Product>
+    ): Promise<string> {
+        return this.adminService.updateProduct(productId, updateProductDto)
+    }
+
+    @Delete('/delete-product/:productId')
+    public deleteProduct(
+        @Param('productId') productId: string
+    ): Promise<string> {
+        return this.adminService.deleteProduct(productId)
     }
 }

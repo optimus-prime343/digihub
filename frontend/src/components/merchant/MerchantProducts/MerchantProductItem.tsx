@@ -45,7 +45,7 @@ const MerchantProductItem: FC<Props> = ({ product }) => {
             Update
           </Button>
           <Button
-            className='bg-red-600 hover:bg-red-500'
+            color='red'
             leftIcon={<AiOutlineDelete />}
             onClick={() => setShowDeleteModal(true)}
             variant='filled'

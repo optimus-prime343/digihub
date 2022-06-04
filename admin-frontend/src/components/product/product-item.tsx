@@ -1,8 +1,10 @@
-import { Transition } from '@headlessui/react'
+import { Button, Checkbox, NumberInput, Textarea, TextInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useState } from 'react'
+import { FormEvent } from 'react'
 
+import { useDeleteProduct } from '../../hooks/use-delete-product'
+import { useUpdateProduct } from '../../hooks/use-update-product'
 import { IProduct } from '../../typings/product'
 import { getImageUrl } from '../../utils/get-image-url'
 
@@ -10,52 +12,90 @@ interface Props {
   product: IProduct
 }
 export const ProductItem = ({ product }: Props) => {
-  // product detail dialog state
-  const [productHovered, setProductHovered] = useState(false)
+  const { showNotification } = useNotifications()
+
+  const deleteProduct = useDeleteProduct()
+  const updateProduct = useUpdateProduct(product.id)
+
+  const handleProductDelete = async () => {
+    try {
+      const message = await deleteProduct.mutateAsync(product.id)
+      showNotification({ message })
+    } catch (error: any) {
+      showNotification({ message: error.message })
+    }
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.target as HTMLFormElement)
+    // converting formdata entries to raw js object
+    const formValue = Array.from(formData.entries()).reduce((acc, curr) => {
+      const [key, value] = curr
+      acc[key] = key === 'featured' ? (value === 'on' ? true : false) : value
+      return acc
+    }, {} as Record<string, any>)
+    try {
+      const message = await updateProduct.mutateAsync(formValue)
+      showNotification({ message })
+    } catch (error: any) {
+      showNotification({
+        title: 'Failed to update product',
+        message: error.message,
+        color: 'red',
+      })
+    }
+  }
+
   return (
-    <div
-      onMouseEnter={() => setProductHovered(true)}
-      onMouseLeave={() => setProductHovered(false)}
-      className='relative rounded-md'
+    <form
+      onSubmit={handleSubmit}
+      className='hover:shaow-2xl flex flex-col gap-6 rounded-md bg-gray-600 p-4 lg:flex-row'
     >
       <Image
         src={getImageUrl('product', product.coverImage)}
-        width={600}
-        height={600}
-        alt={product.name}
+        width={300}
+        height={300}
         objectFit='cover'
+        alt={product.name}
         className='rounded-md'
       />
-      <Transition
-        show={productHovered}
-        className='absolute inset-0 flex items-center justify-center'
-      >
-        <Transition.Child
-          enter='transition-opacity ease-linear duration-300'
-          enterFrom='opacity-0'
-          enterTo='opacity-100'
-          leave='transition-opacity ease-linear duration-300'
-          leaveFrom='opacity-100'
-          leaveTo='opacity-0'
-        >
-          <div className='absolute inset-0 overflow-hidden rounded-md bg-black/75' />
-        </Transition.Child>
-        <Transition.Child
-          className='z-10'
-          enter='transition duration-200 ease-in'
-          enterFrom='translate-y-4 opacity-0'
-          enterTo='translate-y-0 opacity-100'
-          leave='transition duration-200 ease-out'
-          leaveFrom='translate-y-0 opacity-100'
-          leaveTo='translate-y-4 opacity-0'
-        >
-          <Link href={`/products/${product.id}`}>
-            <a className='mx-auto inline-block w-56 text-center text-2xl font-bold'>
-              {product.name}
-            </a>
-          </Link>
-        </Transition.Child>
-      </Transition>
-    </div>
+      <div className='flex-1 space-y-4'>
+        <div className='grid gap-4 lg:grid-cols-2'>
+          <TextInput
+            placeholder='name'
+            label='Name'
+            name='name'
+            defaultValue={product.name}
+          />
+          <NumberInput
+            placeholder='price'
+            label='Price'
+            name='price'
+            defaultValue={product.price}
+          />
+        </div>
+        <Checkbox
+          label='Featured'
+          name='featured'
+          defaultChecked={product.featured}
+        />
+        <Textarea
+          placeholder='description'
+          label='Description'
+          name='description'
+          minRows={5}
+          defaultValue={product.description}
+        />
+        <div className='flex gap-2'>
+          <Button type='submit' loading={updateProduct.isLoading}>
+            Update Product
+          </Button>
+          <Button color='red' onClick={handleProductDelete}>
+            Delete Product
+          </Button>
+        </div>
+      </div>
+    </form>
   )
 }

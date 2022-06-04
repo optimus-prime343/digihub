@@ -16,6 +16,7 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
 import { User } from '../users/entities/user.entity'
 import { CreateReviewDto } from './dto/create-review.dto'
+import { UpdateReviewDto } from './dto/update-review.dto'
 import { Review } from './entities/review.entity'
 import { ReviewsService } from './reviews.service'
 
@@ -43,6 +44,7 @@ export class ReviewsController {
         @Param('reviewId') reviewId: string,
         @Param('productId') productId: string
     ): Promise<string> {
+        console.log({ reviewId, productId })
         return this.reviewsService.remove(user, reviewId, productId)
     }
 
@@ -51,14 +53,14 @@ export class ReviewsController {
         @GetUser() user: User,
         @Param('reviewId') reviewId: string,
         @Param('productId') productId: string,
-        @Body() createReviewDto: CreateReviewDto
+        @Body() updateReviewDto: UpdateReviewDto
     ): Promise<Review> {
         console.log(productId, reviewId)
         return this.reviewsService.update(
             user,
             reviewId,
             productId,
-            createReviewDto
+            updateReviewDto
         )
     }
 }

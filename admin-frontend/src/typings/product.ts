@@ -10,6 +10,7 @@ export interface IProduct {
   coverImage: string
   totalRatings: number
   averageRating: number
+  featured: boolean
   createdAt: string
   updatedAt?: string
   tags: string[]

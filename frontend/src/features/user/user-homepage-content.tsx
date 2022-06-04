@@ -1,10 +1,15 @@
-import { Pagination } from '@mantine/core'
+import { Pagination, Title } from '@mantine/core'
 import { useEffect, useState } from 'react'
 
 import { Layout } from '@/components/core'
 import { FullPageLoader } from '@/components/ui'
 import { PRODUCTS_PER_PAGE } from '@/constants'
-import { ProductList, SearchProducts, SortProducts } from '@/features/product'
+import {
+  FeaturedProducts,
+  ProductList,
+  SearchProducts,
+  SortProducts,
+} from '@/features/product'
 import { useProducts } from '@/hooks/product'
 import { IProduct } from '@/types/product'
 
@@ -36,6 +41,8 @@ export const UserHomepageContent = ({ totalProducts }: Props) => {
             products={products}
           />
         </div>
+        <Title order={2}>Featured Products</Title>
+        <FeaturedProducts />
         <ProductList products={sortedProducts} />
         <Pagination
           onChange={setPage}

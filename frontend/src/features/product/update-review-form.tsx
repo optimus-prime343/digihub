@@ -1,4 +1,5 @@
 import { Button, NumberInput, Textarea } from '@mantine/core'
+import { useModals } from '@mantine/modals'
 import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
 
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export const UpdateReviewForm = ({ review, productId }: Props) => {
-  console.log(productId)
+  const modals = useModals()
   const { showNotification } = useNotifications()
   const updateReview = useUpdateReview(productId)
   const { getFieldProps, setFieldValue, handleSubmit, values } = useFormik({
@@ -30,6 +31,7 @@ export const UpdateReviewForm = ({ review, productId }: Props) => {
           title: 'Review Updated',
           message: 'Your review has been updated',
         })
+        modals.closeModal('update-review-modal')
       } catch (error: any) {
         showNotification({
           color: 'red',

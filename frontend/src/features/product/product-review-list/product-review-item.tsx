@@ -28,6 +28,7 @@ export const ProductReviewItem = ({ review }: Props) => {
 
   const openUpdateModal = () =>
     modal.openModal({
+      id: 'update-review-modal',
       title: 'Update Review',
       children: <UpdateReviewForm productId={productId} review={review} />,
     })

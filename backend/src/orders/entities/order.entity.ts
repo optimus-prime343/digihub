@@ -19,7 +19,7 @@ export class Order {
     @ManyToOne(() => User, user => user.orders)
     public user: User
 
-    @ManyToOne(() => Product, { eager: true })
+    @ManyToOne(() => Product, { eager: true, onDelete: 'CASCADE' })
     @JoinTable()
     public product: Product
 

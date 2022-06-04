@@ -105,4 +105,24 @@ export class AdminService {
     async findAllProducts(): Promise<Product[]> {
         return this.productsRepository.find()
     }
+    async updateProduct(
+        productId: string,
+        updateProductDto: Partial<Product>
+    ): Promise<string> {
+        const product = await this.productsRepository.findOne({
+            where: { id: productId },
+        })
+        if (!product) throw new NotFoundException('Product not found')
+        await this.productsRepository.update(productId, updateProductDto)
+        return 'Product updated successfully'
+    }
+    async deleteProduct(productId: string) {
+        const product = await this.productsRepository.findOne({
+            where: { id: productId },
+        })
+        console.log(product)
+        if (!product) throw new NotFoundException('Product not found')
+        await this.productsRepository.delete(productId)
+        return 'Product deleted successfully'
+    }
 }
