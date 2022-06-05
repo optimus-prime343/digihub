@@ -10,14 +10,16 @@ export class ProductService {
       throw new Error(error.response?.data?.message ?? 'Failed to get product')
     }
   }
-  async fetchProducts(page?: number) {
+  async fetchProducts(featured?: boolean, page?: number) {
     // page is used for pagination
     //every page has 10 products
     try {
-      const pageQuery = page ? `?page=${page}` : ''
-      const { data } = await axiosClient.get<IProduct[]>(
-        `/products${pageQuery}`
-      )
+      const url = new URL(`${axiosClient.defaults.baseURL}/products`)
+      const params = url.searchParams
+      if (featured) params.append('featured', JSON.stringify(true))
+      if (page) params.append('page', JSON.stringify(page))
+
+      const { data } = await axiosClient.get<IProduct[]>(url.href)
       return data
     } catch (error: any) {
       throw new Error(

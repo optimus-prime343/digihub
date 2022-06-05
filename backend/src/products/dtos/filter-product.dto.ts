@@ -6,4 +6,7 @@ export class FilterProductsDto {
 
     @IsOptional()
     limit?: string
+
+    @IsOptional()
+    featured?: boolean
 }

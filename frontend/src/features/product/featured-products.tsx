@@ -1,20 +1,19 @@
-import 'swiper/css'
-import 'swiper/css/pagination'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 import { Button, Text, Title } from '@mantine/core'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { BiDetail } from 'react-icons/bi'
-import { Pagination } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import Slider from 'react-slick'
 
-import { useFeaturedProducts } from '@/hooks/product'
 import { IProduct } from '@/types/product'
 import { getProductImageUrl } from '@/utils/getImageUrl'
 
-export const FeaturedProducts = () => {
-  const featuredProducts = useFeaturedProducts()
-
+interface Props {
+  featuredProducts: IProduct[]
+}
+export const FeaturedProducts = ({ featuredProducts }: Props) => {
   const FeaturedProductItem = ({ product }: { product: IProduct }) => {
     const router = useRouter()
     return (
@@ -45,21 +44,14 @@ export const FeaturedProducts = () => {
   }
   const featuredProductSlides = (): JSX.Element[] => {
     return featuredProducts.map(featuredProduct => (
-      <SwiperSlide key={featuredProduct.id}>
+      <div key={featuredProduct.id}>
         <FeaturedProductItem product={featuredProduct} />
-      </SwiperSlide>
+      </div>
     ))
   }
   return (
-    <Swiper
-      autoplay
-      loop
-      modules={[Pagination]}
-      pagination={{
-        clickable: true,
-      }}
-    >
+    <Slider autoplay autoplaySpeed={2000} dots={true}>
       {featuredProductSlides()}
-    </Swiper>
+    </Slider>
   )
 }

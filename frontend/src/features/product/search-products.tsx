@@ -56,7 +56,7 @@ const SearchAutocomplete = ({
     >
       {style => (
         <div
-          className='absolute z-10 mt-2 w-full space-y-2 rounded-md bg-gray-600 p-2 shadow-2xl'
+          className='absolute z-40 mt-2 w-full space-y-2 rounded-md bg-gray-600 p-2 shadow-2xl'
           style={style}
         >
           <h3 className='heading-tertiary'>

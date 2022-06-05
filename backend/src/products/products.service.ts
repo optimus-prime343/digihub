@@ -83,6 +83,10 @@ export class ProductsService {
             ? Number(filterProductDto.limit)
             : 10
         const skip = (page - 1) * limit
+        if (filterProductDto.featured)
+            return this.productRepository.find({
+                where: { featured: true },
+            })
         return this.productRepository.find({
             relations: ['merchant'],
             take: limit,

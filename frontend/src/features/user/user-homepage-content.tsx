@@ -4,13 +4,8 @@ import { useEffect, useState } from 'react'
 import { Layout } from '@/components/core'
 import { FullPageLoader } from '@/components/ui'
 import { PRODUCTS_PER_PAGE } from '@/constants'
-import {
-  FeaturedProducts,
-  ProductList,
-  SearchProducts,
-  SortProducts,
-} from '@/features/product'
-import { useProducts } from '@/hooks/product'
+import { FeaturedProducts, ProductList, SortProducts } from '@/features/product'
+import { useFeaturedProducts, useProducts } from '@/hooks/product'
 import { IProduct } from '@/types/product'
 
 interface Props {
@@ -23,8 +18,10 @@ interface Props {
 export const UserHomepageContent = ({ totalProducts }: Props) => {
   // pagination
   const [page, setPage] = useState(1)
-  const { products, isLoading } = useProducts(page)
+  const { products, isLoading } = useProducts(false, page)
   const [sortedProducts, setSortedProducts] = useState<IProduct[]>([])
+
+  const featuredProducts = useFeaturedProducts()
 
   useEffect(() => {
     setSortedProducts(products)
@@ -34,17 +31,20 @@ export const UserHomepageContent = ({ totalProducts }: Props) => {
   return (
     <Layout title='Digihub | Browse Products'>
       <div className='space-y-4 p-4 lg:mt-6 lg:px-8 lg:py-0'>
-        <div className='flex flex-col justify-between gap-2 md:flex-row md:gap-0'>
-          <SearchProducts />
+        {featuredProducts.length > 0 && (
+          <>
+            <Title className='uppercase' mb='md' order={2}>
+              Featured Products
+            </Title>
+            <FeaturedProducts featuredProducts={featuredProducts} />
+          </>
+        )}
+        <div className='flex justify-end'>
           <SortProducts
             onSort={products => setSortedProducts([...products])}
             products={products}
           />
         </div>
-        <Title className='uppercase' order={2}>
-          Featured Products
-        </Title>
-        <FeaturedProducts />
         <ProductList products={sortedProducts} />
         <Pagination
           onChange={setPage}

@@ -67,9 +67,11 @@ export const ProductDetail = ({ product: initialData }: Props) => {
             <Alert>No reviews yet</Alert>
           )}
         </Tabs.Tab>
-        <Tabs.Tab icon={<MdRecommend />} label='Recommended Products'>
-          <RecommendedProducts products={recommededProducts} />
-        </Tabs.Tab>
+        {recommededProducts.length > 0 && (
+          <Tabs.Tab icon={<MdRecommend />} label='Recommended Products'>
+            <RecommendedProducts products={recommededProducts} />
+          </Tabs.Tab>
+        )}
       </Tabs>
     </section>
   )

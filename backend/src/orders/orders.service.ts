@@ -137,7 +137,7 @@ export class OrdersService {
         }
         await this.orderRepository.save(order)
         await this.mailService.sendMail({
-            from: order?.merchant.user.email,
+            from: this.configService.get('EMAIL_FROM'),
             to: order?.user.email,
             subject: `Your order is ${status.toLowerCase()}`,
             template: 'orderStatusUpdated',

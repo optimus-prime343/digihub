@@ -1,7 +1,7 @@
 import { Button, Checkbox, NumberInput, Textarea, TextInput } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import Image from 'next/image'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 
 import { useDeleteProduct } from '../../hooks/use-delete-product'
 import { useUpdateProduct } from '../../hooks/use-update-product'
@@ -12,6 +12,8 @@ interface Props {
   product: IProduct
 }
 export const ProductItem = ({ product }: Props) => {
+  const [featured, setFeatured] = useState(() => product.featured)
+
   const { showNotification } = useNotifications()
 
   const deleteProduct = useDeleteProduct()
@@ -32,9 +34,11 @@ export const ProductItem = ({ product }: Props) => {
     // converting formdata entries to raw js object
     const formValue = Array.from(formData.entries()).reduce((acc, curr) => {
       const [key, value] = curr
-      acc[key] = key === 'featured' ? (value === 'on' ? true : false) : value
+      acc[key] = value
       return acc
     }, {} as Record<string, any>)
+    // set the featured state into the formvalue
+    formValue['featured'] = featured
     try {
       const message = await updateProduct.mutateAsync(formValue)
       showNotification({ message })
@@ -77,8 +81,8 @@ export const ProductItem = ({ product }: Props) => {
         </div>
         <Checkbox
           label='Featured'
-          name='featured'
-          defaultChecked={product.featured}
+          checked={featured}
+          onChange={event => setFeatured(event.currentTarget.checked)}
         />
         <Textarea
           placeholder='description'

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Burger, Button } from '@mantine/core'
-import { useClickOutside } from '@mantine/hooks'
+import { useClickOutside, useMediaQuery } from '@mantine/hooks'
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -8,6 +8,7 @@ import Headroom from 'react-headroom'
 
 import { NextLink } from '@/components/core'
 import { navLinks } from '@/constants/nav-links'
+import { SearchProducts } from '@/features/product'
 import { useUser } from '@/hooks/auth'
 import { UserRole } from '@/types/user'
 
@@ -24,6 +25,7 @@ const navLinkList = (showNav: boolean) =>
   )
 
 export const Navbar = () => {
+  const isDesktop = useMediaQuery('(min-width: 1150px)')
   const router = useRouter()
   const { user } = useUser()
   const [showNav, setShowNav] = useState(false)
@@ -56,6 +58,9 @@ export const Navbar = () => {
               src='/images/logo.png'
             />
           </NextLink>
+          {user && user.role === UserRole.USER && isDesktop ? (
+            <SearchProducts />
+          ) : null}
           <ul className={navLinkList(showNav)}>
             {navbarLinks.map(({ href, name }) => (
               <li key={href}>

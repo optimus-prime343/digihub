@@ -73,8 +73,10 @@ export class ReviewsService {
         })
         product.totalRatings += 1
         product.averageRating =
-            (product.averageRating * (product.totalRatings - 1) + rating) /
-            product.totalRatings
+            product.averageRating === 0
+                ? rating
+                : (product.averageRating + rating) / product.totalRatings
+
         await this.productRepository.save(product)
         await this.reviewsRepository.save(newReview)
         return newReview
@@ -121,7 +123,7 @@ export class ReviewsService {
         updateReviewDto: UpdateReviewDto
     ): Promise<Review> {
         console.log(`PRODUCT IS IS ${productId}`)
-        const review = await this.reviewsRepository.findOne({
+        const existingReview = await this.reviewsRepository.findOne({
             where: {
                 id: reviewId,
                 user: { id: user.id },
@@ -129,11 +131,25 @@ export class ReviewsService {
             },
             relations: ['product'],
         })
-        if (!review) throw new NotFoundException(`Review doesnt exist`)
-        const { rating, review: reviewText } = updateReviewDto
-        if (rating) review.rating = rating
-        if (reviewText) review.review = reviewText
-        await this.reviewsRepository.save(review)
-        return review
+        const product = await this.productRepository.findOneBy({
+            id: productId,
+        })
+        if (!product) throw new NotFoundException(`Product doesnt exist`)
+        if (!existingReview) throw new NotFoundException(`Review doesnt exist`)
+
+        const { rating, review } = updateReviewDto
+
+        // update product average rating
+        const updatedAverageRating =
+            product.averageRating - existingReview.rating + rating
+        product.averageRating = updatedAverageRating
+
+        //update existing review text and rating
+        if (rating) existingReview.rating = rating
+        if (review) existingReview.review = review
+
+        await this.reviewsRepository.save(existingReview)
+        await this.productRepository.save(product)
+        return existingReview
     }
 }
