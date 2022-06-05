@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable tailwindcss/no-custom-classname */
+
 const TermsAndConditions = () => {
   return (
     <div className='p-4 lg:px-8 lg:py-4'>

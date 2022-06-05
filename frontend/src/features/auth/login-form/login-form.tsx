@@ -8,7 +8,6 @@ import {
 } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FaUserCircle } from 'react-icons/fa'
 import { MdPassword } from 'react-icons/md'

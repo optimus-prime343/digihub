@@ -1,18 +1,22 @@
 {
-	"name": "digihub",
-	"version": "1.0.0",
-	"main": "index.js",
-	"repository": "https://github.com/optimus-prime343/Digihub.git",
-	"author": "morganTuber <sachinaryal300@gmail.com>",
-	"license": "MIT",
-	"devDependencies": {
-		"concurrently": "^7.0.0"
-	},
-	"scripts": {
-		"db:start": "sudo service postgresql restart",
-		"admin:frontend": "cd admin-frontend && yarn dev --port 3001",
-		"frontend": "cd frontend && yarn dev --port 3000",
-		"backend": "cd backend && yarn start:dev",
-		"start": "yarn db:start && concurrently \"yarn backend\" \"yarn admin:frontend\" \"yarn frontend\""
-	}
+  "name": "digihub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/optimus-prime343/Digihub.git",
+  "author": "morganTuber <sachinaryal300@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  },
+  "scripts": {
+    "db:start": "sudo service postgresql restart",
+    "admin:frontend": "cd admin-frontend && yarn dev --port 3001",
+    "frontend": "cd frontend && yarn dev --port 3000",
+    "backend": "cd backend && yarn start:dev",
+    "admin:frontend:prod": "cd admin-frontend && yarn start:prod",
+    "frontend:prod": "cd frontend && yarn start:prod",
+    "backend:prod": "cd backend && yarn start:prod",
+    "start": "yarn db:start && concurrently \"yarn backend\" \"yarn admin:frontend\" \"yarn frontend\"",
+    "start:prod": "concurrently \"yarn admin:frontend:prod\" \"yarn frontend:prod\" \"yarn backend:prod\""
+  }
 }

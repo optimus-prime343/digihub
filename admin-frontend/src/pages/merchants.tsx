@@ -1,5 +1,5 @@
 import { Table } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { SearchMerchantsForm, UpdateMerchantStatus } from '../components/merchant'
 import { Sidebar } from '../components/sidebar'

@@ -1,11 +1,9 @@
 import { Button, Text, Title } from '@mantine/core'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React from 'react'
 
 const NotFoundPage = () => {
-  const router = useRouter()
   return (
     <div className='flex items-center justify-center p-4 lg:min-h-[calc(100vh-6rem)] lg:p-0'>
       <div className='grid max-w-4xl items-center lg:grid-cols-2 lg:gap-24'>
