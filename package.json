@@ -15,8 +15,7 @@
     "backend": "cd backend && yarn start:dev",
     "admin:frontend:prod": "cd admin-frontend && yarn start:prod",
     "frontend:prod": "cd frontend && yarn start:prod",
-    "backend:prod": "cd backend && yarn start:prod",
     "start": "yarn db:start && concurrently \"yarn backend\" \"yarn admin:frontend\" \"yarn frontend\"",
-    "start:prod": "concurrently \"yarn admin:frontend:prod\" \"yarn frontend:prod\" \"yarn backend:prod\""
+    "start:prod": "concurrently \"yarn admin:frontend:prod\" \"yarn frontend:prod\" \"yarn backend\""
   }
 }

@@ -1,10 +1,11 @@
 import { Button, Modal, NumberInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import React, { FormEvent, useState } from 'react'
-import { toast } from 'react-toastify'
 
 import { useWithDraw } from '@/hooks/merchant/use-withdraw'
 
 const WithdrawAmountPrompt = () => {
+  const { showNotification } = useNotifications()
   const { mutateAsync } = useWithDraw()
   const [opened, setOpened] = useState(false)
   const [amount, setAmount] = useState(0)
@@ -13,9 +14,9 @@ const WithdrawAmountPrompt = () => {
     try {
       await mutateAsync(amount)
       setOpened(false)
-      toast.success('Withdrawal successful')
+      showNotification({ message: 'Withdrawl successful' })
     } catch (error: any) {
-      toast.error(error.message)
+      showNotification({ message: error.message, color: 'red' })
     }
   }
   return (

@@ -142,7 +142,7 @@ export class UsersService {
         user: User,
         newPassword: string
     ): Promise<string> {
-        user.password = newPassword
+        user.password = await hash(newPassword, 12)
         user.passwordChangedAt = new Date()
         await this.userRepository.save(user)
         return `Password changed successfully`

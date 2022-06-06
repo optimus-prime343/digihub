@@ -23,9 +23,9 @@ export const WithAuth = (
     }, [user, error, router, isLoading])
     // if restrictTo is provided in options, then check if the logged in user role matches the restrictTo
     // if not, show an alert saying route doesn't exist
-    if (options?.restrictTo && user && user.role !== options.restrictTo) {
+    if (options?.restrictTo !== user?.role) {
       return (
-        <div className='mx-auto max-w-lg rounded-md bg-red-500'>
+        <div className='mx-auto mt-6 max-w-lg rounded-md bg-red-500'>
           <Alert color='yellow' title="Page doesn't exist" variant='filled'>
             {router.pathname} doesn&apos;t exist{' '}
           </Alert>

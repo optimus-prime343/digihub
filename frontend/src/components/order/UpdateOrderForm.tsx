@@ -1,7 +1,7 @@
 import { Button, Textarea } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import { randTextRange } from '@ngneat/falso'
 import React, { FormEvent, useState } from 'react'
-import { toast } from 'react-toastify'
 
 import { useUpdateOrder } from '@/hooks/order'
 import { OrderStatus } from '@/types/orderStatus'
@@ -20,6 +20,7 @@ const UpdateOrderForm = ({
   customerName,
   onOrderUpdated,
 }: Props) => {
+  const { showNotification } = useNotifications()
   const { mutateAsync, isLoading } = useUpdateOrder()
   const [message, setMessage] = useState(randTextRange({ min: 100, max: 200 }))
 
@@ -27,13 +28,13 @@ const UpdateOrderForm = ({
     event.preventDefault()
     try {
       await mutateAsync({ id, message, status: OrderStatus.COMPLETED })
-      toast.success('Order updated successfully')
+      showNotification({ message: 'Order updated successfully' })
       onOrderUpdated()
       socket.emit('order-completed', {
         productName,
       })
     } catch (error: any) {
-      toast.error(error.message)
+      showNotification({ message: error.message, color: 'red' })
     }
   }
   return (

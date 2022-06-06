@@ -44,7 +44,7 @@ export class AuthController {
     }
 
     @Get('verify-account/:verificationCode')
-    @Redirect('http://localhost:3000/auth/login')
+    @Redirect('http://localhost:3000/auth/login?verification=success')
     public verifyAccount(
         @Param('verificationCode') verificationCode: string
     ): Promise<string> {

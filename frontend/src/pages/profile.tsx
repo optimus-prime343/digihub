@@ -21,8 +21,10 @@ const ProfilePage = () => {
   const { data: orders } = useUserOrders()
   const { data: cartItems } = useCarts()
   // set the active tab based on the route hash
-  const [activeTab, setActiveTab] = useState(() =>
-    TABS.indexOf(window.location.hash.substring(1))
+  const [activeTab, setActiveTab] = useState(
+    typeof window !== 'undefined'
+      ? TABS.indexOf(window.location.hash.substring(1))
+      : 0
   )
   const handleTabChange = (tab: number) => {
     // on tab change, update the hash in the url

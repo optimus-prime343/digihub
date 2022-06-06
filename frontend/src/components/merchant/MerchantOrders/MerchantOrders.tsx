@@ -67,7 +67,7 @@ const MerchantOrderList = () => {
   )
 }
 const OrderTable = ({ orders }: { orders: IOrder[] }) => {
-  const tableHeads = ['Product', 'Status', 'Date', 'Total Price']
+  const tableHeads = ['Product', 'Status', 'Date', 'Total Price', 'Ordered By']
   return (
     <div className='rounded-2xl bg-gray-600 p-4 shadow-md'>
       <table className='w-full table-auto text-left'>

@@ -99,7 +99,7 @@ export class OrdersService {
         this.logger.log(`Retrieving all the orders created by ${user.username}`)
         return this.orderRepository.find({
             where: { user: { id: user.id } },
-            relations: ['product'],
+            relations: ['product', 'product.merchant'],
             order: { createdAt: 'DESC' },
         })
     }

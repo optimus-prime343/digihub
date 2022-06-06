@@ -67,6 +67,7 @@ const MerchantOrderRow: FC<Props> = ({ order }) => {
         </td>
         <td>{format(new Date(order.createdAt), 'PPP')}</td>
         <td>{`Rs.${order.quantity * order.product.price}`}</td>
+        <td>{`${order.user.firstName} ${order.user.lastName}`}</td>
       </tr>
     </>
   )

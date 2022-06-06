@@ -1,6 +1,7 @@
-import { Badge } from '@mantine/core'
+import { Badge, Divider } from '@mantine/core'
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { BsShop } from 'react-icons/bs'
 
 import { NextLink } from '@/components/core'
 import { IOrder } from '@/types/order'
@@ -28,17 +29,21 @@ const OrderListItem = ({ order }: Props) => {
           src={getProductImageUrl(order.product.coverImage)}
           width={300}
         />
-        <div className='w-full max-w-sm space-y-2'>
+        <div className='w-full max-w-sm'>
           <h3 className='text-xl font-bold'>
             <NextLink href={`/products/${order.product.id}`}>
               {order.product.name}
             </NextLink>
           </h3>
+          <Badge leftSection={<BsShop />} mt='md' size='md'>
+            Sold by {order.product.merchant.businessName}
+          </Badge>
+          <Divider my='md' />
           <p>Quantity: {order.quantity}</p>
-          <p>Subtotal : Rs {order.totalPrice}</p>
+          <p className='my-2'>Subtotal : Rs {order.totalPrice}</p>
           <p>Ordered on {format(new Date(order.createdAt), 'PPP')}</p>
         </div>
-        <Badge color={orderStatusColor[order.orderStatus]}>
+        <Badge color={orderStatusColor[order.orderStatus]} size='lg'>
           {order.orderStatus}
         </Badge>
       </div>

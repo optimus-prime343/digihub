@@ -1,14 +1,13 @@
 import { Button, PasswordInput } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import { useFormik } from 'formik'
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 
 import { useChangePassword } from '@/hooks/auth'
 
 export const ChangePasswordForm = () => {
-  const router = useRouter()
+  const { showNotification } = useNotifications()
   const { mutateAsync } = useChangePassword()
-  const { getFieldProps, handleSubmit, isSubmitting } = useFormik({
+  const { getFieldProps, handleSubmit, isSubmitting, resetForm } = useFormik({
     initialValues: {
       currentPassword: '',
       newPassword: '',
@@ -17,10 +16,10 @@ export const ChangePasswordForm = () => {
     onSubmit: async values => {
       try {
         await mutateAsync(values)
-        await router.push('/auth/login')
-        toast.success('Password changed successfully')
+        showNotification({ message: 'Password changed successfully' })
+        resetForm()
       } catch (error: any) {
-        toast.error(error.message)
+        showNotification({ message: error.message })
       }
     },
   })

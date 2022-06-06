@@ -2,7 +2,7 @@ import { Button, Text, TextInput, Transition } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 
 import { NextLink } from '@/components/core'
@@ -21,8 +21,20 @@ export const SearchProducts = () => {
       router.push({ pathname: '/products/search', query: { searchQuery } })
     }
   }
+  const handleRouteChangeStart = () => {
+    setSearchQuery('')
+  }
+  useEffect(() => {
+    router.events.on('routeChangeStart', handleRouteChangeStart)
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart)
+    }
+  }, [router.events])
   return (
-    <div className='relative max-w-md flex-1' ref={searchContainerRef}>
+    <div
+      className='relative hidden max-w-md flex-1 lg:block'
+      ref={searchContainerRef}
+    >
       <TextInput
         icon={<BsSearch />}
         onChange={event => setSearchQuery(event.currentTarget.value)}

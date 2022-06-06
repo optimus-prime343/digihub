@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Burger, Button } from '@mantine/core'
-import { useClickOutside, useMediaQuery } from '@mantine/hooks'
+import { useClickOutside } from '@mantine/hooks'
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -25,7 +25,6 @@ const navLinkList = (showNav: boolean) =>
   )
 
 export const Navbar = () => {
-  const isDesktop = useMediaQuery('(min-width: 1150px)')
   const router = useRouter()
   const { user } = useUser()
   const [showNav, setShowNav] = useState(false)
@@ -58,9 +57,7 @@ export const Navbar = () => {
               src='/images/logo.png'
             />
           </NextLink>
-          {user && user.role === UserRole.USER && isDesktop ? (
-            <SearchProducts />
-          ) : null}
+          {user && user.role === UserRole.USER ? <SearchProducts /> : null}
           <ul className={navLinkList(showNav)}>
             {navbarLinks.map(({ href, name }) => (
               <li key={href}>
@@ -76,7 +73,6 @@ export const Navbar = () => {
             ))}
           </ul>
           <div className='md:hidden'>
-            {/* <Hamburger onToggle={setShowNav} toggled={showNav} /> */}
             <Burger onClick={() => setShowNav(!showNav)} opened={showNav} />
           </div>
         </nav>
